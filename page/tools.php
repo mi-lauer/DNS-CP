@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-?><h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Tools</a></h2>
+?>
+<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Tools</a></h2>
 <div id="main">
 <?php
 if(isset($_POST["Submit"])) {

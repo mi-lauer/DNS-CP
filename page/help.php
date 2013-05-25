@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-?><h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Help</a></h2>
+?>
+<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Help</a></h2>
 <div id="main">
 <b>Forward DNS and Reverse DNS (A and PTR)</b><br />
 The Address (A) record associates a domain name with an IP address, which is the primary purpose of the DNS system.  The Pointer (PTR) record provides data for reverse DNS, which is used for logging the domain name and verification purposes.  Also called "reverse DNS," the PTR record is an option.  See <a href="http://www.pcmag.com/encyclopedia/term/50493/reverse-dns">reverse DNS</a>.<br />
