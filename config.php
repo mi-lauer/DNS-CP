@@ -47,8 +47,8 @@ $conf["ns"]             = array(                      // NameServers for new zon
                                 "ns1.webhostmax.de.", // NS1
                                 "ns2.webhostmax.de.", // NS2
                                 "ns3.webhostmax.de.", // NS3
-                                "ns3.webhostmax.de.", // NS4
-                                "ns3.webhostmax.de."  // NS5
+                                "ns4.webhostmax.de.", // NS4
+                                "ns5.webhostmax.de."  // NS5
                                );
 $conf["a"]              = "84.200.248.52";            // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
@@ -58,7 +58,7 @@ $conf["refresh"]        = 28800;                      // Refresh of soa record
 $conf["retry"]          = 7200;                       // Retry of soa record
 $conf["expire"]         = 604800;                     // Expire of soa record
 $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some records
-$conf["version"]        = "0.1.4-Beta";               // Version
+$conf["version"]        = "0.1.5-Beta";               // Version
 require_once("lib/".$database["typ"].".class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
 require_once("lib/func.class.php");
