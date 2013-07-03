@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if (!extension_loaded("mysql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysql.php\">mysql</a> PHP extension."); // check if extension loaded
+if(PHP_VERSION >= "5.5.0") { die("please use mysqli"); }
 class DB {
 	private static $conn = NULL;
 	
