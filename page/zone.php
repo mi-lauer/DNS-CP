@@ -83,7 +83,7 @@ if(isset($_POST["Submit"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del" && func::isAdmin()) {
 		DB::query("DELETE FROM ".$conf["soa"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = '".DB::escape($_GET["id"])."'") or die(DB::error());
-		echo '<font color="#008000">Domain sucessful deleted</font>';
+		echo '<font color="#008000">Domain deleted successfully.</font>';
 	} else {
 	if(isset($_POST["Submit"])){
 		$total = $_POST["total"];

@@ -6,6 +6,8 @@ admin     INTEGER NOT NULL default 0,
 UNIQUE  (username)
 );
 
+# User: admin
+# Pass: admin
 INSERT INTO users (id, username, password, admin) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
 

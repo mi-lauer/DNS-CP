@@ -19,6 +19,7 @@
 session_start();
 ini_set('display_errors', 1);                         // only for development, will be removed later
 ini_set('error_reporting', E_ALL);                    // only for development, will be removed later
+
 $database               = array();                    // init database array
 $database["typ"]        = "mysqli";                    // Database typ (available: mysql, mysqli and pgsql) 
 $database["host"]       = "localhost";                // Database host
@@ -50,7 +51,7 @@ $conf["ns"]             = array(                      // NameServers for new zon
                                 "ns4.webhostmax.de.", // NS4
                                 "ns5.webhostmax.de."  // NS5
                                );
-$conf["a"]              = "84.200.248.52";            // A record for new zone
+$conf["a"]              = "127.0.0.1";            // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
 $conf["txt"]            = "v=spf1 mx -all";           // TXT record for new zone
 $conf["ttl"]            = 86400;                      // TTL of soa record
@@ -58,9 +59,11 @@ $conf["refresh"]        = 28800;                      // Refresh of soa record
 $conf["retry"]          = 7200;                       // Retry of soa record
 $conf["expire"]         = 604800;                     // Expire of soa record
 $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some records
-$conf["version"]        = "0.1.5-Beta";               // Version
+$conf["version"]        = "0.1.6-Beta";               // Version
+
 require_once("lib/".$database["typ"].".class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
 require_once("lib/func.class.php");
 require_once("lib/dns.class.php");
+
 ?>
