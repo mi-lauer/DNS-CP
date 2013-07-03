@@ -73,7 +73,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
                 <div class="clear"></div>
             </div>
         </div>
-        <p id="footer"><a href="http://nexus-irc.de">Software: <strong>MyDNS-WI <?php echo $conf["version"]; ?></strong>, entwickelt von <strong>Nexus-IRC</strong></a></p>
+        <p id="footer"><a href="http://nexus-irc.de">Software: <strong>MyDNS-WI <?php echo $conf["version"]; ?></strong>, developed by <strong>Nexus-IRC</strong></a></p>
     </div>
 </body>
 </html>

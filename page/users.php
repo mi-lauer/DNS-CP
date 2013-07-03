@@ -75,13 +75,13 @@ if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
 			if($_POST["password_one"] == $_POST["confirm_password"]) {
 				DB::query("UPDATE ".$conf["users"]." SET password = '".md5($_POST["confirm_password"])."', admin = '".DB::escape($_POST["admin"])."' WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
-				echo '<font color="#008000">Password sucessful changed</font>';
+				echo '<font color="#008000">Password changed successfully.</font>';
 			} else {
 				echo '<font color="#ff0000">The data you have entered are invalid.</font>';
 			}
 		} elseif(isset($_POST["admin"])) {
 			DB::query("UPDATE ".$conf["users"]." SET admin = '".DB::escape($_POST["admin"])."' WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
-			echo '<font color="#008000">Status sucessful changed</font>';
+			echo '<font color="#008000">Status changed sucessfully.</font>';
 		}
 	}
 $res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
