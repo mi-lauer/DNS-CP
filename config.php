@@ -20,7 +20,7 @@ session_start();
 ini_set('display_errors', 1);                         // only for development, will be removed later
 ini_set('error_reporting', E_ALL);                    // only for development, will be removed later
 $database               = array();                    // init database array
-$database["typ"]        = "mysql";                    // Database typ (available mysql and pgsql) 
+$database["typ"]        = "mysqli";                    // Database typ (available: mysql, mysqli and pgsql) 
 $database["host"]       = "localhost";                // Database host
 $database["user"]       = "mydns";                    // Database user
 $database["pw"]         = "mydns";                    // Database password
