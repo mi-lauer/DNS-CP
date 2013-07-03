@@ -16,6 +16,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+
+if(!file_exists("config.php")) {
+	die("Missing config file! Please change config.php to your needs and rename it to config.php!");
+}
+
 require_once("config.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
