@@ -28,7 +28,7 @@ if(isset($_POST["Submit"])) {
 		echo "</pre>";
 	}
 	if(isset($_POST["whois"]) && $_POST["whois"] != "") {
-		echo nl2br(shell_exec("whois ".$_POST["whois"]));
+		echo nl2br(shell_exec("whois ".trim($_POST["whois"])));
 	}
 } else {
 ?>

@@ -172,7 +172,7 @@ h2 a:hover { text-decoration: underline; }
 #main {
 	width: 700px;
 	float: right;
-	padding: 0 19px 0 0;
+	padding: 10px 19px 0 0;
 }
 
 h3 {

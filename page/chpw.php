@@ -27,7 +27,7 @@ if(isset($_POST["Submit"])){
 		if($_POST["password_one"] == $_POST["confirm_password"]) {
 			if($row["password"] == md5($_POST["password_old"])){
 				DB::query("UPDATE ".$conf["users"]." SET password = '".md5($_POST["confirm_password"])."' WHERE username = '".DB::escape($_SESSION['username'])."'") or die(DB::error());
-				echo '<font color="#008000">Password sucessful changed</font>';
+				echo '<font color="#008000">Password changed successfully.</font>';
 			} else {
 				echo '<font color="#ff0000">The data you have entered are invalid.</font>';
 			}
