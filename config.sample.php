@@ -1,5 +1,5 @@
 <?php
-/* config.php - myDNS-WI
+/* config.sample.php - myDNS-WI
  * Copyright (C) 2012-2013  Nexus-IRC project
  * http://nexus-irc.de
  * 
@@ -21,7 +21,7 @@ ini_set('display_errors', 1);                         // only for development, w
 ini_set('error_reporting', E_ALL);                    // only for development, will be removed later
 
 $database               = array();                    // init database array
-$database["typ"]        = "mysqli";                    // Database typ (available: mysql, mysqli and pgsql) 
+$database["typ"]        = "mysqli";                   // Database typ (available: mysql, mysqli and pgsql) 
 $database["host"]       = "localhost";                // Database host
 $database["user"]       = "mydns";                    // Database user
 $database["pw"]         = "mydns";                    // Database password
@@ -51,7 +51,7 @@ $conf["ns"]             = array(                      // NameServers for new zon
                                 "ns4.webhostmax.de.", // NS4
                                 "ns5.webhostmax.de."  // NS5
                                );
-$conf["a"]              = "127.0.0.1";            // A record for new zone
+$conf["a"]              = "127.0.0.1";                // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
 $conf["txt"]            = "v=spf1 mx -all";           // TXT record for new zone
 $conf["ttl"]            = 86400;                      // TTL of soa record

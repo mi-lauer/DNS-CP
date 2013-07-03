@@ -3,3 +3,4 @@
 /lib/*.class.php~
 /page/*.php~
 config.php
+/lib/pdo.*.class.php

@@ -18,7 +18,7 @@
  */
 
 if(!file_exists("config.php")) {
-	die("Missing config file! Please change config.php to your needs and rename it to config.php!");
+	die("Missing config file! Please change config.sample.php to your needs and rename it to config.php!");
 }
 
 require_once("config.php");
