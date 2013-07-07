@@ -1,6 +1,7 @@
-0.1.6-Beta
-- add mysqli support for php 5.5 (in php 5.5 is the mysql extension set as deprecated)
-- rename config.php to config.sample.php
-- add AUTHORS file
-- add TODO file
-- add Changelog
+
+ 0.1.6-Beta on 07/07/2013
+   - add mysqli support for php 5.5 (mysqli extension is deprecated since php 5.5)
+   - rename config.php to config.sample.php
+   - add AUTHORS file
+   - add TODO file
+   - add Changelog
