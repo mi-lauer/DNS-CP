@@ -24,7 +24,7 @@ CREATE TABLE dns_rr (
   FOREIGN KEY (zone) REFERENCES dns_soa (id) ON DELETE CASCADE
 );
 
-CREATE TABLE users (
+CREATE TABLE dns_users (
 id        SERIAL NOT NULL PRIMARY KEY,
 username  VARCHAR(255) NOT NULL,
 password  VARCHAR(255) NOT NULL,
@@ -32,7 +32,7 @@ admin     INTEGER NOT NULL default 0,
 UNIQUE  (username)
 );
 
-INSERT INTO users (id, username, password, admin) VALUES
+INSERT INTO dns_users (id, username, password, admin) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
 
 ALTER TABLE soa ADD COLUMN owner INTEGER NOT NULL;
