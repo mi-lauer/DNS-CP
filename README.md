@@ -19,12 +19,13 @@ You may need for a working webinterface:
 The installation isn't so easy than it will be in the future, when we've have enough time to build a easy and nice installation system. For now, you'll need to import the database structure manually and set up the correct data in the config file. If you're a little bit experienced, it shouldn't be a big problem. Feel free to open a issue, when you need help with the installation process.
 
  * Clone the git repository: `git clone https://github.com/Stricted/DNS-Webinterface.git`
- * Change the `config.sample.php` file to your needs and import the `db.<DBsystem>.sql` file in your database.
+ * Change the `config.sample.php` file to your needs
+ * Import the structure in `db.<DBsystem>.sql` file in your database.
  * Open the page and use the default user and password to login: `admin`
 
 ### Screenshots
 ---
-![Screenshot 1](https://raw.github.com/Stricted/DNS-Webinterface/master/github/screenshot1.png "Screenshot 1")
+![Screenshot 1](http://stricted.github.io/DNS-Webinterface/images/screenshot1.png "Screenshot 1")
 
 ### License
 ---
