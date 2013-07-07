@@ -47,6 +47,14 @@ class func {
 		}
 	}
 	
+	public static function isLoggedIn () {
+		if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public static function ent ($str) {
 		return htmlentities($str);
 	}

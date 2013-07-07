@@ -21,7 +21,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
 <div id="main">
 <?php
-
+$isAdmin = func::isAdmin();
 $show_list = true;
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])){
@@ -99,7 +99,7 @@ $show_list = false;
 }
 
 }elseif(isset($_GET["id"])){
-	if(isset($_GET["act"]) && $_GET["act"] == "del" && func::isAdmin()) {
+	if(isset($_GET["act"]) && $_GET["act"] == "del" && $isAdmin) {
 		DB::query("DELETE FROM ".$conf["soa"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = '".DB::escape($_GET["id"])."'") or die(DB::error());
 		echo '<font color="#008000">Domain deleted successfully.</font><br /><br />';
@@ -150,7 +150,7 @@ $show_list = false;
 		} else {
 			$serial = date("Ymd")."01";
 		}
-		if(func::isAdmin()) {
+		if($isAdmin) {
 			DB::query("UPDATE ".$conf["soa"]." SET refresh = " . DB::escape($_POST['refresh']) . ", retry = " . DB::escape($_POST['retry']) . ", expire = " . DB::escape($_POST['expire']) . ", ttl = " . DB::escape($_POST['attl']) . ", owner = '" . DB::escape($_POST['owner']) . "', serial = '".DB::escape($serial)."' WHERE id = " . DB::escape($_GET['id'])) or die(DB::error());
 		} else {
 			DB::query("UPDATE ".$conf["soa"]." SET refresh = " . DB::escape($_POST['refresh']) . ", retry = " . DB::escape($_POST['retry']) . ", expire = " . DB::escape($_POST['expire']) . ", ttl = " . DB::escape($_POST['attl']) . ", serial = '".DB::escape($serial)."' WHERE id = " . DB::escape($_GET['id'])) or die(DB::error());
@@ -158,7 +158,7 @@ $show_list = false;
 		echo '<font color="#008000">Done</font><br /><br />';
 	}
 
-if(func::isAdmin()){
+if($isAdmin){
 	$res = DB::query("SELECT * FROM ".$conf["soa"]." where id ='".DB::escape($_GET["id"])."'") or die(DB::error());
 	$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone ='".DB::escape($_GET["id"])."' ORDER BY type ASC") or die(DB::error());
 } else {
@@ -167,7 +167,7 @@ if(func::isAdmin()){
 }
 
 $row = DB::fetch_array($res);
-if($row["owner"] == $_SESSION['userid'] OR func::isAdmin()) {
+if($row["owner"] == $_SESSION['userid'] OR $isAdmin) {
 $i = 0;
 
 ?>
@@ -192,7 +192,7 @@ $i = 0;
 		<td><div align="right"><strong>TTL:</strong></div></td>
 		<td><input class="text" type="text" name="attl" size="25" value="<?php echo func::ent($row["ttl"]); ?>"></td>
 	</tr>
-<?php if(func::isAdmin()) { ?>
+<?php if($isAdmin) { ?>
 	<tr>
 <?php
 $res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
@@ -272,7 +272,7 @@ $res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or d
 }
 
 if($show_list) {
-	if(func::isAdmin()){
+	if($isAdmin){
 		$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
 	 } else {
 		$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."' ORDER BY origin ASC") or die(DB::error());
@@ -287,7 +287,7 @@ if($show_list) {
 	}
 
 	if($zoneid > 0) {
-	if(func::isAdmin()){
+	if($isAdmin){
 		echo '	<strong><a href="?page=zone&act=add">Create a new zone</a></strong><br /><br />'."\n";
 	}
 	?>
@@ -305,7 +305,7 @@ if($show_list) {
 		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo substr($row["origin"], 0, strlen($row["origin"])-1); ?></a></td>
 		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["serial"]; ?></a></td>
 		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["records"]; ?></a></td>
-<?php if(func::isAdmin()){ ?>
+<?php if($isAdmin){ ?>
 		<td class="action"><a class="delete" href="?page=zone&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('Do you really want to remove this zone?');">Delete</a></td>
 <?php } else { ?>
 		<td>&nbsp;</td>

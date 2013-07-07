@@ -25,7 +25,7 @@ if(!file_exists("config.php")) {
 // set config variables
 $database               = array();                    // init database array
 $conf                   = array();                    // init config array
-$conf["version"]        = "0.1.7-Beta";               // Version
+$conf["version"]        = "0.1.7-dev";                // Version
 $conf["build"]          = "2";                        // build number for internal version checking
 $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 'TXT');
 
@@ -33,10 +33,13 @@ require_once("config.php");
 
 $page = NULL;
 $page = trim($_GET["page"]);
+
+// set default site
 if(empty($page)) {
 	$page = "home";
 }
 
+// menu array
 $menu = array(
 	"home"     => "Home",
 	"zone"     => "Zones",
@@ -46,6 +49,7 @@ $menu = array(
 	"help"     => "Help"
 );
 
+// set title
 $title = $conf["name"];
 if(!empty($menu[$page])) {
 	$title .= " :: ".$menu[$page];
@@ -66,7 +70,7 @@ if(!empty($menu[$page])) {
 	<div id="wrapper">
     	<h1><?php echo $conf["name"]; ?></h1>
         <ul id="mainNav">
-			<?php if(isset($_SESSION['login']) && $_SESSION['login'] == 1){ ?>
+			<?php if(func::isLoggedIn()){ ?>
 				<li class="logout"><a href="?page=logout">LOGOUT</a></li>
 			<?php } else { ?>
 				<li class="logout"><a href="?page=login">LOGIN</a></li>
@@ -76,7 +80,8 @@ if(!empty($menu[$page])) {
 			<div id="container">
         		<div id="sidebar">
                 	<ul class="sideNav">
-						<?php if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
+						<?php if(func::isLoggedIn()){
+							// put the menu out
 							foreach($menu as $mpage => $menu_name) {
 								if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
 								echo '							<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
@@ -88,7 +93,7 @@ if(!empty($menu[$page])) {
                 </div>
 <?php
 
-if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
+if(func::isLoggedIn()){
 	if(isset($page)) {
 		if(@file_exists("page/".$page.".php")){
 			require_once("page/".$page.".php");

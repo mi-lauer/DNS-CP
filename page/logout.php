@@ -21,10 +21,12 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Logout</a></h2>
 <div id="main">
 <?php
-$_SESSION['login'] = 0;
-$_SESSION['username'] = 0;
-$_SESSION['userid'] = 0;
-echo '<font color="#008000">Logout sucessful</font>';
-echo '<meta http-equiv="refresh" content="0; URL=?page=main">';
+if(func::isLoggedIn()) {
+	session_destroy();
+	echo '<font color="#008000">Logout sucessful</font>';
+	echo '<meta http-equiv="refresh" content="2; URL=?page=home">';
+}else{
+	echo 'You are not logged in. <a href="?page=login">Click here</a>.';
+}
 ?>
 </div>
