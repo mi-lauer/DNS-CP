@@ -2,5 +2,6 @@
 /*.php~
 /lib/*.class.php~
 /page/*.php~
-config.php
+/config.php
 /lib/pdo.*.class.php
+/github/*
