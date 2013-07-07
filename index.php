@@ -1,7 +1,7 @@
 <?php
-/* index.php - myDNS-WI
- * Copyright (C) 2012-2013  Nexus-IRC project
- * http://nexus-irc.de
+/* index.php - DNS-WI
+ * Copyright (C) 2013  OWNDNS project
+ * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
                 <div class="clear"></div>
             </div>
         </div>
-        <p id="footer"><a href="http://nexus-irc.de">Software: <strong>MyDNS-WI <?php echo $conf["version"]; ?></strong>, developed by <strong>Nexus-IRC</strong></a></p>
+        <p id="footer"><a href="http://owndns.me/">Software: <strong>DNS-WI <?php echo $conf["version"]; ?></strong>, developed by <strong>OWNDNS</strong></a></p>
     </div>
 </body>
 </html>
