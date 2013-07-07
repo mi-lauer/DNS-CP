@@ -1,6 +1,6 @@
 <?php
 /* page/zone.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
+ * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,39 +16,57 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
-<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
 <div id="main">
 <?php
+
+$show_list = true;
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])){
-	if(isset($_POST['name']) && $_POST['name'] != ""){
-		$_POST['name'] = $_POST['name'].".";
-		DB::query("INSERT INTO ".$conf["soa"]." (origin, ns, mbox, serial, refresh, retry, expire, minimum, ttl, owner) VALUES ('".DB::escape($_POST['name'])."', '".DB::escape($conf["soans"])."', '".DB::escape($conf["mbox"])."', '".date("Ymd")."01', '".DB::escape($conf["refresh"])."', '".DB::escape($conf["retry"])."', '".DB::escape($conf["expire"])."', '".DB::escape($conf["minimum_ttl"])."', '".DB::escape($conf["ttl"])."', '".DB::escape($_POST['owner'])."')") or die(DB::error());
-		
-		$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin ='".DB::escape($_POST['name'])."'") or die(DB::error());
+	if(isset($_POST['name']) && $_POST['name'] != "") {
+		$zone_name = $_POST['name'].".";
+		$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin ='".DB::escape($zone_name)."'");
 		$row = DB::fetch_array($res);
-		if(isset($conf["ns"]) && $conf["ns"] != Null){
-			foreach($conf["ns"] as $id => $ns) {
-				DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '".DB::escape($_POST['name'])."', 'NS', '".DB::escape($ns)."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+		if(!empty($row["id"])) {
+			echo '<font color="#ff0000">Zone already exists.</font>';
+
+		}else if(empty($_POST['name']) || $_POST['name'] == "." || strlen($_POST['name']) < 2) {
+			echo '<font color="#ff0000">Please enter a valid domain name!</font>';
+
+		}else{
+
+			DB::query("INSERT INTO ".$conf["soa"]." (origin, ns, mbox, serial, refresh, retry, expire, minimum, ttl, owner) VALUES ('".DB::escape($zone_name)."', '".DB::escape($conf["soans"])."', '".DB::escape($conf["mbox"])."', '".date("Ymd")."01', '".DB::escape($conf["refresh"])."', '".DB::escape($conf["retry"])."', '".DB::escape($conf["expire"])."', '".DB::escape($conf["minimum_ttl"])."', '".DB::escape($conf["ttl"])."', '".DB::escape($_POST['owner'])."')") or die(DB::error());
+			$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin ='".DB::escape($zone_name)."'") or die(DB::error());
+			$row = DB::fetch_array($res);
+
+			if(isset($conf["ns"]) && $conf["ns"] != Null){
+				foreach($conf["ns"] as $id => $ns) {
+					DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'NS', '".DB::escape($ns)."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+				}
 			}
+			if(isset($conf["a"]) && $conf["a"] != Null){
+				DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'A', '".DB::escape($conf["a"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+				DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '*', 'A', '".DB::escape($conf["a"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+			}
+			if(isset($conf["aaaa"]) && $conf["aaaa"] != Null){
+				DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'AAAA', '".DB::escape($conf["aaaa"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+			}
+			if(isset($conf["txt"]) && $conf["txt"] != Null){
+				DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'TXT', '".DB::escape($conf["txt"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+			}
+			DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'MX', 'mail.".DB::escape($zone_name)."', '10', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
+			echo '<font color="#008000">Zone <b>'.$_POST['name'].'</b> sucessfully added.</font>';
 		}
-		if(isset($conf["a"]) && $conf["a"] != Null){
-			DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '".DB::escape($_POST['name'])."', 'A', '".DB::escape($conf["a"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-			DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '*', 'A', '".DB::escape($conf["a"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-		}
-		if(isset($conf["aaaa"]) && $conf["aaaa"] != Null){
-			DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '".DB::escape($_POST['name'])."', 'AAAA', '".DB::escape($conf["aaaa"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-		}
-		if(isset($conf["txt"]) && $conf["txt"] != Null){
-			DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '".DB::escape($_POST['name'])."', 'TXT', '".DB::escape($conf["txt"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-		}
-		DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".DB::escape($row['id'])."', '".DB::escape($_POST['name'])."', 'MX', 'mail.".DB::escape($_POST['name'])."', '10', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-		echo '<font color="#008000">'.$_POST['name'].' sucessful added</font>';
 	} else{
-		echo '<font color="#ff0000">Please enter a Domain name</font>';
+		echo '<font color="#ff0000">Please enter a domain name</font>';
 	}
+	echo "<br /><br />";
+
 } else {
+$show_list = false;
+
 ?>
 <form name="form1" method="post" action="?page=zone&act=add" class="jNice">
 	<table width="320"  border="0">
@@ -79,11 +97,12 @@ if(isset($_POST["Submit"])){
 </form>
 <?php
 }
+
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del" && func::isAdmin()) {
 		DB::query("DELETE FROM ".$conf["soa"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = '".DB::escape($_GET["id"])."'") or die(DB::error());
-		echo '<font color="#008000">Domain deleted successfully.</font>';
+		echo '<font color="#008000">Domain deleted successfully.</font><br /><br />';
 	} else {
 	if(isset($_POST["Submit"])){
 		$total = $_POST["total"];
@@ -136,8 +155,9 @@ if(isset($_POST["Submit"])){
 		} else {
 			DB::query("UPDATE ".$conf["soa"]." SET refresh = " . DB::escape($_POST['refresh']) . ", retry = " . DB::escape($_POST['retry']) . ", expire = " . DB::escape($_POST['expire']) . ", ttl = " . DB::escape($_POST['attl']) . ", serial = '".DB::escape($serial)."' WHERE id = " . DB::escape($_GET['id'])) or die(DB::error());
 		}
-		echo '<font color="#008000">Done</font>';
+		echo '<font color="#008000">Done</font><br /><br />';
 	}
+
 if(func::isAdmin()){
 	$res = DB::query("SELECT * FROM ".$conf["soa"]." where id ='".DB::escape($_GET["id"])."'") or die(DB::error());
 	$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone ='".DB::escape($_GET["id"])."' ORDER BY type ASC") or die(DB::error());
@@ -145,9 +165,11 @@ if(func::isAdmin()){
 	$res = DB::query("SELECT * FROM ".$conf["soa"]." where id ='".DB::escape($_GET["id"])."' and owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
 	$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone ='".DB::escape($_GET["id"])."' ORDER BY type ASC") or die(DB::error());
 }
+
 $row = DB::fetch_array($res);
 if($row["owner"] == $_SESSION['userid'] OR func::isAdmin()) {
 $i = 0;
+
 ?>
 
 <form name="form1" method="post" action="?page=zone&id=<?php echo $row["id"]; ?>" class="jNice">
@@ -203,7 +225,7 @@ $res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or d
 		<td><strong>Type</strong></td>
 		<td><strong>Prio</strong></td>
 		<td><strong>Data</strong></td>
-		<td><strong>Delete</strong></td>
+		<td><strong>Manage</strong></td>
 	</tr>
 <?php while ($row2 = DB::fetch_array($res2)) { ?>
 	<tr>
@@ -247,38 +269,55 @@ $res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or d
 <?php
 } else { echo "No Access"; }
 } 
-} else {
-if(func::isAdmin()){
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
-} else {
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."' ORDER BY origin ASC") or die(DB::error());
 }
-if(func::isAdmin()){
-?>
-<strong><a href="?page=zone&act=add">Create a new zone</a></strong>
-<?php } ?>
-<table width="100%"  border="0" cellspacing="1" class="jNice">
+
+if($show_list) {
+	if(func::isAdmin()){
+		$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
+	 } else {
+		$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."' ORDER BY origin ASC") or die(DB::error());
+	}
+
+	$zones  = array();
+	$zoneid = 0;
+	while($row = DB::fetch_array($res)) {
+		$zoneid++;
+		$zones[$zoneid] = $row;
+		$zones[$zoneid]["records"] = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = '".$row["id"]."'")) or die(DB::error());
+	}
+
+	if($zoneid > 0) {
+	if(func::isAdmin()){
+		echo '	<strong><a href="?page=zone&act=add">Create a new zone</a></strong><br /><br />'."\n";
+	}
+	?>
+	<table width="100%"  border="0" cellspacing="1" class="jNice">
 	<tr>
-	<td><strong>Name</strong></td>
-	<td><strong>Serial</strong></td>
-	<td><strong>Records</strong></td>
-	<td><strong>Delete</strong></td>
+		<td><strong>Name</strong></td>
+		<td><strong>Serial</strong></td>
+		<td><strong>Records</strong></td>
+		<td><strong>Manage</strong></td>
 	</tr>
-<?php 
-while ($row = DB::fetch_array($res)) { 
-$records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = '".$row["id"]."'")) or die(DB::error());
+<?php
+	foreach($zones as $zoneid => $row) {
 ?>
 	<tr>
-		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["origin"]; ?></a></td>
+		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo substr($row["origin"], 0, strlen($row["origin"])-1); ?></a></td>
 		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["serial"]; ?></a></td>
-		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $records; ?></a></td>
-		<?php if(func::isAdmin()){ ?>
-		<td class="action"><a class="delete" href="?page=zone&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('really??');">Delete</a></td>
-		<?php } else { ?>
+		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["records"]; ?></a></td>
+<?php if(func::isAdmin()){ ?>
+		<td class="action"><a class="delete" href="?page=zone&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('Do you really want to remove this zone?');">Delete</a></td>
+<?php } else { ?>
 		<td>&nbsp;</td>
 <?php } ?>
-<?php } ?>
 	</tr>
-</table>
-<?php } ?>
+<?php
+	}
+	echo '</table>
+';
+	}else{
+		echo 'There are currently no zones available. <strong><a href="?page=zone&act=add">Create your first zone</a></strong>';
+	}
+}
+?>
 </div>

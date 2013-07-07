@@ -1,6 +1,6 @@
 <?php
 /* page/chpw.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
+ * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
-<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Change password</a></h2>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Settings</a></h2>
 <div id="main">
 <?php
 if(isset($_POST["Submit"])){

@@ -41,6 +41,8 @@ class DB {
 	}
 	
 	public static function error () {
+		// DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
+		// ISSUE: Does not respond anything.
 		return mysqli_error(self::$conn);
 	}
 	

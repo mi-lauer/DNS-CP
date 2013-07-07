@@ -17,17 +17,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
+define("IN_PAGE", true);
 if(!file_exists("config.php")) {
 	die("Missing config file! Please change config.sample.php to your needs and rename it to config.php!");
 }
 
+// set config variables
+$database               = array();                    // init database array
+$conf                   = array();                    // init config array
+$conf["version"]        = "0.1.7-Beta";               // Version
+$conf["build"]          = "2";                        // build number for internal version checking
+$conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 'TXT');
+
 require_once("config.php");
+
+$page = NULL;
+$page = trim($_GET["page"]);
+if(empty($page)) {
+	$page = "home";
+}
+
+$menu = array(
+	"home"     => "Home",
+	"zone"     => "Zones",
+	"users"    => "Users",
+	"settings" => "Settings",
+	"tools"    => "Tools",
+	"help"     => "Help"
+);
+
+$title = $conf["name"];
+if(!empty($menu[$page])) {
+	$title .= " :: ".$menu[$page];
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php echo $conf["name"]; ?></title>
+	<title><?php echo $title; ?></title>
 	<link href="style/css/layout.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="style/css/jNice.css" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="style/js/jquery.js"></script>
@@ -47,40 +76,35 @@ require_once("config.php");
 			<div id="container">
         		<div id="sidebar">
                 	<ul class="sideNav">
-						<?php if(isset($_SESSION['login']) && $_SESSION['login'] == 1){ ?>
-							<li><a href="?page=main" <?php if($_GET["page"] == "main" || !$_GET["page"]) { ?>class="active"<?php } ?>>Main</a></li>
-							<li><a href="?page=zone" <?php if($_GET["page"] == "zone" ) { ?>class="active"<?php } ?>>Zones</a></li>
-							<li><a href="?page=users" <?php if($_GET["page"] == "users") { ?>class="active"<?php } ?>>Users</a></li>
-							<li><a href="?page=tools" <?php if($_GET["page"] == "tools") { ?>class="active"<?php } ?>>Tools</a></li>
-							<li><a href="?page=chpw" <?php if($_GET["page"] == "chpw") { ?>class="active"<?php } ?>>Change password</a></li>
-							<li><a href="?page=help" <?php if($_GET["page"] == "help") { ?>class="active"<?php } ?>>Help</a></li>
-						<?php } else { ?>
+						<?php if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
+							foreach($menu as $mpage => $menu_name) {
+								if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
+								echo '							<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
+							}	
+						} else { ?>
 							<li><a href="?page=login" class="active">Login</a></li>
-							<li><a href="?page=main">Main</a></li>
 						<?php } ?>
                     </ul>
                 </div>
 <?php
+
 if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
-	if(isset($_GET["page"])) {
-		if(file_exists("page/".$_GET["page"].".php")){
-			require_once("page/".$_GET["page"].".php");
-		} else {
-			require_once("page/main.php");
+	if(isset($page)) {
+		if(@file_exists("page/".$page.".php")){
+			require_once("page/".$page.".php");
+		 } else {
+			require_once("page/404.php");
 		}
-	} else {
-		require_once("page/main.php");
 	}
-} else {
+ } else {
 	require_once("page/login.php");
 }
+
 ?>
                 <div class="clear"></div>
             </div>
         </div>
-        <p id="footer"><a href="http://owndns.me/">Software: <strong>DNS-WI <?php echo $conf["version"]; ?></strong>, developed by <strong>OWNDNS</strong></a></p>
+        <p id="footer"><a href="http://owndns.me">Software: <strong>DNS-WI <span title="<?php echo $conf["build"]; ?>"><?php echo $conf["version"]; ?></strong></span>, developed by <a href="https://github.com/Stricted/DNS-Webinterface"><strong>OwnDNS</strong></a></a></p>
     </div>
 </body>
 </html>
-
-

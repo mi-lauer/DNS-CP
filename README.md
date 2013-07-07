@@ -42,7 +42,7 @@ Not available yet.
 ### ToDo
 ---
  * general improvements
- * bind9 support (and DNSSEC)
+ * bind9 support (and DNSSEC) [maybe PowerDNS too?]
  * API (with keys & right controls?)
  * Cronjob for scheduled work (ex: creating zones for bind9)
  * Log-functionality for all users
@@ -50,9 +50,10 @@ Not available yet.
  * possibility to create templates
  * backup current zones and restore them, if the user has permissions for this
  * settings page to customize webinterface: Force HTTPS, white- and blacklist for IPs, domains, ... and more
- * easy installation with step by step
+ * easy installation assistant with step by step
  * error handling with mail support and logging
  * monitoring dns server and execute events on failure (email, sms api, pushover, ...)
  * manage own permission groups for easier managing users
- * version-checker and automated updater (with git?)
+ * version-checker and update assistant (with question to remove README.md, ...)
  * contact page for contacting the administrator of the webinterface or domain
+ * multi language support

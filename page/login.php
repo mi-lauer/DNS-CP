@@ -1,6 +1,6 @@
 <?php
 /* page/login.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
+ * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,20 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
-<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Login</a></h2>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Login</a></h2>
 <div id="main">
 <?php
 if(isset($_POST["Submit"])) {
-	$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username LIKE '".DB::escape($_POST["username"])."'") or die(DB::error());
+	$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username='".DB::escape($_POST["username"])."'") or die(DB::error());
 	$row = DB::fetch_array($res);
 	if($row["password"] == md5($_POST["password"])) {
 		$_SESSION['login'] = 1;
 		$_SESSION['username'] = $row["username"];
 		$_SESSION['userid'] = $row["id"];
 		echo '<font color="#008000">Login sucessful</font>';
-		echo '<meta http-equiv="refresh" content="0; URL=?page=main">';
+		echo '<meta http-equiv="refresh" content="0; URL=?page=home">';
 	} else {
 		echo '<font color="#ff0000">The data you have entered are invalid.</font>';
 	}

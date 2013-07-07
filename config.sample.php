@@ -16,41 +16,31 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+
 session_start();
 ini_set('display_errors', 1);                         // only for development, will be removed later
 ini_set('error_reporting', E_ALL);                    // only for development, will be removed later
 
-$database               = array();                    // init database array
+// config
+// database
 $database["typ"]        = "mysqli";                   // Database typ (available: mysql, mysqli and pgsql) 
 $database["host"]       = "localhost";                // Database host
-$database["user"]       = "mydns";                    // Database user
-$database["pw"]         = "mydns";                    // Database password
-$database["db"]         = "mydns";                    // MyDNS Database
+$database["user"]       = "dns";                      // Database user
+$database["pw"]         = "dns";                      // Database password
+$database["db"]         = "dns";                      // MyDNS Database
 
-$conf                   = array();                    // init config array
-$conf["typearray"]      = array(                      // available record type
-                                'A',                  // A record
-                                'AAAA',               // AAAA record
-                                'CNAME',              // CNAME record
-                                'MX',                 // MX record
-                                'NS',                 // NS record
-                                'PTR',                // PTR record
-                                'SRV',                // SRV record
-                                'TXT'                 // TXT record
-                               );
-$conf["name"]           = "OWNDNS";            // Name of Page
+// database tables
 $conf["soa"]            = "dns_soa";                  // SOA Table
 $conf["rr"]             = "dns_rr";                   // RR Table
 $conf["users"]          = "dns_users";                // Users Table
+
+// general
+$conf["name"]           = "OwnDNS";                   // Name of Page
+
+// Default values on create
 $conf["mbox"]           = "info.owndns.me.";          // mbox for SOA
 $conf["soans"]          = "ns1.owndns.me.";           // NS for SOA
-$conf["ns"]             = array(                      // NameServers for new zone
-                                "ns1.owndns.me.",     // NS1
-                                "ns2.owndns.me.",     // NS2
-                                "ns3.owndns.me.",     // NS3
-                                "ns4.owndns.me.",     // NS4
-                                "ns5.owndns.me."      // NS5
-                               );
+$conf["ns"]             = array("ns1.owndns.me.", "ns2.owndns.me.", "ns3.owndns.me.", "ns4.owndns.me.", "ns5.owndns.me.");
 $conf["a"]              = "127.0.0.1";                // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
 $conf["txt"]            = "v=spf1 mx -all";           // TXT record for new zone
@@ -59,8 +49,9 @@ $conf["refresh"]        = 28800;                      // Refresh of soa record
 $conf["retry"]          = 7200;                       // Retry of soa record
 $conf["expire"]         = 604800;                     // Expire of soa record
 $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some records
-$conf["version"]        = "0.1.6-Beta";               // Version
 
+
+// include and connect to database
 require_once("lib/".$database["typ"].".class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
 require_once("lib/func.class.php");

@@ -108,6 +108,7 @@ ol, ul {
 	background: #fff url(../img/content.gif) repeat-y left top;
 	border: 1px solid #ddd;
 	width: 918px;
+	padding-bottom: 15px;
 }
 
 /* Sidebar ---------------------------------------- */

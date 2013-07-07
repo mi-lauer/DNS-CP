@@ -1,5 +1,5 @@
 <?php
-/* page/logout.php - DNS-WI
+/* page/main.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -18,13 +18,18 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
-<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Logout</a></h2>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Home</a></h2>
 <div id="main">
-<?php
-$_SESSION['login'] = 0;
-$_SESSION['username'] = 0;
-$_SESSION['userid'] = 0;
-echo '<font color="#008000">Logout sucessful</font>';
-echo '<meta http-equiv="refresh" content="0; URL=?page=main">';
+<?php 
+$i = 0;
+if(func::isAdmin()){
+	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
+} else {
+	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
+}
+$i = DB::num_rows($res);
 ?>
+<strong>Welcome, <?php echo $_SESSION['username']; ?>.</strong> <?php if(func::isAdmin()) { ?>(<u>administrator</u>)<?php } else { ?>(<u>customer</u>)<?php } ?>
+<br /><br />
+<br />You maintain <strong><?php echo $i; ?></strong> zones.
 </div>

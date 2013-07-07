@@ -1,6 +1,6 @@
 <?php
 /* page/users.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
+ * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
-<h2><a href="?page=main">DNS</a> &raquo; <a href="#" class="active">Users</a></h2>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Users</a></h2>
 <div id="main">
 <?php
 if(func::isAdmin()){
@@ -67,9 +68,13 @@ if(isset($_POST["Submit"])) {
 <?php
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del") {
-		DB::query("DELETE FROM ".$conf["users"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
-		DB::query("UPDATE ".$conf["soa"]." SET owner = '1' WHERE owner = '".DB::escape($_GET["id"])."'") or die(DB::error());
-		echo '<font color="#008000">User sucessful deleted</font>';
+		if($_GET["id"] == 1) {
+			echo '<font color="#ff0000">You can not delete the main admin with id 1.</font>';
+		}else{
+			DB::query("DELETE FROM ".$conf["users"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
+			DB::query("UPDATE ".$conf["soa"]." SET owner = '1' WHERE owner = '".DB::escape($_GET["id"])."'") or die(DB::error());
+			echo '<font color="#008000">User sucessful deleted</font>';
+		}
 	} else {
 	if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
@@ -150,7 +155,7 @@ $records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = '"
 } else {
 $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
 ?>
-<strong><a href="?page=users&act=add">Add a new user</a></strong>
+<strong><a href="?page=users&act=add">Add a new user</a></strong><br /><br />
 <table width="100%"  border="0" cellspacing="1">
 	<tr>
 		<td><strong>Username</strong></td>
@@ -170,7 +175,7 @@ $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or di
 		?>
 			</a>
 		</td>
-		<td class="action"><a class="delete" href="?page=users&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('really??')">Delete</a></td>
+		<td class="action"><a class="delete" href="?page=users&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('Are you really sure that you want delete this user?')">Delete</a></td>
 	</tr>
 <?php } ?>
 </table>
