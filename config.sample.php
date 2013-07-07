@@ -38,18 +38,18 @@ $conf["typearray"]      = array(                      // available record type
                                 'SRV',                // SRV record
                                 'TXT'                 // TXT record
                                );
-$conf["name"]           = "Nexus-IRC DNS";            // Name of Page
+$conf["name"]           = "OWNDNS";            // Name of Page
 $conf["soa"]            = "dns_soa";                  // SOA Table
 $conf["rr"]             = "dns_rr";                   // RR Table
 $conf["users"]          = "dns_users";                // Users Table
-$conf["mbox"]           = "info.webhostmax.de.";      // mbox for SOA
-$conf["soans"]          = "ns1.webhostmax.de.";       // NS for SOA
+$conf["mbox"]           = "info.owndns.me.";          // mbox for SOA
+$conf["soans"]          = "ns1.owndns.me.";           // NS for SOA
 $conf["ns"]             = array(                      // NameServers for new zone
-                                "ns1.webhostmax.de.", // NS1
-                                "ns2.webhostmax.de.", // NS2
-                                "ns3.webhostmax.de.", // NS3
-                                "ns4.webhostmax.de.", // NS4
-                                "ns5.webhostmax.de."  // NS5
+                                "ns1.owndns.me.",     // NS1
+                                "ns2.owndns.me.",     // NS2
+                                "ns3.owndns.me.",     // NS3
+                                "ns4.owndns.me.",     // NS4
+                                "ns5.owndns.me."      // NS5
                                );
 $conf["a"]              = "127.0.0.1";                // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
