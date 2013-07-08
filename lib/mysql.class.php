@@ -16,9 +16,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+/* MySQL class */
+require_once("database.class.php");
 if (!extension_loaded("mysql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysql.php\">mysql</a> PHP extension."); // check if extension loaded
 if(PHP_VERSION >= "5.5.0") { die("please use mysqli"); }
-class DB {
+class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
@@ -44,10 +46,6 @@ class DB {
 	
 	public static function error () {
 		return mysql_error(self::$conn);
-	}
-	
-	public static function unescape ($data) {
-		return $data;
 	}
 }
 ?>

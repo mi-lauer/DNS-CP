@@ -16,8 +16,10 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+/* SQLite class */
+require_once("database.class.php");
 if (!extension_loaded("sqlite3")) die("Missing <a href=\"http://www.php.net/manual/en/book.sqlite3.php\">sqlite3</a> PHP extension."); // check if extension loaded
-class DB {
+class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
@@ -37,15 +39,11 @@ class DB {
 	}
 	
 	public static function num_rows ($res) {
-		return count($res);
+		return "1"; /* will be changes later */
 	}
 	
 	public static function error () {
 		return self::$conn->lastErrorMsg();
-	}
-	
-	public static function unescape ($data) {
-		return $data;
 	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* lib/pgsql.class.php - DNS-WI
+/* lib/database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,38 +16,31 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* PostgreSQL class */
-require_once("database.class.php");
-if (!extension_loaded("pgsql")) die("Missing <a href=\"http://www.php.net/manual/en/book.pgsql.php\">pgsql</a> PHP extension."); // check if extension loaded
-class DB extends database {
+/* Database layout class */
+class database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = pg_connect("host=".$host." user=".$user." password=".$pw." dbname=".$db) ;
 	}
 	
 	public static function query ($res) {
-		return pg_query(self::$conn, $res);
 	}
 	
 	public static function escape ($res) {
-		return pg_escape_string(self::$conn, $res);
+		return $res;
 	}
 	
 	public static function fetch_array ($res) {
-		return pg_fetch_array($res);
 	}
 	
 	public static function num_rows ($res) {
-		return pg_num_rows($res);
 	}
 	
 	public static function error () {
-		return pg_last_error(self::$conn);
 	}
 	
 	public static function unescape ($data) {
-		return pg_unescape_bytea($data);
+		return $data;
 	}
 }
 ?>

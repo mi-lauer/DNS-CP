@@ -16,8 +16,10 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+/* MySQL Improved Extension class */
+require_once("database.class.php");
 if (!extension_loaded("mysqli")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysqli.php\">mysqli</a> PHP extension."); // check if extension loaded
-class DB {
+class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
@@ -44,10 +46,6 @@ class DB {
 		// DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
 		// ISSUE: Does not respond anything.
 		return mysqli_error(self::$conn);
-	}
-	
-	public static function unescape ($data) {
-		return $data;
 	}
 }
 ?>
