@@ -9,6 +9,7 @@ CREATE TABLE dns_soa (
 	expire  INTEGER NOT NULL default 604800,
 	minimum INTEGER NOT NULL default 86400,
 	ttl     INTEGER NOT NULL default 86400,
+	owner	INTEGER NOT NULL,
 	UNIQUE  (origin)
 );
 
@@ -25,14 +26,12 @@ CREATE TABLE dns_rr (
 );
 
 CREATE TABLE dns_users (
-id        SERIAL NOT NULL PRIMARY KEY,
-username  VARCHAR(255) NOT NULL,
-password  VARCHAR(255) NOT NULL,
-admin     INTEGER NOT NULL default 0,
-UNIQUE  (username)
+ id        SERIAL NOT NULL PRIMARY KEY,
+ username  VARCHAR(255) NOT NULL,
+ password  VARCHAR(255) NOT NULL,
+ admin     INTEGER NOT NULL default 0,
+ UNIQUE  (username)
 );
 
 INSERT INTO dns_users (id, username, password, admin) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-
-ALTER TABLE soa ADD COLUMN owner INTEGER NOT NULL;

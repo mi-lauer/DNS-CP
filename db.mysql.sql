@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `dns_rr` (
   `ttl` int(10) unsigned NOT NULL DEFAULT '86400',
   `type` enum('A','AAAA','CNAME','HINFO','MX','NAPTR','NS','PTR','RP','SRV','TXT') DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `rr` (`zone`,`name`,`type`,`data`)
+  UNIQUE KEY `dns_rr` (`zone`,`name`,`type`,`data`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `dns_users` ( 
@@ -36,5 +36,3 @@ CREATE TABLE IF NOT EXISTS `dns_users` (
 
 INSERT INTO `dns_users` (`id`, `username`, `password`, `admin`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-
-ALTER TABLE `soa` ADD `owner` INT( 11 ) NOT NULL AFTER `ttl` 
