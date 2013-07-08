@@ -21,7 +21,7 @@ class DB {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = new SQLite3($db);
+		self::$conn = new SQLite3("database/".$db);
 	}
 	
 	public static function query ($res) {
