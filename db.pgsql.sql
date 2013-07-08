@@ -1,16 +1,16 @@
 CREATE TABLE dns_soa (
-	id      SERIAL NOT NULL PRIMARY KEY,
-	origin  VARCHAR(255) NOT NULL,
-	ns      VARCHAR(255) NOT NULL,
-	mbox    VARCHAR(255) NOT NULL,
-	serial  INTEGER NOT NULL default 1,
-	refresh INTEGER NOT NULL default 28800,
-	retry   INTEGER NOT NULL default 7200,
-	expire  INTEGER NOT NULL default 604800,
-	minimum INTEGER NOT NULL default 86400,
-	ttl     INTEGER NOT NULL default 86400,
-	owner	INTEGER NOT NULL,
-	UNIQUE  (origin)
+ id      SERIAL NOT NULL PRIMARY KEY,
+ origin  VARCHAR(255) NOT NULL,
+ ns      VARCHAR(255) NOT NULL,
+ mbox    VARCHAR(255) NOT NULL,
+ serial  INTEGER NOT NULL default 1,
+ refresh INTEGER NOT NULL default 28800,
+ retry   INTEGER NOT NULL default 7200,
+ expire  INTEGER NOT NULL default 604800,
+ minimum INTEGER NOT NULL default 86400,
+ ttl     INTEGER NOT NULL default 86400,
+ owner	INTEGER NOT NULL,
+ UNIQUE  (origin)
 );
 
 CREATE TABLE dns_rr (
