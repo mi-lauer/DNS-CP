@@ -1,5 +1,5 @@
 <?php
-/* lib/pgsql.class.php - DNS-WI
+/* lib/pgsql.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 

@@ -1,5 +1,5 @@
 <?php
-/* lib/sqlite3.class.php - DNS-WI
+/* lib/mysqli.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,34 +16,36 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* SQLite class */
+/* MySQL Improved Extension class */
 require_once("database.class.php");
-if (!extension_loaded("sqlite3")) die("Missing <a href=\"http://www.php.net/manual/en/book.sqlite3.php\">sqlite3</a> PHP extension."); // check if extension loaded
+if (!extension_loaded("mysqli")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysqli.php\">mysqli</a> PHP extension."); // check if extension loaded
 class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = new SQLite3("database/".$db);
+		self::$conn = mysqli_connect($host, $user, $pw, $db);
 	}
 	
 	public static function query ($res) {
-		return self::$conn->query($res);
+		return mysqli_query(self::$conn, $res);
 	}
 	
 	public static function escape ($res) {
-		return self::$conn->escapeString($res);
+		return mysqli_real_escape_string(self::$conn, $res);
 	}
 	
 	public static function fetch_array ($res) {
-		return $res->fetchArray();
+		return mysqli_fetch_array($res);
 	}
 	
 	public static function num_rows ($res) {
-		return "1"; /* will be changes later */
+		return mysqli_num_rows($res);
 	}
 	
 	public static function error () {
-		return self::$conn->lastErrorMsg();
+		// DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
+		// ISSUE: Does not respond anything.
+		return mysqli_error(self::$conn);
 	}
 }
 ?>

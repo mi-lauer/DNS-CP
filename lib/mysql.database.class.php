@@ -1,5 +1,5 @@
 <?php
-/* lib/mysqli.class.php - DNS-WI
+/* lib/mysql.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,36 +16,36 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* MySQL Improved Extension class */
+/* MySQL class */
 require_once("database.class.php");
-if (!extension_loaded("mysqli")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysqli.php\">mysqli</a> PHP extension."); // check if extension loaded
+if (!extension_loaded("mysql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysql.php\">mysql</a> PHP extension."); // check if extension loaded
+if(PHP_VERSION >= "5.5.0") { die("please use mysqli"); }
 class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = mysqli_connect($host, $user, $pw, $db);
+		self::$conn = mysql_connect($host, $user, $pw);
+		mysql_select_db($db);
 	}
 	
 	public static function query ($res) {
-		return mysqli_query(self::$conn, $res);
+		return mysql_query($res, self::$conn);
 	}
 	
 	public static function escape ($res) {
-		return mysqli_real_escape_string(self::$conn, $res);
+		return mysql_real_escape_string($res, self::$conn);
 	}
 	
 	public static function fetch_array ($res) {
-		return mysqli_fetch_array($res);
+		return mysql_fetch_array($res);
 	}
 	
 	public static function num_rows ($res) {
-		return mysqli_num_rows($res);
+		return mysql_num_rows($res);
 	}
 	
 	public static function error () {
-		// DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
-		// ISSUE: Does not respond anything.
-		return mysqli_error(self::$conn);
+		return mysql_error(self::$conn);
 	}
 }
 ?>

@@ -52,7 +52,7 @@ $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some re
 
 
 // include and connect to database
-require_once("lib/".$database["typ"].".class.php");
+require_once("lib/".$database["typ"].".database.class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
 require_once("lib/func.class.php");
 require_once("lib/dns.class.php");
