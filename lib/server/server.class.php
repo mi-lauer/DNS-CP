@@ -1,5 +1,5 @@
 <?php
-/* lib/powerdns.server.class.php - DNS-WI
+/* lib/server/server.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* powerDNS server class */
-class server extends dns_server {
+/* Server layout class (for later support bind9, mydns and powerdns) */
+class dns_server {
 	public static function get_records () { }
 	public static function add_record () { }
 	public static function del_record () { }

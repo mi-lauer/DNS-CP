@@ -1,5 +1,5 @@
 <?php
-/* lib/sqlite3.database.class.php - DNS-WI
+/* lib/database/sqlite3.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,32 +16,68 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* SQLite class */
-require_once("database.class.php");
+/* This is the database implementation for SQLite3. */
 if (!extension_loaded("sqlite3")) die("Missing <a href=\"http://www.php.net/manual/en/book.sqlite3.php\">sqlite3</a> PHP extension."); // check if extension loaded
 class DB extends database {
 	private static $conn = NULL;
 	
+	/**
+	 * Connects to SQLite database
+	 * 
+	 * @param	NULL		$host
+	 * @param	NULL		$user
+	 * @param	NULL		$pw
+	 * @param	string		$db
+	 */
 	public static function connect($host, $user, $pw, $db) {
 		self::$conn = new SQLite3("database/".$db);
 	}
 	
+	/**
+	 * Sends a database query to SQLite database.
+	 *
+	 * @param	string		$res 		a database query
+	 * @return 	integer					id of the query result
+	 */
 	public static function query ($res) {
 		return self::$conn->query($res);
 	}
 	
+	/**
+	 * Escapes a string for use in sql query.
+	 *
+	 * @param	string		$res 		a database query
+	 * @return	string
+	 */
 	public static function escape ($res) {
 		return self::$conn->escapeString($res);
 	}
 	
+	/**
+	 * Gets a row from SQLite database query result
+	 *
+	 * @param	string		$res		a database query
+	 * @return 				array		a row from result
+	 */
 	public static function fetch_array ($res) {
 		return $res->fetchArray();
 	}
 	
+	/**
+	 * Counts number of rows in a result returned by a SELECT query.
+	 *
+	 * @param	string		$res	a database query	
+	 * @return 	integer				number of rows in a result
+	 */
 	public static function num_rows ($res) {
 		return "1"; /* will be changed later */
 	}
 	
+	/**
+	 * Returns SQLite error description for last error.
+	 *
+	 * @return 	string		SQLite error description
+	 */
 	public static function error () {
 		return self::$conn->lastErrorMsg();
 	}

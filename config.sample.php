@@ -36,6 +36,7 @@ $conf["users"]          = "dns_users";                // Users Table
 
 // general
 $conf["name"]           = "OwnDNS";                   // Name of Page
+$conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns)
 
 // Default values on create
 $conf["mbox"]           = "info.owndns.me.";          // mbox for SOA
@@ -52,8 +53,11 @@ $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some re
 
 
 // include and connect to database
-require_once("lib/".$database["typ"].".database.class.php");
+require_once("lib/database/database.class.php");
+require_once("lib/database/".$database["typ"].".database.class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
+require_once("lib/server/server.class.php");
+require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/func.class.php");
 require_once("lib/dns.class.php");
 
