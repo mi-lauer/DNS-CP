@@ -23,29 +23,31 @@ class DB extends database {
 	private static $conn = NULL;
 	
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = mysqli_connect($host, $user, $pw, $db);
+		self::$conn = new mysqli($host, $user, $pw, $db);
 	}
 	
 	public static function query ($res) {
-		return mysqli_query(self::$conn, $res);
+		return self::$conn->query($res);
 	}
 	
 	public static function escape ($res) {
-		return mysqli_real_escape_string(self::$conn, $res);
+		return self::$conn->real_escape_string($res);
 	}
 	
 	public static function fetch_array ($res) {
-		return mysqli_fetch_array($res);
+		return $res->fetch_array();
 	}
 	
 	public static function num_rows ($res) {
-		return mysqli_num_rows($res);
+		return $res-num_rows();
 	}
 	
 	public static function error () {
-		// DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
-		// ISSUE: Does not respond anything.
-		return mysqli_error(self::$conn);
+		/* DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!
+		 * ISSUE: Does not respond anything.
+		 * (Stricted: i think its a bug un our system when num_rows nothin response then makes or die(DB::error) we check this later)
+		 */		
+		return self::$conn->error();
 	}
 }
 ?>

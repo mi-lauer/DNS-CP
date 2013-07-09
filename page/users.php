@@ -47,11 +47,11 @@ if(isset($_POST["Submit"])) {
 			</td>
 		</tr>
 		<tr>
-			<td><div align="right"><strong>New password:</strong></div></td>
+			<td><div align="right"><strong>password:</strong></div></td>
 			<td><input class="text" type="password" name="password_one" ></td>
 		</tr>
 		<tr>
-			<td><div align="right"><strong>Confirm new password:</strong></div></td>
+			<td><div align="right"><strong>Confirm password:</strong></div></td>
 			<td><input class="text" type="password" name="confirm_password" ></td>
 		</tr>
 		<tr>

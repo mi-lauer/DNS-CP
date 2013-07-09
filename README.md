@@ -1,7 +1,7 @@
 DNS-Webinterface
 ==================
 
-**DNS webinterface** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with mysql and PostgreSQL databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
+**DNS webinterface** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with mysql, PostgreSQL and SQLite databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
 
 ### Requirements
 ---
@@ -10,7 +10,7 @@ You may need for a working webinterface:
  * Linux machine (Debian 6+ recommended; windows may work too, but not recommended)
  * Linux knowledge
  * At least php 5 and enabled shell_exec() for more functionality
- * MySQL/PostgreSQL-database
+ * MySQL/PostgreSQL/SQLite-database
  * working DNS server (only [myDNS](http://mydns.bboy.net) supported so far)
  * some time and basic knowledge about DNS 
 
@@ -37,11 +37,12 @@ Our project page is currently hosted on github and is available on [stricted.git
 
 ### Live Demo
 ---
-Not available yet.
+[Demo](http://demo.owndns.me)
 
 ### ToDo
 ---
  * general improvements
+ * add some comments to the classes
  * bind9 support (and DNSSEC) [maybe PowerDNS too?]
  * API (with keys & right controls?)
  * Cronjob for scheduled work (ex: creating zones for bind9)

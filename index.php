@@ -32,7 +32,8 @@ $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 
 require_once("config.php");
 
 $page = NULL;
-$page = trim($_GET["page"]);
+if(isset($_GET["page"]) && !empty($_GET["page"]))
+	$page = trim($_GET["page"]);
 
 // set default site
 if(empty($page)) {
