@@ -21,6 +21,6 @@ $data = array(
 		"_name" => "404 - Not found",
 		"_content" => "<b>This page does not exist!</b>"
 		);
-$temp = template::get_template("page");
+$temp = template::get_template("404");
 template::show($temp, $data);
 ?>

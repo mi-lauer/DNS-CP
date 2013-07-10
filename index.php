@@ -69,61 +69,35 @@ if(!empty($menu[$page])) {
 	$title .= " :: ".$menu[$page];
 }
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php echo $title; ?></title>
-	<link href="style/css/layout.css" rel="stylesheet" type="text/css" media="screen" />
-	<link href="style/css/jNice.css" rel="stylesheet" type="text/css" media="screen" />
-	<script type="text/javascript" src="style/js/jquery.js"></script>
-	<script type="text/javascript" src="style/js/jNice.js"></script>
-</head>
-<body>
-	<div id="wrapper">
-    	<h1><?php echo $conf["name"]; ?></h1>
-        <ul id="mainNav">
-			<?php if(func::isLoggedIn()){ ?>
-				<li class="logout"><a href="?page=logout">LOGOUT</a></li>
-			<?php } else { ?>
-				<li class="logout"><a href="?page=login">LOGIN</a></li>
-			<?php } ?>
-        </ul>
-        <div id="containerHolder">
-			<div id="container">
-        		<div id="sidebar">
-                	<ul class="sideNav">
-						<?php if(func::isLoggedIn()){
-							// put the menu out
-							foreach($menu as $mpage => $menu_name) {
-								if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
-								echo '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
-							}
-						} else { ?>
-							<li><a href="?page=login" class="active">Login</a></li>
-						<?php } ?>
-                    </ul>
-                </div>
-<?php
-
 if(func::isLoggedIn()){
+	$tmenu = "";
+	foreach($menu as $mpage => $menu_name) {
+		if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
+		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
+	}
 	if(isset($page)) {
 		if(@file_exists("page/".$page.".php")){
-			require_once("page/".$page.".php");
-		 } else {
-			require_once("page/404.php");
+			$content = '<?php require_once("page/'.$page.'.php"); ?>';
+		} else {
+			$content = '<?php require_once("page/404.php"); ?>';
 		}
 	}
- } else {
-	require_once("page/login.php");
+	$login = '<li class="logout"><a href="?page=logout">LOGOUT</a></li>';
+} else {
+	$tmenu ='<li><a href="?page=login" class="active">Login</a></li>';
+	$content = '<?php require_once("page/login.php"); ?>';
+	$login = '<li class="logout"><a href="?page=login">LOGIN</a></li>';
 }
+$data = array(
+		"_title" => $title,
+		"_name" => $conf["name"],
+		"_login" => $login,
+		"_menu" => $tmenu,
+		"_content" => $content,
+		"_build" => $conf["build"],
+		"_version" => $conf["version"]
+		);
 
+$temp = template::get_template("index");
+template::show($temp, $data);
 ?>
-                <div class="clear"></div>
-            </div>
-        </div>
-        <p id="footer"><a href="http://owndns.me">Software: <strong>DNS-WI <span title="<?php echo $conf["build"]; ?>"><?php echo $conf["version"]; ?></strong></span>, developed by <a href="https://github.com/Stricted/DNS-Webinterface"><strong>OwnDNS</strong></a></a></p>
-    </div>
-</body>
-</html>

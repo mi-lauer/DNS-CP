@@ -17,16 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-?>
-<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Logout</a></h2>
-<div id="main">
-<?php
 if(func::isLoggedIn()) {
 	session_destroy();
-	echo '<font color="#008000">Logout sucessful</font>';
-	echo '<meta http-equiv="refresh" content="2; URL=?page=home">';
+	$error = '<font color="#008000">Logout sucessful</font>';
+	$error .= '<meta http-equiv="refresh" content="2; URL=?page=home">';
 }else{
-	echo 'You are not logged in. <a href="?page=login">Click here</a>.';
+	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';
 }
+$data = array(
+		"_name" => "Logout",
+		"_error" => $error
+		);
+$temp = template::get_template("logout");
+template::show($temp, $data);
 ?>
-</div>

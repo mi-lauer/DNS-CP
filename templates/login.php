@@ -1,5 +1,5 @@
 <?php
-/* page/login.php - DNS-WI
+/* templates/login.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,23 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-if(isset($_POST["Submit"])) {
-	$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username='".DB::escape($_POST["username"])."'") or die(DB::error());
-	$row = DB::fetch_array($res);
-	if($row["password"] == md5($_POST["password"])) {
-		$_SESSION['login'] = 1;
-		$_SESSION['username'] = $row["username"];
-		$_SESSION['userid'] = $row["id"];
-		$error = '<font color="#008000">Login sucessful</font>';
-		$error .='<meta http-equiv="refresh" content="0; URL=?page=home">';
-	} else {
-		$error = '<font color="#ff0000">The data you have entered are invalid.</font>';
-	}
-} else { $error = ""; }
-$data = array(
-		"_name" => "Login",
-		"_error" => $error
-		);
-$temp = template::get_template("login");
-template::show($temp, $data);
 ?>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
+<div id="main">
+{_error}
+<form method="post" name="login" action="?page=login" class="jNice">
+	<table width="320"  border="0" align="center">
+		<tr>
+			<td><strong>Username:</strong></td>
+			<td><input class="text" type="text" name="username" /></td>
+		</tr>
+		<tr>
+			<td><strong>Password:</strong></td>
+			<td><input class="text" type="password" name="password" /></td>
+		</tr>
+		<tr class="odd">
+			<td><center><input type="submit" name="Submit" value="Login" /></center></td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+</form>
+</div>
