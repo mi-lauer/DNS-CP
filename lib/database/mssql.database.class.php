@@ -1,5 +1,5 @@
 <?php
-/* lib/database/mysql.database.class.php - DNS-WI
+/* lib/database/mssql.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* This is the database implementation for MySQL4.1 or higher using the mysql extension. */
-if (!extension_loaded("mysql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysql.php\">mysql</a> PHP extension."); // check if extension loaded
-if(PHP_VERSION >= "5.5.0") { die("please use mysqli"); }
+/* This is the database implementation for MSSQL. */
+if (!extension_loaded("mssql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mssql.php\">mssql</a> PHP extension."); // check if extension loaded
+die("actually not supportet and untestet");
 class DB extends database {
 	private static $conn = NULL;
 	
 	/**
-	 * Connects to MySQL Server
+	 * Connects to MSSQL Server
 	 * 
 	 * @param	string		$host
 	 * @param	string		$user
@@ -31,18 +31,18 @@ class DB extends database {
 	 * @param	string		$db
 	 */
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = mysql_connect($host, $user, $pw);
-		mysql_select_db($db, self::$conn);
+		self::$conn = mssql_connect($host, $user, $pw);
+		mssql_select_db($db, self::$conn);
 	}
 
 	/**
-	 * Sends a database query to MySQL server.
+	 * Sends a database query to MSSQL server.
 	 *
 	 * @param	string		$res 		a database query
 	 * @return 	integer					id of the query result
 	 */
 	public static function query ($res) {
-		return mysql_query($res, self::$conn);
+		return mssql_query($res, self::$conn);
 	}
 
 	/**
@@ -52,17 +52,17 @@ class DB extends database {
 	 * @return	string
 	 */
 	public static function escape ($res) {
-		return mysql_real_escape_string($res, self::$conn);
+		return str_replace("'", "''", $res); /* MSSQL has no function like mysql_real_escape_string */
 	}
 	
 	/**
-	 * Gets a row from MySQL database query result.
+	 * Gets a row from MSSQL database query result.
 	 *
 	 * @param	string		$res		a database query
 	 * @return 				array		a row from result
 	 */
 	public static function fetch_array ($res) {
-		return mysql_fetch_array($res);
+		return mssql_fetch_array($res);
 	}
 	
 	/**
@@ -72,7 +72,7 @@ class DB extends database {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) {
-		return mysql_num_rows($res);
+		return mssql_num_rows($res);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ class DB extends database {
 	 * @return 	integer		MySQL error number
 	 */
 	public static function error () {
-		return mysql_error(self::$conn);
+		return mssql_get_last_message(self::$conn);
 	}
 }
 ?>

@@ -60,7 +60,7 @@ class DB extends database {
 	 * @return 				array		a row from result
 	 */
 	public static function fetch_array ($res) {
-		return $res->fetchArray();
+		return $res->fetchArray(SQLITE3_ASSOC);
 	}
 	
 	/**
@@ -70,7 +70,9 @@ class DB extends database {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) {
-		return "1"; /* will be changed later */
+		$count = 0;
+		while ($row = self::fetch_array($res)) { $count++; }
+		return $count;
 	}
 	
 	/**
