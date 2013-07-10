@@ -1,5 +1,5 @@
 <?php
-/* lib/server/bind9.server.class.php - DNS-WI
+/* lib/template.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,18 +16,15 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* bind9 server class */
-class server extends dns_server {
-	public static function get_records () { }
-	public static function add_record () { }
-	public static function del_record () { }
-	public static function update_record () { }
-	public static function get_soa () { }
-	public static function add_soa () { }
-	public static function del_soa () { }
-	public static function update_soa () { }
-	public static function get_zone () { }
-	public static function add_zone () { }
-	public static function del_zone () { }
+class template {
+	public static function get_template($template) {
+		return file_get_contents("templates/".$template);
+	}
+	public static function show ($content, $replace) {
+		foreach($replace as $name => $value) {
+			$content = str_replace("{".$name."}", $value, $content);
+		}
+		return $content;
+	}
 }
 ?>

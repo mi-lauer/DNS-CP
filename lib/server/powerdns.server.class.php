@@ -26,10 +26,6 @@ class server extends dns_server {
 	public static function add_soa () { }
 	public static function del_soa () { }
 	public static function update_soa () { }
-	public static function get_user () { }
-	public static function add_user () { }
-	public static function del_user () { }
-	public static function update_user () { }
 	public static function get_zone () { }
 	public static function add_zone () { }
 	public static function del_zone () { }

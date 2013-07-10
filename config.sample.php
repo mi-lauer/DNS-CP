@@ -17,10 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-session_start();
-ini_set('display_errors', 1);                         // only for development, will be removed later
-ini_set('error_reporting', E_ALL);                    // only for development, will be removed later
-
 // config
 // database
 $database["typ"]        = "mysqli";                   // Database typ (available: mysql, mysqli and pgsql) 
@@ -50,15 +46,4 @@ $conf["refresh"]        = 28800;                      // Refresh of soa record
 $conf["retry"]          = 7200;                       // Retry of soa record
 $conf["expire"]         = 604800;                     // Expire of soa record
 $conf["minimum_ttl"]    = 60;                         // Minimum ttl for some records
-
-
-// include and connect to database
-require_once("lib/database/database.class.php");
-require_once("lib/database/".$database["typ"].".database.class.php");
-DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
-require_once("lib/server/server.class.php");
-require_once("lib/server/".$conf['server'].".server.class.php");
-require_once("lib/func.class.php");
-require_once("lib/dns.class.php");
-
 ?>

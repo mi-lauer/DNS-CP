@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+session_start();
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 
 define("IN_PAGE", true);
 if(!file_exists("config.php")) {
@@ -29,7 +32,17 @@ $conf["version"]        = "0.1.7-dev";                // Version
 $conf["build"]          = "2";                        // build number for internal version checking
 $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 'TXT');
 
+// requirements
 require_once("config.php");
+require_once("lib/database/database.class.php");
+require_once("lib/database/".$database["typ"].".database.class.php");
+DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
+require_once("lib/user.class.php");
+require_once("lib/server/server.class.php");
+require_once("lib/server/".$conf['server'].".server.class.php");
+require_once("lib/template.class.php");
+require_once("lib/func.class.php");
+require_once("lib/dns.class.php");
 
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
