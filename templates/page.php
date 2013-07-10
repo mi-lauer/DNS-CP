@@ -1,5 +1,5 @@
 <?php
-/* page/help.php - DNS-WI
+/* templates/page.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,10 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-$data = array(
-		"_name" => "404 - Not found",
-		"_content" => "<b>This page does not exist!</b>"
-		);
-$temp = template::get_template("page");
-template::show($temp, $data);
 ?>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
+<div id="main">
+{_content}
+</div>
