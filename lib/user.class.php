@@ -47,10 +47,40 @@ class user {
 		session_destroy();
 		return '<font color="#008000">Logout sucessful</font><meta http-equiv="refresh" content="2; URL=?page=home">';
 	}
-	public static function change_password () { }
+	
+	/**
+	 * change the password of a user
+	 *
+	 * @param 		string		$user
+	 * @param 		string		$opw
+	 * @param 		string		$npw
+	 * @param 		string		$npw2
+	 * @return		string
+	 */
+	public static function change_password ($user, $opw, $npw, $npw2) {
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = '".DB::escape($user)."'") or die(DB::error());
+		$row = DB::fetch_array($res);
+		if(isset($npw) && isset($npw2) && isset($opw) && $opw != "" && $npw != "" && $npw2 != ""){
+			if($npw == $npw2) {
+				if($row["password"] == md5($opw)){
+					DB::query("UPDATE ".$conf["users"]." SET password = '".md5($npw)."' WHERE username = '".DB::escape($user)."'") or die(DB::error());
+					return '<font color="#008000">Password changed successfully.</font>';
+				} else {
+					return '<font color="#ff0000">The data you have entered are invalid.</font>';
+				}
+			} else {
+				return '<font color="#ff0000">The data you have entered are invalid.</font>';
+			}
+		} else {
+			return '<font color="#ff0000">The data you have entered are invalid.</font>';
+		}
+	}
+	
+	/* will be added later
 	public static function get_users () { }
 	public static function add_user () { }
 	public static function del_user () { }
 	public static function change_user () { }
+	*/
 }
 ?>

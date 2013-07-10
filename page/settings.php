@@ -18,22 +18,7 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])){
-	$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = '".DB::escape($_SESSION['username'])."'") or die(DB::error());
-	$row = DB::fetch_array($res);
-	if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && isset($_POST["password_old"]) && $_POST["password_old"] != "" && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
-		if($_POST["password_one"] == $_POST["confirm_password"]) {
-			if($row["password"] == md5($_POST["password_old"])){
-				DB::query("UPDATE ".$conf["users"]." SET password = '".md5($_POST["confirm_password"])."' WHERE username = '".DB::escape($_SESSION['username'])."'") or die(DB::error());
-				$error = '<font color="#008000">Password changed successfully.</font>';
-			} else {
-				$error = '<font color="#ff0000">The data you have entered are invalid.</font>';
-			}
-		} else {
-			$error = '<font color="#ff0000">The data you have entered are invalid.</font>';
-		}
-	} else {
-		$error = '<font color="#ff0000">The data you have entered are invalid.</font>';
-	}
+	$error = user::change_password($_SESSION['username'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
 } else { $error = ""; }
 $data = array(
 		"_name" => "Settings",
