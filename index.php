@@ -98,8 +98,8 @@ if(!empty($menu[$page])) {
 							// put the menu out
 							foreach($menu as $mpage => $menu_name) {
 								if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
-								echo '							<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
-							}	
+								echo '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
+							}
 						} else { ?>
 							<li><a href="?page=login" class="active">Login</a></li>
 						<?php } ?>

@@ -18,13 +18,14 @@
  */
 class template {
 	public static function get_template($template) {
-		return file_get_contents("templates/".$template);
+		return file_get_contents("templates/".$template.".php");
 	}
 	public static function show ($content, $replace) {
 		foreach($replace as $name => $value) {
 			$content = str_replace("{".$name."}", $value, $content);
-		}
-		return $content;
+		} 
+		global $conf;
+		return eval("?>".$content);
 	}
 }
 ?>
