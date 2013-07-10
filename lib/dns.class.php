@@ -17,6 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 class dns {
+	/**
+	 * convert time to string
+	 *
+	 * @param 	integer 	$time
+	 * @param	integer		$anz
+	 * @return	stting
+	 */
 	function time2str($time, $anz = 9) {
 		$str="";
 		if(!$anz) $anz=9;
@@ -62,6 +69,12 @@ class dns {
 		return $str;
 	}
 
+	/**
+	 * show sub records of dns request
+	 *
+	 * @param	string	$host
+	 * @return	string
+	 */
 	function show_subrecords($host) {
 		$return = "";
 		$dns = dns_get_record($host, DNS_ALL);
@@ -84,6 +97,13 @@ class dns {
 		return $return;
 	}
 
+	/**
+	 * sort dns records
+	 *
+	 * @param	array	$a
+	 * @param	array	$b
+	 * @return	array
+	 */
 	static function sort_records($a, $b) {
 		$record_order = array("SOA", "NS", "A", "AAAA", "MX");
 		$index_a = array_search($a['type'], $record_order);
@@ -111,6 +131,13 @@ class dns {
 		return $order;
 	}
 	
+	/**
+	 * get dns records
+	 *
+	 * @param	string	$host
+	 * @param	string	$show_record
+	 * @return	string
+	 */
 	function get ($host,$show_record = Null) {
 		$pattern_ipv6 = '/^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))(|\/[0-9]{1,3})$/';
 		$pattern_ipv4 = '/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(|\/[0-9]{1,2})$/';

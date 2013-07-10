@@ -24,6 +24,5 @@ class user {
 	public static function add_user () { }
 	public static function del_user () { }
 	public static function change_user () { }
-	
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* lib/template.class.php - DNS-WI
+/* lib/api.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,30 +16,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-class template {
-	/**
-	 * get the template
-	 *
-	 * @param	string		$template
-	 * @return 	string		source from the template
-	 */
-	public static function get_template($template) {
-		return file_get_contents("templates/".$template.".php");
-	}
-	
-	/**
-	 * show the template
-	 *
-	 * @param	string		$content
-	 * @param	string		$replace
-	 * @return	string		returns the replaces template
-	 */
-	public static function show ($content, $replace) {
-		foreach($replace as $name => $value) {
-			$content = str_replace("{".$name."}", $value, $content);
-		} 
-		global $conf;
-		return eval("?>".$content);
-	}
+class api {
+	public static function login () { }
+	public static function get_data () { }
+	public static function add_data () { }
+	public static function del_data () { }
+	public static function update_data () { }
 }
 ?>

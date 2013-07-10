@@ -17,6 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 class func {
+	/**
+	 * returns a options box
+	 *
+	 * @param		string		$type
+	 * @param		integer		$id
+	 * @return					retuns a options box
+	 */
 	public static function getOptions ($type, $id = NULL) {
 		global $conf;
 		$return = NULL;
@@ -36,6 +43,11 @@ class func {
 		return $return;
 	}
 	
+	/**
+	 * check is user an Admin
+	 *
+	 * @return 		true or false
+	 */
 	public static function isAdmin () {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".DB::escape($_SESSION["userid"])."'") or die(DB::error());
@@ -47,6 +59,11 @@ class func {
 		}
 	}
 	
+	/**
+	 * check if the user is loggedin
+	 *
+	 * @return		true or false
+	 */
 	public static function isLoggedIn () {
 		if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
 			return true;
@@ -55,6 +72,12 @@ class func {
 		}
 	}
 	
+	/**
+	 * Convert all applicable characters to HTML entities
+	 *
+	 * @param 	string	$str
+	 * @return	string
+	 */
 	public static function ent ($str) {
 		return htmlentities($str);
 	}

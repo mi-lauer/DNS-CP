@@ -42,13 +42,11 @@ Our project page is currently hosted on github and is available on [stricted.git
 ### ToDo
 ---
  * general improvements
- * add some comments to the classes
  * bind9 support (and DNSSEC) [maybe PowerDNS too?]
  * API (with keys & right controls?)
  * Cronjob for scheduled work (ex: creating zones for bind9)
  * Log-functionality for all users
  * importing general DNS entries from domains
- * possibility to create templates
  * backup current zones and restore them, if the user has permissions for this
  * settings page to customize webinterface: Force HTTPS, white- and blacklist for IPs, domains, ... and more
  * easy installation assistant with step by step
