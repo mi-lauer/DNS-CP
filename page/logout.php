@@ -18,9 +18,7 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(func::isLoggedIn()) {
-	session_destroy();
-	$error = '<font color="#008000">Logout sucessful</font>';
-	$error .= '<meta http-equiv="refresh" content="2; URL=?page=home">';
+	$error = user::logout();
 }else{
 	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';
 }

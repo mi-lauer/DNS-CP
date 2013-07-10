@@ -18,17 +18,7 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
-	$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username='".DB::escape($_POST["username"])."'") or die(DB::error());
-	$row = DB::fetch_array($res);
-	if($row["password"] == md5($_POST["password"])) {
-		$_SESSION['login'] = 1;
-		$_SESSION['username'] = $row["username"];
-		$_SESSION['userid'] = $row["id"];
-		$error = '<font color="#008000">Login sucessful</font>';
-		$error .='<meta http-equiv="refresh" content="0; URL=?page=home">';
-	} else {
-		$error = '<font color="#ff0000">The data you have entered are invalid.</font>';
-	}
+	$error = user::login($_POST['username'], $_POST['password']);
 } else { $error = ""; }
 $data = array(
 		"_name" => "Login",

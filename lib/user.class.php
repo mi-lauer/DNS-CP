@@ -17,8 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 class user {
-	public static function login () { }
-	public static function logout () { }
+	/**
+	 * login a user
+	 *
+	 * @param		string		$user
+	 * @param		string		$user
+	 * @return		string
+	 */
+	public static function login ($user, $pass) {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username='".DB::escape($user)."'") or die(DB::error());
+		$row = DB::fetch_array($res);
+		if($row["password"] == md5($pass)) {
+			$_SESSION['login'] = 1;
+			$_SESSION['username'] = $row["username"];
+			$_SESSION['userid'] = $row["id"];
+			return '<font color="#008000">Login sucessful</font><meta http-equiv="refresh" content="0; URL=?page=home">';
+		} else {
+			return '<font color="#ff0000">The data you have entered are invalid.</font>';
+		}
+	}
+	
+	/**
+	 * logout a user
+	 *
+	 * @return		string
+	 */
+	public static function logout () {
+		session_destroy();
+		return '<font color="#008000">Logout sucessful</font><meta http-equiv="refresh" content="2; URL=?page=home">';
+	}
 	public static function change_password () { }
 	public static function get_users () { }
 	public static function add_user () { }
