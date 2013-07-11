@@ -20,10 +20,19 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])){
 	$error = user::change_password($_SESSION['username'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
 } else { $error = ""; }
+$dns_setting = '';
+foreach($conf["avail_dns_srv"] as $dns) {
+	$selected = NULL;
+	if(func::currentDNSserver() == $dns) {
+		$selected = ' selected';
+	}
+	$dns_setting .= '<option value="'.strtolower($dns).'"'.$selected.'>'.$dns.'</option>'."\n";
+}
 $data = array(
-		"_name" => "Settings",
-		"_error" => $error
-		);
+	"_name" => "Settings",
+	"_error" => $error,
+	"_dnsserver" => $dns_setting
+	);
 $temp = template::get_template("settings");
 template::show($temp, $data);
 ?>

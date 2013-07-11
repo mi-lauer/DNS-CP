@@ -81,5 +81,15 @@ class func {
 	public static function ent ($str) {
 		return htmlentities($str);
 	}
+
+	/**
+	 * Output current dns server
+	 *
+	 * @param    none
+	 * @return   string    dns server in lowercase
+	*/
+	public static function currentDNSserver () {
+		return '<MYSQL QUERY>';
+	}
 }
 ?>

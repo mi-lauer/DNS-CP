@@ -30,7 +30,21 @@ class DB extends database {
 	 * @param	string		$db
 	 */
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = new SQLite3("database/".$db);
+		$dbfile  = "database/sqlite3.db";
+		$created = false;
+		if(!file_exists($dbfile)) {
+			$created = true;
+		}
+		if(!file_exists("database/")) {
+			mkdir("database", 0777, true);			
+		}
+		if(!file_exists("database/.htaccess")) {	
+			file_put_contents("database/.htaccess", "Deny from all");
+		}
+		self::$conn  = new SQLite3($dbfile);
+		if($created) {
+			self::$conn->exec(file_get_contents("lib/database/db.sqlite3.sql"));
+		}
 	}
 	
 	/**

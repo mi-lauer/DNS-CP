@@ -70,7 +70,7 @@ class DB extends database {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) {
-		return $res-num_rows();
+		return $res->num_rows();
 	}
 	
 	/**

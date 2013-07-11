@@ -18,7 +18,7 @@
  */
 session_start();
 ini_set('display_errors', 1);
-ini_set('error_reporting', E_ALL);
+ini_set('error_reporting', E_ALL & ~E_STRICT);
 
 define("IN_PAGE", true);
 if(!file_exists("config.php")) {
@@ -31,6 +31,7 @@ $conf                   = array();                    // init config array
 $conf["version"]        = "0.1.7-dev";                // Version
 $conf["build"]          = "2";                        // build number for internal version checking
 $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 'TXT');
+$conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 
 // requirements
 require_once("config.php");
