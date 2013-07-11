@@ -1,7 +1,7 @@
 DNS-Webinterface
 ==================
 
-**DNS webinterface** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with mysql, PostgreSQL and SQLite databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
+**DNS webinterface** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with MySQL, PostgreSQL and SQLite databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
 
 ### Requirements
 ---
@@ -19,8 +19,8 @@ You may need for a working webinterface:
 The installation isn't so easy than it will be in the future, when we've have enough time to build a easy and nice installation system. For now, you'll need to import the database structure manually and set up the correct data in the config file. If you're a little bit experienced, it shouldn't be a big problem. Feel free to open a issue, when you need help with the installation process.
 
  * Clone the git repository: `git clone https://github.com/Stricted/DNS-Webinterface.git`
- * Change the `config.sample.php` file to your needs
- * Import the structure in `db.<DBsystem>.sql` file in your database.
+ * Change the `config.sample.php` file to your needs and rename it to `config.php`
+ * Import the structure in `lib/database/db.<DBsystem>.sql` file in your database.
  * Open the page and use the default user and password to login: `admin`
 
 ### Screenshots
@@ -37,7 +37,7 @@ Our project page is currently hosted on github and is available on [stricted.git
 
 ### Live Demo
 ---
-[Demo](http://demo.owndns.me)
+A live demonstration is available at [Demo](http://demo.owndns.me). Please report any bugs or give us feedback to let us improve the webinterface.
 
 ### ToDo
 ---

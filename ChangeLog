@@ -1,5 +1,9 @@
  0.1.7-dev on 07/07/2013
-   - in development
+   - template system
+   - now supporting SQLite
+   - no STRICT errors
+   - still in development
+   - fixes & improvements
 
  0.1.6-Beta on 07/07/2013
    - add mysqli support for php 5.5 (mysqli extension is deprecated since php 5.5)
