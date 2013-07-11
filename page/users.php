@@ -24,12 +24,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(user::isAdmin()){
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])) {
-	if($_POST["password_one"] == $_POST["confirm_password"]) {
-		DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES ('".DB::escape($_POST["username_one"])."', '".md5($_POST["confirm_password"])."', '".DB::escape($_POST["admin"])."');") or die(DB::error());
-		echo '<font color="#008000">User sucessful added</font>';
-	} else {
-		echo '<font color="#ff0000">The data you have entered are invalid.</font>';
-	}
+	echo user::add($_POST["username_one"], $_POST["password_one"], $_POST["confirm_password"], $_POST["admin"]);
 }
 ?>
 
@@ -68,25 +63,13 @@ if(isset($_POST["Submit"])) {
 <?php
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del") {
-		if($_GET["id"] == 1) {
-			echo '<font color="#ff0000">You can not delete the main admin with id 1.</font>';
-		}else{
-			DB::query("DELETE FROM ".$conf["users"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
-			DB::query("UPDATE ".$conf["soa"]." SET owner = '1' WHERE owner = '".DB::escape($_GET["id"])."'") or die(DB::error());
-			echo '<font color="#008000">User sucessful deleted</font>';
-		}
+		echo user::del($_GET['id']);
 	} else {
 	if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
-			if($_POST["password_one"] == $_POST["confirm_password"]) {
-				DB::query("UPDATE ".$conf["users"]." SET password = '".md5($_POST["confirm_password"])."', admin = '".DB::escape($_POST["admin"])."' WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
-				echo '<font color="#008000">Password changed successfully.</font>';
-			} else {
-				echo '<font color="#ff0000">The data you have entered are invalid.</font>';
-			}
+			echo user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
 		} elseif(isset($_POST["admin"])) {
-			DB::query("UPDATE ".$conf["users"]." SET admin = '".DB::escape($_POST["admin"])."' WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
-			echo '<font color="#008000">Status changed sucessfully.</font>';
+			echo user::change("chad", $_GET['id'], $_POST["admin"]);
 		}
 	}
 $res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());

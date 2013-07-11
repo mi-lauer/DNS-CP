@@ -59,7 +59,8 @@ class func {
 	 * @return   string    dns server in lowercase
 	*/
 	public static function currentDNSserver () {
-		return '<MYSQL QUERY>';
+		global $conf;
+		return $conf['server'];
 	}
 }
 ?>

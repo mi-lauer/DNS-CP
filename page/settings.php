@@ -18,7 +18,7 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])){
-	$error = user::change_password($_SESSION['username'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
+	$error = user::change_password($_SESSION['userid'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
 } else { $error = ""; }
 $dns_setting = '';
 foreach($conf["avail_dns_srv"] as $dns) {
