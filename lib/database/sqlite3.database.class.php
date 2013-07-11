@@ -30,7 +30,7 @@ class DB extends database {
 	 * @param	string		$db
 	 */
 	public static function connect($host, $user, $pw, $db) {
-		$dbfile  = "database/sqlite3.db";
+		$dbfile  = "database/".$db.".db";
 		$created = false;
 		if(!file_exists($dbfile)) {
 			$created = true;
@@ -38,13 +38,15 @@ class DB extends database {
 		if(!file_exists("database/")) {
 			mkdir("database", 0777, true);			
 		}
-		if(!file_exists("database/.htaccess")) {	
+		if(!file_exists("database/.htaccess")) {
 			file_put_contents("database/.htaccess", "Deny from all");
 		}
-		self::$conn  = new SQLite3($dbfile);
-		if($created) {
-			self::$conn->exec(file_get_contents("lib/database/db.sqlite3.sql"));
-		}
+		if(is_readable($dbfile) && is_writable($dbfile)) {
+			self::$conn  = new SQLite3($dbfile);
+			if($created) {
+				self::$conn->exec(file_get_contents("lib/database/db.sqlite3.sql"));
+			}
+		} else { die(/* error message will be added later ;) */); }
 	}
 	
 	/**

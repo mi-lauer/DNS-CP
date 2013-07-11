@@ -76,6 +76,34 @@ class user {
 		}
 	}
 	
+	/**
+	 * check if the user is loggedin
+	 *
+	 * @return		true or false
+	 */
+	public static function isLoggedIn () {
+		if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * check is user an Admin
+	 *
+	 * @return 		true or false
+	 */
+	public static function isAdmin () {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".DB::escape($_SESSION["userid"])."'") or die(DB::error());
+		$row = DB::fetch_array($res);
+		if(isset($row['admin']) && $row['admin'] == 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/* will be added later
 	public static function get_users () { }
 	public static function add_user () { }

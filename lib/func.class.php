@@ -44,35 +44,6 @@ class func {
 	}
 	
 	/**
-	 * check is user an Admin
-	 *
-	 * @return 		true or false
-	 */
-	public static function isAdmin () {
-		global $conf;
-		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".DB::escape($_SESSION["userid"])."'") or die(DB::error());
-		$row = DB::fetch_array($res);
-		if(isset($row['admin']) && $row['admin'] == 1){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * check if the user is loggedin
-	 *
-	 * @return		true or false
-	 */
-	public static function isLoggedIn () {
-		if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
 	 * Convert all applicable characters to HTML entities
 	 *
 	 * @param 	string	$str
@@ -85,7 +56,6 @@ class func {
 	/**
 	 * Output current dns server
 	 *
-	 * @param    none
 	 * @return   string    dns server in lowercase
 	*/
 	public static function currentDNSserver () {

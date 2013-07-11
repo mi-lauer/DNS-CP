@@ -18,14 +18,14 @@
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 $i = 0;
-if(func::isAdmin()){
+if(user::isAdmin()){
 	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
 } else {
 	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
 }
 $i = DB::num_rows($res);
 
-if(func::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
+if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
 $data = array(
 		"_name" => "Home",
 		"_user" => $_SESSION['username'],

@@ -70,7 +70,7 @@ if(!empty($menu[$page])) {
 	$title .= " :: ".$menu[$page];
 }
 
-if(func::isLoggedIn()){
+if(user::isLoggedIn()){
 	$tmenu = "";
 	foreach($menu as $mpage => $menu_name) {
 		if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }

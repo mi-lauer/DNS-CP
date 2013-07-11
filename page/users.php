@@ -21,7 +21,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Users</a></h2>
 <div id="main">
 <?php
-if(func::isAdmin()){
+if(user::isAdmin()){
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])) {
 	if($_POST["password_one"] == $_POST["confirm_password"]) {

@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-if(func::isLoggedIn()) {
+if(user::isLoggedIn()) {
 	$error = user::logout();
 }else{
 	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';

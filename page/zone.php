@@ -21,7 +21,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
 <div id="main">
 	<?php
-	$isAdmin = func::isAdmin();
+	$isAdmin = user::isAdmin();
 	$show_list = true;
 	if(isset($_GET["act"]) && $_GET["act"] == "add") {
 		if(isset($_POST["Submit"])){
