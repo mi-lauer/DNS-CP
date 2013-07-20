@@ -44,7 +44,7 @@ require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/template.class.php");
 require_once("lib/func.class.php");
 require_once("lib/dns.class.php");
-
+require_once("lib/lang.".$conf['lang'].".inc.php");
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
 	$page = trim($_GET["page"]);

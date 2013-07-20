@@ -32,6 +32,7 @@ $conf["users"]          = "dns_users";                // Users Table
 
 // general
 $conf["name"]           = "OwnDNS";                   // Name of Page
+$conf["lang"]           = "en";                       // Site Language
 
 // will be removed in the future
 $conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns)

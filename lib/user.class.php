@@ -58,6 +58,7 @@ class user {
 	 * @return		string
 	 */
 	public static function change_password ($id, $opw, $npw, $npw2) {
+		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".intval($id)."'") or die(DB::error());
 		$row = DB::fetch_array($res);
 		if(isset($npw) && isset($npw2) && isset($opw) && $opw != "" && $npw != "" && $npw2 != ""){
@@ -114,7 +115,7 @@ class user {
 	 * @param	integer	$admin
 	 * @return	string
 	 */
-	public static function add ($user $pass, $pass2, $admin) {
+	public static function add ($user, $pass, $pass2, $admin) {
 		global $conf;
 		if($pass == $pass2) {
 			DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES ('".DB::escape($user)."', '".md5($pass)."', '".intval($admin)."');") or die(DB::error());

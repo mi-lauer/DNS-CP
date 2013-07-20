@@ -38,6 +38,9 @@ class DB extends database {
 		if(!file_exists("database/")) {
 			mkdir("database", 0777, true);			
 		}
+		if(!file_exists($dbfile)) {
+			touch($dbfile);
+		}
 		if(!file_exists("database/.htaccess")) {
 			file_put_contents("database/.htaccess", "Deny from all");
 		}

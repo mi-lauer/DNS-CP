@@ -35,10 +35,13 @@ class template {
 	 * @return	string		returns the replaces template
 	 */
 	public static function show ($content, $replace) {
+		global $conf, $lang;
 		foreach($replace as $name => $value) {
 			$content = str_replace("{".$name."}", $value, $content);
-		} 
-		global $conf;
+		}
+		foreach($lang as $name => $value) {
+			$content = str_replace("{@_".$name."}", $value, $content);
+		}
 		return eval("?>".$content);
 	}
 }
