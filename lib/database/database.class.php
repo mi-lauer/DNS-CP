@@ -19,11 +19,11 @@
 /* Database layout class */
 class database {
 	private static $conn = NULL;
-	public static function connect() { }
-	public static function query () { }
+	public static function connect($host, $user, $pw, $db) { }
+	public static function query ($res) { }
 	public static function escape ($res) { return $res; }
-	public static function fetch_array () { }
-	public static function num_rows () { }
+	public static function fetch_array ($res) { }
+	public static function num_rows ($res) { }
 	public static function error () { }
 	public static function unescape ($data) { return $data; }
 }

@@ -20,7 +20,6 @@
 if (!extension_loaded("mssql")) die("Missing <a href=\"http://www.php.net/manual/en/book.mssql.php\">mssql</a> PHP extension."); // check if extension loaded
 die("actually not supportet and untestet");
 class DB extends database {
-	private static $conn = NULL;
 	
 	/**
 	 * Connects to MSSQL Server
