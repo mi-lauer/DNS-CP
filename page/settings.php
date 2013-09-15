@@ -28,11 +28,9 @@ foreach($conf["avail_dns_srv"] as $dns) {
 	}
 	$dns_setting .= '<option value="'.strtolower($dns).'"'.$selected.'>'.$dns.'</option>'."\n";
 }
-$data = array(
+template::show("settings", array(
 	"_name" => "Settings",
 	"_error" => $error,
 	"_dnsserver" => $dns_setting
-	);
-$temp = template::get_template("settings");
-template::show($temp, $data);
+	));
 ?>

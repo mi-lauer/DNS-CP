@@ -26,12 +26,10 @@ if(user::isAdmin()){
 $i = DB::num_rows($res);
 
 if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
-$data = array(
+template::show("home", array(
 		"_name" => "Home",
 		"_user" => $_SESSION['username'],
 		"_status" => $status,
 		"_zones" => $i
-		);
-$temp = template::get_template("home");
-template::show($temp, $data);
+		));
 ?>

@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-$data = array("_name" => "Help");
-$temp = template::get_template("help");
-template::show($temp, $data);
+template::show("help", array("_name" => "Help"));
 ?>
 

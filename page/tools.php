@@ -29,10 +29,8 @@ if(isset($_POST["Submit"])) {
 		$cont .= nl2br(shell_exec("whois ".trim($_POST["whois"])));
 	}
 } else { $cont = ""; }
-$data = array(
+template::show("tools", array(
 		"_name" => "Tools",
 		"_content" => $cont
-		);
-$temp = template::get_template("tools");
-template::show($temp, $data);
+		));
 ?>

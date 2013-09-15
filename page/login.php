@@ -20,10 +20,8 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
 	$error = user::login($_POST['username'], $_POST['password']);
 } else { $error = ""; }
-$data = array(
+template::show("login", array(
 		"_name" => "Login",
 		"_error" => $error
-		);
-$temp = template::get_template("login");
-template::show($temp, $data);
+		));
 ?>

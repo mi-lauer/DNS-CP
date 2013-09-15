@@ -22,10 +22,8 @@ if(user::isLoggedIn()) {
 }else{
 	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';
 }
-$data = array(
+template::show("logout", array(
 		"_name" => "Logout",
 		"_error" => $error
-		);
-$temp = template::get_template("logout");
-template::show($temp, $data);
+		));
 ?>
