@@ -19,7 +19,7 @@
 /* This is the database implementation for SQLite3. */
 if (!extension_loaded("sqlite3")) die("Missing <a href=\"http://www.php.net/manual/en/book.sqlite3.php\">sqlite3</a> PHP extension."); // check if extension loaded
 class DB extends database {
-	
+	private static $conn = NULL;
 	/**
 	 * Connects to SQLite database
 	 * 

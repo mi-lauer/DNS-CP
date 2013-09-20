@@ -19,7 +19,7 @@
 /* This is the database implementation for PostgreSQL. */
 if (!extension_loaded("pgsql")) die("Missing <a href=\"http://www.php.net/manual/en/book.pgsql.php\">pgsql</a> PHP extension."); // check if extension loaded
 class DB extends database {
-	
+	private static $conn = NULL;
 	/**
 	 * Connects to PostgreSQL Server
 	 * 

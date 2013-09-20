@@ -19,7 +19,7 @@
 /* This is the database implementation for MySQL4.1 or higher using the mysqli extension. */
 if (!extension_loaded("mysqli")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysqli.php\">mysqli</a> PHP extension."); // check if extension loaded
 class DB extends database {
-	
+	private static $conn = NULL;
 	/**
 	 * Connects to MySQL Server
 	 * 
@@ -69,7 +69,7 @@ class DB extends database {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) {
-		return $res->num_rows();
+		return $res->num_rows;
 	}
 	
 	/**

@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 session_start();
-ini_set('display_errors', 1);
-ini_set('error_reporting', E_ALL & ~E_STRICT);
+#ini_set('display_errors', 1);
+#ini_set('error_reporting', E_ALL);
 
 define("IN_PAGE", true);
 if(!file_exists("config.php")) {
@@ -98,7 +98,5 @@ $data = array(
 		"_build" => $conf["build"],
 		"_version" => $conf["version"]
 		);
-
-$temp = template::get_template("index");
-template::show($temp, $data);
+template::show("index", $data);
 ?>
