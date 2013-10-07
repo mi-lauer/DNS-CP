@@ -21,13 +21,9 @@ if (!extension_loaded("mysql")) die("Missing <a href=\"http://www.php.net/manual
 if(PHP_VERSION >= "5.5.0") { die("please use mysqli"); }
 class DB extends database {
 	private static $conn = NULL;
+
 	/**
-	 * Connects to MySQL Server
-	 * 
-	 * @param	string		$host
-	 * @param	string		$user
-	 * @param	string		$pw
-	 * @param	string		$db
+	 * @see database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		self::$conn = mysql_connect($host, $user, $pw);
@@ -35,49 +31,35 @@ class DB extends database {
 	}
 
 	/**
-	 * Sends a database query to MySQL server.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return 	integer					id of the query result
+	 * @see database::query();
 	 */
 	public static function query ($res) {
 		return mysql_query($res, self::$conn);
 	}
 
 	/**
-	 * Escapes a string for use in sql query.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return	string
+	 * @see database::escape();
 	 */
 	public static function escape ($res) {
 		return mysql_real_escape_string($res, self::$conn);
 	}
 	
 	/**
-	 * Gets a row from MySQL database query result.
-	 *
-	 * @param	string		$res		a database query
-	 * @return 				array		a row from result
+	 * @see database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		return mysql_fetch_array($res);
 	}
 	
 	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
+	 * @see database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		return mysql_num_rows($res);
 	}
 	
 	/**
-	 * Returns MySQL error number for last error.
-	 *
-	 * @return 	integer		MySQL error number
+	 * @see database::error();
 	 */
 	public static function error () {
 		return mysql_error(self::$conn);

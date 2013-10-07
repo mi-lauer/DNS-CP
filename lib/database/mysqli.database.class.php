@@ -20,62 +20,44 @@
 if (!extension_loaded("mysqli")) die("Missing <a href=\"http://www.php.net/manual/en/book.mysqli.php\">mysqli</a> PHP extension."); // check if extension loaded
 class DB extends database {
 	private static $conn = NULL;
+
 	/**
-	 * Connects to MySQL Server
-	 * 
-	 * @param	string		$host
-	 * @param	string		$user
-	 * @param	string		$pw
-	 * @param	string		$db
+	 * @see database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		self::$conn = new mysqli($host, $user, $pw, $db);
 	}
 
 	/**
-	 * Sends a database query to MySQL server.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return 	integer					id of the query result
+	 * @see database::query();
 	 */
 	public static function query ($res) {
 		return self::$conn->query($res);
 	}
 
 	/**
-	 * Escapes a string for use in sql query.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return	string
+	 * @see database::escape();
 	 */
 	public static function escape ($res) {
 		return self::$conn->real_escape_string($res);
 	}
 	
 	/**
-	 * Gets a row from MySQL database query result.
-	 *
-	 * @param	string		$res		a database query
-	 * @return 				array		a row from result
+	 * @see database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		return $res->fetch_array();
 	}
 	
 	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
+	 * @see database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		return $res->num_rows;
 	}
 	
 	/**
-	 * Returns MySQL error number for last error.
-	 *
-	 * @return 	integer		MySQL error number
+	 * @see database::error();
 	 */
 	public static function error () {
 		/* DOES CURRENTLY NOT WORK, NEEDS TO BE FIXED!

@@ -20,13 +20,9 @@
 if (!extension_loaded("sqlite3")) die("Missing <a href=\"http://www.php.net/manual/en/book.sqlite3.php\">sqlite3</a> PHP extension."); // check if extension loaded
 class DB extends database {
 	private static $conn = NULL;
+
 	/**
-	 * Connects to SQLite database
-	 * 
-	 * @param	NULL		$host
-	 * @param	NULL		$user
-	 * @param	NULL		$pw
-	 * @param	string		$db
+	 * @see database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		$dbfile  = "database/".$db.".db";
@@ -52,40 +48,28 @@ class DB extends database {
 	}
 	
 	/**
-	 * Sends a database query to SQLite database.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return 	integer					id of the query result
+	 * @see database::query();
 	 */
 	public static function query ($res) {
 		return self::$conn->query($res);
 	}
 	
 	/**
-	 * Escapes a string for use in sql query.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return	string
+	 * @see database::escape();
 	 */
 	public static function escape ($res) {
 		return self::$conn->escapeString($res);
 	}
 	
 	/**
-	 * Gets a row from SQLite database query result
-	 *
-	 * @param	string		$res		a database query
-	 * @return 				array		a row from result
+	 * @see database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		return $res->fetchArray(SQLITE3_ASSOC);
 	}
 	
 	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
+	 * @see database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		$count = 0;
@@ -94,9 +78,7 @@ class DB extends database {
 	}
 	
 	/**
-	 * Returns SQLite error description for last error.
-	 *
-	 * @return 	string		SQLite error description
+	 * @see database::error();
 	 */
 	public static function error () {
 		return self::$conn->lastErrorMsg();

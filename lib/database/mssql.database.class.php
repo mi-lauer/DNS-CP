@@ -21,13 +21,9 @@ if (!extension_loaded("mssql")) die("Missing <a href=\"http://www.php.net/manual
 die("actually not supportet and untestet");
 class DB extends database {
 	private static $conn = NULL;
+
 	/**
-	 * Connects to MSSQL Server
-	 * 
-	 * @param	string		$host
-	 * @param	string		$user
-	 * @param	string		$pw
-	 * @param	string		$db
+	 * @see database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		self::$conn = mssql_connect($host, $user, $pw);
@@ -35,49 +31,35 @@ class DB extends database {
 	}
 
 	/**
-	 * Sends a database query to MSSQL server.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return 	integer					id of the query result
+	 * @see database::query();
 	 */
 	public static function query ($res) {
 		return mssql_query($res, self::$conn);
 	}
 
 	/**
-	 * Escapes a string for use in sql query.
-	 *
-	 * @param	string		$res 		a database query
-	 * @return	string
+	 * @see database::escape();
 	 */
 	public static function escape ($res) {
 		return str_replace("'", "''", $res); /* MSSQL has no function like mysql_real_escape_string */
 	}
 	
 	/**
-	 * Gets a row from MSSQL database query result.
-	 *
-	 * @param	string		$res		a database query
-	 * @return 				array		a row from result
+	 * @see database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		return mssql_fetch_array($res);
 	}
 	
 	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
+	 * @see database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		return mssql_num_rows($res);
 	}
 	
 	/**
-	 * Returns MySQL error number for last error.
-	 *
-	 * @return 	integer		MySQL error number
+	 * @see database::error();
 	 */
 	public static function error () {
 		return mssql_get_last_message(self::$conn);

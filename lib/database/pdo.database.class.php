@@ -19,11 +19,52 @@
 /* Database layout class */
 class pdo_database {
 	private static $conn = NULL;
+	
+	/**
+	 * Connects to SQL Server
+	 * 
+	 * @param	string		$host
+	 * @param	string		$user
+	 * @param	string		$pw
+	 * @param	string		$db
+	 */
 	public static function connect($host, $user, $pw, $db) { }
+	
+	/*
+	 * close the database connection
+	 */
 	public static function close() { }
+	
+	/**
+	 * Sends a database query to SQL server.
+	 *
+	 * @param	string		$res 		a database query
+	 * @param	array		$bind 		
+	 * @return 	integer					id of the query result
+	 */
 	public static function query ($res, $bind = array()) { }
+	
+	/**
+	 * Gets a row from SQL database query result.
+	 *
+	 * @param	string		$res		a database query
+	 * @return 				array		a row from result
+	 */
 	public static function fetch_array ($res) { }
+	
+	/**
+	 * Counts number of rows in a result returned by a SELECT query.
+	 *
+	 * @param	string		$res	a database query	
+	 * @return 	integer				number of rows in a result
+	 */
 	public static function num_rows ($res) { }
+	
+	/**
+	 * Returns SQL error number for last error.
+	 *
+	 * @return 	integer		MySQL error number
+	 */
 	public static function error () { }
 }
 ?>

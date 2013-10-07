@@ -21,30 +21,23 @@ if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/e
 if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
 class DB extends pdo_database {
 	private static $conn = NULL;
+
 	/**
-	 * Connects to MySQL Server
-	 * 
-	 * @param	string		$host
-	 * @param	string		$user
-	 * @param	string		$pw
-	 * @param	string		$db
+	 * @see	pdo_database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
 	}
 	
-	/*
-	 * close the database connection
+	/**
+	 * @see	pdo_database::close();
 	 */
 	public static function close () {
 		self::$conn = NULL;
 	}
+	
 	/**
-	 * Sends a database query to MySQL server.
-	 *
-	 * @param	string		$res 		a database query
-	 * @param	string		$bind 		
-	 * @return 	integer					id of the query result
+	 * @see	pdo_database::query();
 	 */
 	public static function query ($res, $bind = array()) {
 		$query = self::$conn->prepare($res);
@@ -57,29 +50,21 @@ class DB extends pdo_database {
 
 	
 	/**
-	 * Gets a row from MySQL database query result.
-	 *
-	 * @param	string		$res		a database query
-	 * @return 				array		a row from result
+	 * @see	pdo_database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
+	 * @see	pdo_database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		return $res->rowCount();
 	}
 	
 	/**
-	 * Returns MySQL error number for last error.
-	 *
-	 * @return 	integer		MySQL error number
+	 * @see	pdo_database::error();
 	 */
 	public static function error () {
 		$return = "<pre>";
