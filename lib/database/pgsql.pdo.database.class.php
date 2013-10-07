@@ -1,5 +1,5 @@
 <?php
-/* lib/database/mysql.pdo.database.class.php - DNS-WI
+/* lib/database/pgsql.pdo.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/en/book.pdo.php\">PDO</a> PHP extension."); // check if extension loaded
-if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
+if (!extension_loaded("pdo_pgsql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-pgsql.php\">pdo_pgsql</a> PHP extension."); // check if extension loaded
 class DB extends pdo_database {
 	private static $conn = NULL;
 	private static $err = NULL;
@@ -27,7 +27,7 @@ class DB extends pdo_database {
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		try {
-			self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
+			self::$conn = new PDO("pgsql:host=".$host.";dbname=".$db, $user, $pw);
 			return true;
 		} catch (PDOException $e) {
 			self::$err = $e->getMessage();
