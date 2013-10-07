@@ -21,12 +21,19 @@ if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/e
 if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
 class DB extends pdo_database {
 	private static $conn = NULL;
+	private static $err = NULL;
 
 	/**
 	 * @see	pdo_database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
-		self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
+		try {
+			self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
+			return true;
+		} catch (PDOException $e) {
+			self::$err = $e->getMessage();
+			return false;
+		}
 	}
 	
 	/**
@@ -40,12 +47,16 @@ class DB extends pdo_database {
 	 * @see	pdo_database::query();
 	 */
 	public static function query ($res, $bind = array()) {
-		$query = self::$conn->prepare($res);
-		if(is_array($bind) && !empty($bind))
-			return $query->execute($bind);
-		else
-			return $query->execute();
-		
+		try {
+			$query = self::$conn->prepare($res);
+			if(is_array($bind) && !empty($bind))
+				$query->execute($bind);
+			else
+				$query->execute();
+			return $query;
+		} catch (PDOException $e) {
+			self::$err = $e->getMessage();
+		}
 	}
 
 	
@@ -53,24 +64,29 @@ class DB extends pdo_database {
 	 * @see	pdo_database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
-		return $res->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			return $res->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			self::$err = $e->getMessage();
+		}
 	}
 	
 	/**
 	 * @see	pdo_database::num_rows();
 	 */
 	public static function num_rows ($res) {
-		return $res->rowCount();
+		try {
+			return $res->rowCount();
+		} catch (PDOException $e) {
+			self::$err = $e->getMessage();
+		}
 	}
 	
 	/**
 	 * @see	pdo_database::error();
 	 */
 	public static function error () {
-		$return = "<pre>";
-		$return .= print_r(self::$conn->errorInfo());
-		$return .= "</pre>";
-		return $return;
+		return self::$err;
 	}
 }
 ?>

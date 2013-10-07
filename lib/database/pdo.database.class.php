@@ -19,6 +19,7 @@
 /* Database layout class */
 class pdo_database {
 	private static $conn = NULL;
+	private static $err = NULL;
 	
 	/**
 	 * Connects to SQL Server
@@ -59,6 +60,20 @@ class pdo_database {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) { }
+	
+	/**
+	 * only for debug
+	 */
+	public static function escape ($res) {
+		return $res;
+	}
+	
+	/**
+	 * only for debug
+	 */
+	public static function unescape ($res) {
+		return $res;
+	}
 	
 	/**
 	 * Returns SQL error number for last error.
