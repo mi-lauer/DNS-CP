@@ -46,11 +46,12 @@ class DB extends pdo_database {
 	 * @param	string		$bind 		
 	 * @return 	integer					id of the query result
 	 */
-	public static function query ($res, $bind = Null) {
+	public static function query ($res, $bind = array()) {
 		$query = self::$conn->prepare($res);
-		if($bind)
-			$query->bindParam($bind);
-		return $query->execute();
+		if(is_array($bind) && !empty($bind))
+			return $query->execute($bind);
+		else
+			return $query->execute();
 		
 	}
 

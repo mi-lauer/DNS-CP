@@ -21,7 +21,7 @@ class pdo_database {
 	private static $conn = NULL;
 	public static function connect($host, $user, $pw, $db) { }
 	public static function close() { }
-	public static function query ($res) { }
+	public static function query ($res, $bind = array()) { }
 	public static function fetch_array ($res) { }
 	public static function num_rows ($res) { }
 }
