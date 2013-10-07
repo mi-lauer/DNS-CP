@@ -75,5 +75,17 @@ class DB extends pdo_database {
 	public static function num_rows ($res) {
 		return $res->rowCount();
 	}
+	
+	/**
+	 * Returns MySQL error number for last error.
+	 *
+	 * @return 	integer		MySQL error number
+	 */
+	public static function error () {
+		$return = "<pre>";
+		$return .= print_r(self::$conn->errorInfo());
+		$return .= "</pre>";
+		return $return;
+	}
 }
 ?>

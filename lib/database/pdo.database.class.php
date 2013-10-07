@@ -24,5 +24,6 @@ class pdo_database {
 	public static function query ($res, $bind = array()) { }
 	public static function fetch_array ($res) { }
 	public static function num_rows ($res) { }
+	public static function error () { }
 }
 ?>
