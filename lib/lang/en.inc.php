@@ -1,6 +1,6 @@
 <?php
-/* page/home.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
+/* lib/lang/en.inc.php - DNS-WI
+ * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,7 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-$i = 0;
-if(user::isAdmin()){
-	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
-} else {
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
-}
-$i = DB::num_rows($res);
 
-if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
-template::show("home", array(
-		"_name" => "Home",
-		"_user" => $_SESSION['username'],
-		"_status" => $status,
-		"_zones" => $i
-		));
+$lang = array();
+$lang['login'] = "Login";
 ?>

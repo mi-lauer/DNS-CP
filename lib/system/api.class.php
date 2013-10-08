@@ -1,5 +1,5 @@
 <?php
-/* lib/lang.en.inc.php - DNS-WI
+/* lib/system/api.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,7 +16,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-
-$lang = array();
-$lang['login'] = "Login";
+class api {
+	public static function login () { }
+	public static function get_data () { }
+	public static function add_data () { }
+	public static function del_data () { }
+	public static function update_data () { }
+}
 ?>

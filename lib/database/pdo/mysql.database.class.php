@@ -1,5 +1,5 @@
 <?php
-/* lib/database/pgsql.pdo.database.class.php - DNS-WI
+/* lib/database/pdo/mysql.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -17,17 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/en/book.pdo.php\">PDO</a> PHP extension."); // check if extension loaded
-if (!extension_loaded("pdo_pgsql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-pgsql.php\">pdo_pgsql</a> PHP extension."); // check if extension loaded
-class DB extends pdo_database {
+if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
+class DB extends database {
 	private static $conn = NULL;
 	private static $err = NULL;
 
 	/**
-	 * @see	pdo_database::connect();
+	 * @see	database::connect();
 	 */
 	public static function connect($host, $user, $pw, $db) {
 		try {
-			self::$conn = new PDO("pgsql:host=".$host.";dbname=".$db, $user, $pw);
+			self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
 			return true;
 		} catch (PDOException $e) {
 			self::$err = $e->getMessage();
@@ -36,14 +36,14 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::close();
+	 * @see	database::close();
 	 */
 	public static function close () {
 		self::$conn = NULL;
 	}
 	
 	/**
-	 * @see	pdo_database::query();
+	 * @see	database::query();
 	 */
 	public static function query ($res, $bind = array()) {
 		try {
@@ -60,7 +60,7 @@ class DB extends pdo_database {
 
 	
 	/**
-	 * @see	pdo_database::fetch_array();
+	 * @see	database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		try {
@@ -71,7 +71,7 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::num_rows();
+	 * @see	database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		try {
@@ -82,7 +82,7 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::error();
+	 * @see	database::error();
 	 */
 	public static function error () {
 		return self::$err;

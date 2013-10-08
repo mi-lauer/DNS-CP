@@ -1,5 +1,5 @@
 <?php
-/* page/help.php - DNS-WI
+/* lib/page/help.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-template::show("help", array("_name" => "Help"));
+template::show("404", array(
+		"_name" => "404 - Not found",
+		"_content" => "<b>This page does not exist!</b>"
+		));
 ?>
-

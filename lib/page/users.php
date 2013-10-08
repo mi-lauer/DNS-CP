@@ -1,5 +1,5 @@
 <?php
-/* page/users.php - DNS-WI
+/* lib/page/users.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 

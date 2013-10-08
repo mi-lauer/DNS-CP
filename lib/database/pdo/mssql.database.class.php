@@ -1,5 +1,5 @@
 <?php
-/* lib/database/mysql.pdo.database.class.php - DNS-WI
+/* lib/database/pdo/mssql.database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -17,17 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/en/book.pdo.php\">PDO</a> PHP extension."); // check if extension loaded
-if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
-class DB extends pdo_database {
+class DB extends database {
 	private static $conn = NULL;
 	private static $err = NULL;
 
 	/**
-	 * @see	pdo_database::connect();
+	 * @see	database::connect();
 	 */
-	public static function connect($host, $user, $pw, $db) {
+	public static function connect($host, $user, $pw, $db, $driver = "dblib") {
 		try {
-			self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
+			if($driver == "dblib") {
+				if (!extension_loaded("pdo_dblib")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-dblib.php\">pdo_dblib</a> PHP extension."); // check if extension
+				self::$conn = new PDO("dblib:host=".$host.";dbname=".$db, $user, $pw);
+			} elseif($driver == "odbc") {
+				if (!extension_loaded("pdo_odbc")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-odbc.php\">pdo_odbc</a> PHP extension."); // check if extension loaded
+				self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=1433; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
+			} else {
+				die("not supported driver");
+			}
 			return true;
 		} catch (PDOException $e) {
 			self::$err = $e->getMessage();
@@ -36,14 +43,14 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::close();
+	 * @see	database::close();
 	 */
 	public static function close () {
 		self::$conn = NULL;
 	}
 	
 	/**
-	 * @see	pdo_database::query();
+	 * @see	database::query();
 	 */
 	public static function query ($res, $bind = array()) {
 		try {
@@ -60,7 +67,7 @@ class DB extends pdo_database {
 
 	
 	/**
-	 * @see	pdo_database::fetch_array();
+	 * @see	database::fetch_array();
 	 */
 	public static function fetch_array ($res) {
 		try {
@@ -71,7 +78,7 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::num_rows();
+	 * @see	database::num_rows();
 	 */
 	public static function num_rows ($res) {
 		try {
@@ -82,7 +89,7 @@ class DB extends pdo_database {
 	}
 	
 	/**
-	 * @see	pdo_database::error();
+	 * @see	database::error();
 	 */
 	public static function error () {
 		return self::$err;

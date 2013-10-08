@@ -1,5 +1,5 @@
 <?php
-/* lib/database/pdo.database.class.php - DNS-WI
+/* lib/database/pdo/database.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 /* Database layout class */
-class pdo_database {
+class database {
 	private static $conn = NULL;
 	private static $err = NULL;
 	

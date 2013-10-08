@@ -1,5 +1,5 @@
 <?php
-/* lib/dns.class.php - DNS-WI
+/* lib/system/dns.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
