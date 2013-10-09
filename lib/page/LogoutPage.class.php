@@ -1,5 +1,5 @@
 <?php
-/* lib/page/tools.php - DNS-WI
+/* lib/page/LogoutPage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,20 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-if(isset($_POST["Submit"])) {
-	$cont = "";
-	if(isset($_POST["dns"]) && $_POST["dns"] != "") {
-		$dns = new dns;
-		$cont .= "<pre>";
-		$cont .= $dns->get($_POST["dns"]);
-		$cont .= "</pre>";
+class LogoutPage extends AbstractPage {
+	public $error = "";
+
+	public function readData() {
+		if(user::isLoggedIn()) {
+			$this->error = user::logout();
+		}else{
+			$this->error = 'You are not logged in. <a href="?page=login">Click here</a>.';
+		}
 	}
-	if(isset($_POST["whois"]) && $_POST["whois"] != "") {
-		$cont .= nl2br(shell_exec("whois ".trim($_POST["whois"])));
+	public function show() {
+		return template::show("logout", array(
+				"_name" => "Logout",
+				"_error" => $this->error
+				));
 	}
-} else { $cont = ""; }
-template::show("tools", array(
-		"_name" => "Tools",
-		"_content" => $cont
-		));
+}
 ?>

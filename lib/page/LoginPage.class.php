@@ -1,5 +1,5 @@
 <?php
-/* lib/page/login.php - DNS-WI
+/* lib/page/LoginPage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,11 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-if(isset($_POST["Submit"])) {
-	$error = user::login($_POST['username'], $_POST['password']);
-} else { $error = ""; }
-template::show("login", array(
-		"_name" => "Login",
-		"_error" => $error
-		));
+class LoginPage extends AbstractPage {
+	public $error = "";
+	public function readData() {
+		if(isset($_POST["Submit"])) {
+			$this->error = user::login($_POST['username'], $_POST['password']);
+		}
+	}
+	
+	public function show() {
+		return template::show("login", array(
+				"_name" => "Login",
+				"_error" => $this->error
+				));
+	}
+}
 ?>

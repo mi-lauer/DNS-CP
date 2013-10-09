@@ -1,5 +1,5 @@
 <?php
-/* lib/page/zone.php - DNS-WI
+/* lib/page/ZonePage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,10 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-?>
+class ZonePage extends AbstractPage {
+/*will be changes later*/
+public function show() {
+	global $conf;
+$ret = '
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
-<div id="main">
-	<?php
+<div id="main">';
 	$isAdmin = user::isAdmin();
 	$show_list = true;
 	if(isset($_GET["act"]) && $_GET["act"] == "add") {
@@ -30,10 +33,10 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 				$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin ='".DB::escape($zone_name)."'");
 				$row = DB::fetch_array($res);
 				if(!empty($row["id"])) {
-					echo '<font color="#ff0000">Zone already exists.</font>';
+					$ret .= '<font color="#ff0000">Zone already exists.</font>';
 
 				}else if(empty($_POST['name']) || $_POST['name'] == "." || strlen($_POST['name']) < 2) {
-					echo '<font color="#ff0000">Please enter a valid domain name!</font>';
+					$ret .= '<font color="#ff0000">Please enter a valid domain name!</font>';
 
 				}else{
 
@@ -57,17 +60,17 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 						DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'TXT', '".DB::escape($conf["txt"])."', '0', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
 					}
 					DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES ('".$row['id']."', '".DB::escape($zone_name)."', 'MX', 'mail.".DB::escape($zone_name)."', '10', '".DB::escape($conf["minimum_ttl"])."');") or die(DB::error());
-					echo '<font color="#008000">Zone <b>'.$_POST['name'].'</b> sucessfully added.</font>';
+					$ret .= '<font color="#008000">Zone <b>'.$_POST['name'].'</b> sucessfully added.</font>';
 				}
 			} else{
-				echo '<font color="#ff0000">Please enter a domain name</font>';
+				$ret .= '<font color="#ff0000">Please enter a domain name</font>';
 			}
-			echo "<br /><br />";
+			$ret .= "<br /><br />";
 
 		} else {
 			$show_list = false;
 
-			?>
+			$ret .= '
 			<form name="form1" method="post" action="?page=zone&act=add" class="jNice">
 				<table width="320"  border="0">
 					<tr>
@@ -79,11 +82,11 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 						<td><div align="right"><strong>Owner: </strong></div></td>
 						<td>
 							<select name="owner">
-								<?php 
+								'; 
 								$res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
-								while ($row3 = DB::fetch_array($res3)) { ?>
-								<option value="<?php echo $row3["id"]; ?>"><?php echo $row3["username"]; ?></option>
-								<?php } ?>
+								while ($row3 = DB::fetch_array($res3)) {
+								$ret .= '<option value="'.$row3["id"].'">'.$row3["username"].'</option>';
+								} $ret .= '
 							</select>
 						</td>
 						<td>&nbsp;</td>
@@ -95,14 +98,14 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 					</tr>
 				</table>
 			</form>
-			<?php
+			';
 		}
 
 	}elseif(isset($_GET["id"])){
 		if(isset($_GET["act"]) && $_GET["act"] == "del" && $isAdmin) {
 			DB::query("DELETE FROM ".$conf["soa"]." WHERE id = '".DB::escape($_GET["id"])."'") or die(DB::error());
 			DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = '".DB::escape($_GET["id"])."'") or die(DB::error());
-			echo '<font color="#008000">Domain deleted successfully.</font><br /><br />';
+			$ret .= '<font color="#008000">Domain deleted successfully.</font><br /><br />';
 		} else {
 			if(isset($_POST["Submit"])){
 				$total = $_POST["total"];
@@ -155,7 +158,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 				} else {
 					DB::query("UPDATE ".$conf["soa"]." SET refresh = " . DB::escape($_POST['refresh']) . ", retry = " . DB::escape($_POST['retry']) . ", expire = " . DB::escape($_POST['expire']) . ", ttl = " . DB::escape($_POST['attl']) . ", serial = '".DB::escape($serial)."' WHERE id = " . DB::escape($_GET['id'])) or die(DB::error());
 				}
-				echo '<font color="#008000">Done</font><br /><br />';
+				$ret .= '<font color="#008000">Done</font><br /><br />';
 			}
 
 			if($isAdmin){
@@ -170,54 +173,53 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 			if($row["owner"] == $_SESSION['userid'] OR $isAdmin) {
 				$i = 0;
 
-				?>
+				$ret .= '
 
-				<form name="form1" method="post" action="?page=zone&id=<?php echo $row["id"]; ?>" class="jNice">
+				<form name="form1" method="post" action="?page=zone&id='.$row["id"].'" class="jNice">
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td><div align="right"><strong>Zone:</strong></div></td>
-							<td><?php echo func::ent($row["origin"]); ?></td>
+							<td>'.func::ent($row["origin"]).'</td>
 							<td><div align="right"><strong>Serial:</strong></div></td>
-							<td><?php echo func::ent($row["serial"]); ?></td>
+							<td>'.func::ent($row["serial"]).'</td>
 						</tr>
 						<tr>
 							<td><div align="right"><strong>Refresh:</strong></div></td>
-							<td><input class="text" type="text" name="refresh" size="25" value="<?php echo func::ent($row["refresh"]); ?>"></td>
+							<td><input class="text" type="text" name="refresh" size="25" value="'.func::ent($row["refresh"]).'"></td>
 							<td><div align="right"><strong>Retry:</strong></div></td>
-							<td><input class="text" type="text" name="retry" size="25" value="<?php echo func::ent($row["retry"]); ?>"></td>
+							<td><input class="text" type="text" name="retry" size="25" value="'.func::ent($row["retry"]).'"></td>
 						</tr>
 						<tr>
 							<td><div align="right"><strong>Expire:</strong></div></td>
-							<td><input class="text" type="text" name="expire" size="25" value="<?php echo func::ent($row["expire"]); ?>"></td>
+							<td><input class="text" type="text" name="expire" size="25" value="'.func::ent($row["expire"]).'"></td>
 							<td><div align="right"><strong>TTL:</strong></div></td>
-							<td><input class="text" type="text" name="attl" size="25" value="<?php echo func::ent($row["ttl"]); ?>"></td>
+							<td><input class="text" type="text" name="attl" size="25" value="'.func::ent($row["ttl"]).'"></td>
 						</tr>
-						<?php if($isAdmin) { ?>
+						'; if($isAdmin) { $ret .= '
 						<tr>
-							<?php
+							';
 							$res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
-							?>
+							$ret .= '
 							<td><div align="right"><font face="Arial,Helvetica" size="-1"><strong>Owner: </strong></font></div></td>
 							<td>
 								<select name="owner">
-									<?php while ($row3 = DB::fetch_array($res3)) { ?>
-									<?php if($row3["id"] == $row["owner"]) { ?>
-									<option value="<?php echo $row3["id"]; ?>" selected><?php echo $row3["username"]; ?></option>
-									<?php } else { ?>
-									<option value="<?php echo $row3["id"]; ?>"><?php echo $row3["username"]; ?></option>
-									<?php } ?>
-									<?php } ?>
+									'; while ($row3 = DB::fetch_array($res3)) {
+									if($row3["id"] == $row["owner"]) { $ret .= '
+									<option value="'.$row3["id"].'" selected>'.$row3["username"].'</option>
+									'; } else { $ret .= '
+									<option value="'.$row3["id"].'">'.$row3["username"].'</option>
+									'; } } $ret .= '
 								</select>
 							</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 						</tr>
-						<?php } ?>
+						
 					</table>
 
-					<input type="hidden" name="serial" value="<?php echo func::ent($row["serial"]); ?>">
-					<input type="hidden" name="zone" value="<?php echo func::ent($row["origin"]); ?>">
-					<input type="hidden" name="zoneid" value="<?php echo func::ent($row["id"]); ?>">
+					<input type="hidden" name="serial" value="'.func::ent($row["serial"]).'">
+					<input type="hidden" name="zone" value="'.func::ent($row["origin"]).'">
+					<input type="hidden" name="zoneid" value="'.func::ent($row["id"]).'">
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td><strong>Host</strong></td>
@@ -227,27 +229,27 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 							<td><strong>Data</strong></td>
 							<td><strong>Manage</strong></td>
 						</tr>
-						<?php while ($row2 = DB::fetch_array($res2)) { ?>
+						'; while ($row2 = DB::fetch_array($res2)) { $ret .= '
 						<tr>
 							<td>
-								<input type="hidden" name="host_id[<?php echo $i; ?>]" value="<?php echo func::ent($row2["id"]); ?>">
-								<input class="text" type="text" name="host[<?php echo $i; ?>]" value="<?php echo func::ent($row2["name"]); ?>" size="14">
+								<input type="hidden" name="host_id['.$i.']" value="'.func::ent($row2["id"]).'">
+								<input class="text" type="text" name="host['.$i.']" value="'.func::ent($row2["name"]).'" size="14">
 							</td>
-							<td><input class="text" type="text" name="ttl[<?php echo $i; ?>]" size="1" value="<?php echo func::ent($row2["ttl"]); ?>"></td>
-							<td><?php echo func::getOptions($row2["type"], $i); ?></td>
-							<td><input class="text" type="text" name="pri[<?php echo $i; ?>]" size="1" value="<?php echo func::ent($row2["aux"]); ?>"></td>
-							<td><input class="text" type="text" name="destination[<?php echo $i; ?>]" size="14" value="<?php echo func::ent(DB::unescape($row2["data"])); ?>"></td>
-							<td><center><input type="checkbox" name="delete[<?php echo $i; ?>]" /></center></td>
+							<td><input class="text" type="text" name="ttl['.$i.']" size="1" value="'.func::ent($row2["ttl"]).'"></td>
+							<td>'.func::getOptions($row2["type"], $i).'</td>
+							<td><input class="text" type="text" name="pri['.$i.']" size="1" value="'.func::ent($row2["aux"]).'"></td>
+							<td><input class="text" type="text" name="destination['.$i.']" size="14" value="'.func::ent(DB::unescape($row2["data"])).'"></td>
+							<td><center><input type="checkbox" name="delete['.$i.']" /></center></td>
 						</tr>
 
-						<?php $i++; } ?>
+						'; $i++; } $ret .= '
 						<tr>
 							<td colspan="6"><hr size="1" noshade></td>
 						</tr>
 						<tr>
 							<td><input class="text" type="text" name="newhost" size="14"></td>
-							<td><input class="text" type="text" name="newttl" size="1" value="<?php echo $conf["minimum_ttl"]; ?>"></td>
-							<td><?php echo func::getOptions("A"); ?></td>
+							<td><input class="text" type="text" name="newttl" size="1" value="'.$conf["minimum_ttl"].'"></td>
+							<td>'.func::getOptions("A").'</td>
 							<td><input class="text" type="text" name="newpri" size="1" value="0"></td>
 							<td><input class="text" type="text" name="newdestination" size="14"></td>
 							<td>&nbsp;</td>
@@ -256,7 +258,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>
-								<input type="hidden" name="total" value="<?php echo $i; ?>">
+								<input type="hidden" name="total" value="'.$i.'">
 								<input name="Submit" type="submit" value="Save">
 							</td>
 							<td>&nbsp;</td>
@@ -266,9 +268,9 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 					</table>
 				</form>
 
-				<?php
+				';
 				$show_list = false;
-			} else { echo "No Access"; }
+			} else { $ret .=  "No Access"; }
 		} 
 	}
 
@@ -289,9 +291,9 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 
 		if($zoneid > 0) {
 			if($isAdmin){
-				echo '	<strong><a href="?page=zone&act=add">Create a new zone</a></strong><br /><br />'."\n";
+				$ret .= '<strong><a href="?page=zone&act=add">Create a new zone</a></strong><br /><br />'."\n";
 			}
-			?>
+			$ret .= '
 			<table width="100%"  border="0" cellspacing="1" class="jNice">
 				<tr>
 					<td><strong>Name</strong></td>
@@ -299,26 +301,27 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 					<td><strong>Records</strong></td>
 					<td><strong>Manage</strong></td>
 				</tr>
-				<?php
+				';
 				foreach($zones as $zoneid => $row) {
-					?>
+					$ret .= '
 					<tr>
-						<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo substr($row["origin"], 0, strlen($row["origin"])-1); ?></a></td>
-						<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["serial"]; ?></a></td>
-						<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["records"]; ?></a></td>
-						<?php if($isAdmin){ ?>
-						<td class="action"><a class="delete" href="?page=zone&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('Do you really want to remove this zone?');">Delete</a></td>
-						<?php } else { ?>
+						<td class="action"><a class="view" href="?page=zone&id='.$row["id"].'">'.substr($row["origin"], 0, strlen($row["origin"])-1).'</a></td>
+						<td class="action"><a class="edit" href="?page=zone&id='.$row["id"].'">'.$row["serial"].'</a></td>
+						<td class="action"><a class="edit" href="?page=zone&id='.$row["id"].'">'.$row["records"].'</a></td>
+						'; if($isAdmin){ $ret .= '
+						<td class="action"><a class="delete" href="?page=zone&id='.$row["id"].'&act=del" onClick="return confirm(\'Do you really want to remove this zone?\');">Delete</a></td>
+						'; } else { $ret .= '
 						<td>&nbsp;</td>
-						<?php } ?>
+						'; } $ret .= '
 					</tr>
-					<?php
+					';
 				}
-				echo '</table>
+				$ret .= '</table>
 				';
 			}else{
-				echo 'There are currently no zones available. <strong><a href="?page=zone&act=add">Create your first zone</a></strong>';
+				$ret .= 'There are currently no zones available. <strong><a href="?page=zone&act=add">Create your first zone</a></strong>';
 			}
 		}
-		?>
-	</div>
+		$ret .= '
+	</div>';
+} return $ret; } } ?>

@@ -1,5 +1,5 @@
 <?php
-/* lib/page/users.php - DNS-WI
+/* lib/page/UsersPage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,16 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-?>
+class UsersPage extends AbstractPage {
+/*will be changes later*/
+public function show() {
+	global $conf;
+$ret = '
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Users</a></h2>
 <div id="main">
-<?php
+';
 if(user::isAdmin()){
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])) {
-	echo user::add($_POST["username_one"], $_POST["password_one"], $_POST["confirm_password"], $_POST["admin"]);
+	$ret .= user::add($_POST["username_one"], $_POST["password_one"], $_POST["confirm_password"], $_POST["admin"]);
 }
-?>
+$ret .= '
 
 <form name="form1" method="post" action="?page=users&act=add" class="jNice">
 	<table width="320"  border="0">
@@ -60,39 +64,39 @@ if(isset($_POST["Submit"])) {
 	</table>
 </form>
 
-<?php
+';
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del") {
-		echo user::del($_GET['id']);
+		$ret .= user::del($_GET['id']);
 	} else {
 	if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
-			echo user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
+			$ret .= user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
 		} elseif(isset($_POST["admin"])) {
-			echo user::change("chad", $_GET['id'], $_POST["admin"]);
+			$ret .= user::change("chad", $_GET['id'], $_POST["admin"]);
 		}
 	}
 $res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
 $row = DB::fetch_array($res);
-?>
+$ret .= '
 
-<form name="form1" method="post" action="?page=users&id=<?php echo $_GET["id"];?>" class="jNice">
+<form name="form1" method="post" action="?page=users&id='.$_GET["id"].'?>" class="jNice">
 	<table width="320"  border="0">
 		<tr>
 			<td><div align="right"><strong>Username:</strong></div></td>
-			<td><?php echo $row["username"]; ?></td>
+			<td>'.$row["username"].'</td>
 		</tr>
 		<tr>
 			<td><div align="right"><strong>Administrator:</strong></div></td>
-			<td>
-			<?php if($row["admin"] == 1) { ?>
-				<label><input type="radio" name="admin" value="1" checked="checked" />yes</label> 
-				<label><input type="radio" name="admin" value="0" />no</label>
-			<?php } else { ?>
-				<label><input type="radio" name="admin" value="1" />yes</label> 
-				<label><input type="radio" name="admin" value="0" checked="checked" />no</label>
-			<?php } ?>
-			</td>
+			<td>';
+			if($row["admin"] == 1) {
+				$ret .= '<label><input type="radio" name="admin" value="1" checked="checked" />yes</label>';
+				$ret .= '<label><input type="radio" name="admin" value="0" />no</label>';
+			} else {
+				$ret .= '<label><input type="radio" name="admin" value="1" />yes</label>';
+				$ret .= '<label><input type="radio" name="admin" value="0" checked="checked" />no</label>';
+			}
+			$ret .= '</td>
 		</tr>
 		<tr>
 			<td><div align="right"><strong>New password:</strong></div></td>
@@ -112,9 +116,9 @@ $row = DB::fetch_array($res);
 		</tr>
 	</table>
 </form>
-<?php
+';
 $res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = '".DB::escape($row["id"])."' ORDER BY origin ASC") or die(DB::error());
-?>
+$ret .= '
 <strong>Zones owned by this user:</strong>
 <table width="100%"  border="0" cellspacing="1">
 	<tr>
@@ -122,22 +126,21 @@ $res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = '".DB::escape($r
 		<td><strong>Records</strong></td>
 		<td><strong>Serial</strong></td>
 	</tr>
-<?php 
+';
 while ($row2 = DB::fetch_array($res2)) { 
 $records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = '".$row2["id"]."'")) or die(DB::error());
-?>
+$ret .='
 	<tr>
-		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row2["id"]; ?>"><?php echo $row2["origin"]; ?></a></td>
-		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row2["id"]; ?>"><?php echo $records; ?></a></td>
-		<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row2["id"]; ?>"><?php echo $row2["serial"]; ?></a></td>
+		<td class="action"><a class="view" href="?page=zone&id='.$row2["id"].'">'.$row2["origin"].'</a></td>
+		<td class="action"><a class="view" href="?page=zone&id='.$row2["id"].'">'.$records.'</a></td>
+		<td class="action"><a class="edit" href="?page=zone&id='.$row2["id"].'">'.$row2["serial"].'</a></td>
 	</tr>
-<?php } ?>
-</table>
-<?php
+'; }
+$ret .= '</table>';
 }
 } else {
 $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
-?>
+$ret .= '
 <strong><a href="?page=users&act=add">Add a new user</a></strong><br /><br />
 <table width="100%"  border="0" cellspacing="1">
 	<tr>
@@ -146,24 +149,27 @@ $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or di
 		<td><strong>Zones</strong></td>
 		<td><strong>Delete</strong></td>
 	</tr>
-<?php while ($row = DB::fetch_array($res)) { ?>
-	<tr>
-		<td class="action"><a class="view" href="?page=users&id=<?php echo $row["id"]; ?>"><?php echo $row["username"]; ?></a></td>
-		<td class="action"><a class="edit" href="?page=users&id=<?php echo $row["id"]; ?>"><?php if($row["admin"] == 1) { echo "yes"; } else { echo "no"; } ?></a></td>
+'; while ($row = DB::fetch_array($res)) { 
+	$ret .= '<tr>
+		<td class="action"><a class="view" href="?page=users&id='.$row["id"].'">'.$row["username"].'</a></td>
+		<td class="action"><a class="edit" href="?page=users&id='.$row["id"].'">';
+		if($row["admin"] == 1) { $ret .= "yes"; } else { $ret .= "no"; } $ret .= '</a></td>
 		<td class="action">
-			<a class="edit" href="?page=users&id=<?php echo $row["id"]; ?>">
-		<?php
+			<a class="edit" href="?page=users&id='.$row["id"].'">
+';
 			$zone = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($row['id'])."'") or die(DB::error());
-			echo DB::num_rows($zone); 
-		?>
-			</a>
+			$ret .= DB::num_rows($zone); 
+
+			$ret .='</a>
 		</td>
-		<td class="action"><a class="delete" href="?page=users&id=<?php echo $row["id"]; ?>&act=del" onClick="return confirm('Are you really sure that you want delete this user?')">Delete</a></td>
-	</tr>
-<?php } ?>
-</table>
-<?php } ?>
-<?php } else { ?>
-No Access
-<?php } ?>
-</div>
+		<td class="action"><a class="delete" href="?page=users&id='.$row["id"].'&act=del" onClick="return confirm(\'Are you really sure that you want delete this user?\')">Delete</a></td>
+	</tr>';
+}
+$ret .='</table>';
+}
+} else {
+$ret .= 'No Access';
+}
+$ret .= '</div>';
+return $ret;
+} } ?>

@@ -1,5 +1,5 @@
 <?php
-/* lib/page/home.php - DNS-WI
+/* lib/page/SettingsPage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,19 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-$i = 0;
-if(user::isAdmin()){
-	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
-} else {
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
+class SettingsPage extends AbstractPage {
+	public $error = "";
+	public $dns = "";
+	
+	public function readData() {
+		global $conf;
+		if(isset($_POST["Submit"])){
+			$this->error = user::change_password($_SESSION['userid'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
+		}
+		foreach($conf["avail_dns_srv"] as $dns) {
+			$selected = NULL;
+			if(func::currentDNSserver() == $dns) {
+				$selected = ' selected';
+			}
+			$this->dns .= '<option value="'.strtolower($dns).'"'.$selected.'>'.$dns.'</option>'."\n";
+		}
+	}
+	
+	public function show() {
+		return template::show("settings", array(
+			"_name" => "Settings",
+			"_error" => $this->error,
+			"_dnsserver" => $this->dns
+			));
+	}
 }
-$i = DB::num_rows($res);
-
-if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
-template::show("home", array(
-		"_name" => "Home",
-		"_user" => $_SESSION['username'],
-		"_status" => $status,
-		"_zones" => $i
-		));
 ?>

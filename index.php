@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 session_start();
-#ini_set('display_errors', 1);
-#ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 
 define("IN_PAGE", true);
 if(!file_exists("config.php")) {
@@ -44,7 +44,8 @@ require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/system/template.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");
-require_once("lib//lang/".$conf['lang'].".inc.php");
+require_once("lib/lang/".$conf['lang'].".inc.php");
+require_once("lib/page/AbstractPage.class.php");
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
 	$page = trim($_GET["page"]);
@@ -77,16 +78,24 @@ if(user::isLoggedIn()){
 		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
 	}
 	if(isset($page)) {
-		if(@file_exists("lib/page/".$page.".php")){
-			$content = '<?php require_once("lib/page/'.$page.'.php"); ?>';
+		
+		if(@file_exists("lib/page/".ucfirst($page)."Page.class.php")){
+			require_once("lib/page/".ucfirst($page)."Page.class.php");
+			$pagename = ucfirst($page)."Page";
+			$pagecontent = new $pagename();
+			$content = $pagecontent->show();
 		} else {
-			$content = '<?php require_once("lib/page/404.php"); ?>';
+			require_once("lib/page/ErrorPage.class.php");
+			$pagecontent = new ErrorPage();
+			$content = $pagecontent->show();
 		}
 	}
 	$login = '<li class="logout"><a href="?page=logout">LOGOUT</a></li>';
 } else {
 	$tmenu ='<li><a href="?page=login" class="active">Login</a></li>';
-	$content = '<?php require_once("page/login.php"); ?>';
+	require_once("lib/page/LoginPage.class.php");
+	$pagecontent = new LoginPage();
+	$content = $pagecontent->show();
 	$login = '<li class="logout"><a href="?page=login">LOGIN</a></li>';
 }
 $data = array(
@@ -98,5 +107,5 @@ $data = array(
 		"_build" => $conf["build"],
 		"_version" => $conf["version"]
 		);
-template::show("index", $data);
+echo template::show("index", $data);
 ?>

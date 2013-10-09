@@ -1,5 +1,5 @@
 <?php
-/* lib/page/logout.php - DNS-WI
+/* lib/page/AbstractPage.class.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-if(user::isLoggedIn()) {
-	$error = user::logout();
-}else{
-	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';
+abstract class AbstractPage {
+
+	public function __construct() {
+		$this->readData();
+		$this->show();
+	}
+	
+	public function readData() {
+	}
+	
+	public function show() {
+	}
 }
-template::show("logout", array(
-		"_name" => "Logout",
-		"_error" => $error
-		));
 ?>
