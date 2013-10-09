@@ -273,7 +273,7 @@ $ret = '
 			} else { $ret .=  "No Access"; }
 		} 
 	}
-
+	}
 	if($show_list) {
 		if($isAdmin){
 			$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
@@ -324,4 +324,4 @@ $ret = '
 		}
 		$ret .= '
 	</div>';
-} return $ret; } } ?>
+ return $ret; } } ?>
