@@ -76,7 +76,7 @@ $ret .= '
 			$ret .= user::change("chad", $_GET['id'], $_POST["admin"]);
 		}
 	}
-$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = ".DB::escape($_GET["id"])) or die(DB::error());
+$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_GET["id"])) or die(DB::error());
 $row = DB::fetch_array($res);
 $ret .= '
 
@@ -117,7 +117,7 @@ $ret .= '
 	</table>
 </form>
 ';
-$res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = '".DB::escape($row["id"])."' ORDER BY origin ASC") or die(DB::error());
+$res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :id ORDER BY origin ASC", array(":id" => $_GET["id"])) or die(DB::error());
 $ret .= '
 <strong>Zones owned by this user:</strong>
 <table width="100%"  border="0" cellspacing="1">
@@ -128,7 +128,7 @@ $ret .= '
 	</tr>
 ';
 while ($row2 = DB::fetch_array($res2)) { 
-$records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = '".$row2["id"]."'")) or die(DB::error());
+$records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = :id", array(":id" => $row2["id"]))) or die(DB::error());
 $ret .='
 	<tr>
 		<td class="action"><a class="view" href="?page=zone&id='.$row2["id"].'">'.$row2["origin"].'</a></td>
@@ -157,7 +157,7 @@ $ret .= '
 		<td class="action">
 			<a class="edit" href="?page=users&id='.$row["id"].'">
 ';
-			$zone = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($row['id'])."'") or die(DB::error());
+			$zone = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :id", array(":id" => $row["id"])) or die(DB::error());
 			$ret .= DB::num_rows($zone); 
 
 			$ret .='</a>

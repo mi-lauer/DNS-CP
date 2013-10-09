@@ -26,7 +26,7 @@ class user {
 	 */
 	public static function login ($user, $pass) {
 		global $conf;
-		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username ='".DB::escape($user)."'") or die(DB::error());
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if($row["password"] == md5($pass)) {
 			$_SESSION['login'] = 1;
@@ -59,12 +59,12 @@ class user {
 	 */
 	public static function change_password ($id, $opw, $npw, $npw2) {
 		global $conf;
-		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".intval($id)."'") or die(DB::error());
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $id)) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if(isset($npw) && isset($npw2) && isset($opw) && $opw != "" && $npw != "" && $npw2 != ""){
 			if($npw == $npw2) {
 				if($row["password"] == md5($opw)){
-					DB::query("UPDATE ".$conf["users"]." SET password = '".md5($npw)."' WHERE id = '".intval($id)."'") or die(DB::error());
+					DB::query("UPDATE ".$conf["users"]." SET password = :pw WHERE id = :id", array(":pw" => md5($npw), ":id" => $id)) or die(DB::error());
 					return '<font color="#008000">Password changed successfully.</font>';
 				} else {
 					return '<font color="#ff0000">The data you have entered are invalid.</font>';
@@ -97,7 +97,7 @@ class user {
 	 */
 	public static function isAdmin () {
 		global $conf;
-		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = '".DB::escape($_SESSION["userid"])."'") or die(DB::error());
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_SESSION["userid"])) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if(isset($row['admin']) && $row['admin'] == 1){
 			return true;
@@ -117,11 +117,20 @@ class user {
 	 */
 	public static function add ($user, $pass, $pass2, $admin) {
 		global $conf;
-		if($pass == $pass2) {
-			DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES ('".DB::escape($user)."', '".md5($pass)."', '".intval($admin)."');") or die(DB::error());
-			return '<font color="#008000">User sucessful added</font>';
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
+		$row = DB::fetch_array($res);
+		print_r($res);
+		if(!$row['username'] && $row['username'] != $user) {
+			if($pass == $pass2) {
+				$bind = array(":user" => $user, ":pass" => md5($pass), ":admin" => $admin);
+				$la = DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES (:user, :pass, :admin);", $bind) or die(DB::error());
+				print_r($la);
+				return '<font color="#008000">User sucessful added</font>';
+			} else {
+				return '<font color="#ff0000">The data you have entered are invalid.</font>';
+			}
 		} else {
-			return '<font color="#ff0000">The data you have entered are invalid.</font>';
+			return '<font color="#ff0000">User allready exists</font>';
 		}
 	}
 
@@ -136,8 +145,8 @@ class user {
 		if($id == 1) {
 			return '<font color="#ff0000">You can not delete the main admin with id 1.</font>';
 		}else{
-			DB::query("DELETE FROM ".$conf["users"]." WHERE id = '".intval($id)."'") or die(DB::error());
-			DB::query("UPDATE ".$conf["soa"]." SET owner = '1' WHERE owner = '".intval($id)."'") or die(DB::error());
+			DB::query("DELETE FROM ".$conf["users"]." WHERE id = :id", array(":id" => $id)) or die(DB::error());
+			DB::query("UPDATE ".$conf["soa"]." SET owner = '1' WHERE owner = :id", array(":id" => $id)) or die(DB::error());
 			return '<font color="#008000">User sucessful deleted</font>';
 		}
 	}
@@ -156,13 +165,15 @@ class user {
 		global $conf;
 		if($action == "chpw") {
 			if($pass == $pass2) {
-				DB::query("UPDATE ".$conf["users"]." SET password = '".md5($pass)."', admin = '".intval($admin)."' WHERE id = ".intval($id)) or die(DB::error());
+				$bind = array(":pass" => md5($pass), ":adm" => $admin, ":id" => $id);
+				DB::query("UPDATE ".$conf["users"]." SET password = :pass, admin = :adm WHERE id = :id", $bind) or die(DB::error());
 				return'<font color="#008000">Password changed successfully.</font>';
 			} else {
 				return '<font color="#ff0000">The data you have entered are invalid.</font>';
 			}
 		} elseif($action == "chad") {
-			DB::query("UPDATE ".$conf["users"]." SET admin = '".intval($admin)."' WHERE id = ".intval($id)) or die(DB::error());
+			$bind = array(":adm" => $admin, ":id" => $id);
+			DB::query("UPDATE ".$conf["users"]." SET admin = :adm WHERE id = :id". $bind) or die(DB::error());
 			return '<font color="#008000">Status changed sucessfully.</font>';
 		}
 	}

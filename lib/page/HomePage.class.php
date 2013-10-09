@@ -26,7 +26,7 @@ class HomePage extends AbstractPage {
 		if(user::isAdmin()){
 			$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
 		} else {
-			$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = '".DB::escape($_SESSION['userid'])."'") or die(DB::error());
+			$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :id", array(":id" => $_SESSION['userid'])) or die(DB::error());
 		}
 		$this->i = DB::num_rows($res);
 

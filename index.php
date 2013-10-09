@@ -35,9 +35,8 @@ $conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 
 // requirements
 require_once("config.php");
-require_once("lib/database/database.class.php");
-require_once("lib/database/".$database["typ"].".database.class.php");
-DB::connect($database["host"], $database["user"], $database["pw"], $database["db"]);
+require_once("lib/database/db.class.php");
+DB::connect($database["host"], $database["port"], $database["user"], $database["pw"], $database["db"], $database["typ"]);
 require_once("lib/user/user.class.php");
 require_once("lib/server/server.class.php");
 require_once("lib/server/".$conf['server'].".server.class.php");

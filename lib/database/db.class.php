@@ -29,7 +29,7 @@ class DB {
 	 * @param	string		$pw
 	 * @param	string		$db
 	 */
-	public static function connect($host, $user, $pw, $db, $driver) {
+	public static function connect($host, $port, $user, $pw, $db, $driver) {
 		try {
 			switch ($driver) {
 				case "dblib":
@@ -39,17 +39,23 @@ class DB {
 					
 				case "odbc":
 					if (!extension_loaded("pdo_odbc")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-odbc.php\">pdo_odbc</a> PHP extension."); // check if extension loaded
-					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=1433; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
+					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$port."; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
+					break;
+			
+										
+				case "sqlsrv":
+					if (!extension_loaded("pdo_sqlsrv")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlsrv.php\">pdo_sqlsrv</a> PHP extension."); // check if extension loaded	
+					self::$conn = new PDO("sqlsrv:Server=".$host.",".$port.";Database=".$db, $user, $pw);
 					break;
 			
 				case "mysql":
 					if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
-					self::$conn = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pw);
+					self::$conn = new PDO("mysql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
 					break;
 				
 				case "pgsql":
 					if (!extension_loaded("pdo_pgsql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-pgsql.php\">pdo_pgsql</a> PHP extension."); // check if extension loaded
-					self::$conn = new PDO("pgsql:host=".$host.";dbname=".$db, $user, $pw);
+					self::$conn = new PDO("pgsql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
 					break;
 					
 				case "sqlite":
@@ -73,7 +79,7 @@ class DB {
 						if($created) {
 							self::$conn->exec(file_get_contents("lib/database/db.sqlite3.sql"));
 						}
-					} else { die(/* error message will be added later ;) */); }
+					} else { die("cant crate the sqlite database"); }
 					break;
 					
 				default:

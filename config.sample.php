@@ -19,8 +19,9 @@
 
 // config
 // database
-$database["typ"]        = "mysqli";                   // Database typ (available: mysql, mysqli and pgsql) 
+$database["typ"]        = "mysql";                    // Database typ (available: mysql and pgsql) 
 $database["host"]       = "localhost";                // Database host
+$database["port"]       = "3306";                     // Database port
 $database["user"]       = "dns";                      // Database user
 $database["pw"]         = "dns";                      // Database password
 $database["db"]         = "dns";                      // MyDNS Database
