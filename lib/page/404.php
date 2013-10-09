@@ -1,5 +1,5 @@
 <?php
-/* lib/page/SettingsPage.class.php - DNS-WI
+/* lib/page/help.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,30 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-class SettingsPage extends AbstractPage {
-	public $error = "";
-	public $dns = "";
-	
-	public function readData() {
-		global $conf;
-		if(isset($_POST["Submit"])){
-			$this->error = user::change_password($_SESSION['userid'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
-		}
-		foreach($conf["avail_dns_srv"] as $dns) {
-			$selected = NULL;
-			if(func::currentDNSserver() == $dns) {
-				$selected = ' selected';
-			}
-			$this->dns .= '<option value="'.strtolower($dns).'"'.$selected.'>'.$dns.'</option>'."\n";
-		}
-	}
-	
-	public function show() {
-		return template::show("settings", array(
-			"_name" => "Settings",
-			"_error" => $this->error,
-			"_dnsserver" => $this->dns
-			));
-	}
-}
+template::show("404", array(
+		"_name" => "404 - Not found",
+		"_content" => "<b>This page does not exist!</b>"
+		));
 ?>

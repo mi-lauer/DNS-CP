@@ -1,5 +1,5 @@
 <?php
-/* lib/page/ErrorPage.class.php - DNS-WI
+/* lib/page/settings.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -16,12 +16,21 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-class ErrorPage extends AbstractPage {
-	public function show() {
-		return template::show("404", array(
-				"_name" => "404 - Not found",
-				"_content" => "<b>This page does not exist!</b>"
-				));
+if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
+if(isset($_POST["Submit"])){
+	$error = user::change_password($_SESSION['userid'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
+} else { $error = ""; }
+$dns_setting = '';
+foreach($conf["avail_dns_srv"] as $dns) {
+	$selected = NULL;
+	if(func::currentDNSserver() == $dns) {
+		$selected = ' selected';
 	}
+	$dns_setting .= '<option value="'.strtolower($dns).'"'.$selected.'>'.$dns.'</option>'."\n";
 }
+template::show("settings", array(
+	"_name" => "Settings",
+	"_error" => $error,
+	"_dnsserver" => $dns_setting
+	));
 ?>

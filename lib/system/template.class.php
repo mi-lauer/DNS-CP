@@ -43,12 +43,7 @@ class template {
 		foreach($lang as $name => $value) {
 			$content = str_replace("{@_".$name."}", $value, $content);
 		}
-		$ret = "";
-		ob_start();
-		eval("?>".$content);
-		$ret = ob_get_contents();
-		ob_end_clean();
-		return $ret;
+		return eval("?>".$content);
 	}
 }
 ?>

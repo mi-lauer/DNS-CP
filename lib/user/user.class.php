@@ -119,12 +119,10 @@ class user {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
 		$row = DB::fetch_array($res);
-		print_r($res);
 		if(!$row['username'] && $row['username'] != $user) {
 			if($pass == $pass2) {
 				$bind = array(":user" => $user, ":pass" => md5($pass), ":admin" => $admin);
-				$la = DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES (:user, :pass, :admin);", $bind) or die(DB::error());
-				print_r($la);
+				DB::query("INSERT INTO ".$conf["users"]." (username, password, admin) VALUES (:user, :pass, :admin);", $bind) or die(DB::error());
 				return '<font color="#008000">User sucessful added</font>';
 			} else {
 				return '<font color="#ff0000">The data you have entered are invalid.</font>';

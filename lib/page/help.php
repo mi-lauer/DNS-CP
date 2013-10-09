@@ -1,5 +1,5 @@
 <?php
-/* lib/page/HelpPage.class.php - DNS-WI
+/* lib/page/help.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -17,10 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
-class HelpPage extends AbstractPage {
-	public function show() {
-		return template::show("help", array("_name" => "Help"));
-	}
-}
+template::show("help", array("_name" => "Help"));
 ?>
 
