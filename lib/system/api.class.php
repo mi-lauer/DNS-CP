@@ -16,11 +16,59 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-class api {
-	public static function login () { }
-	public static function get_data () { }
-	public static function add_data () { }
-	public static function del_data () { }
-	public static function update_data () { }
+class API {
+	/**
+	 * login a user
+	 *
+	 * @param		string		$user
+	 * @param		string		$pass
+	 * @return		string
+	 */
+	public static function login ($user, $pass) {
+		return false
+	}
+	
+	/**
+	 * get dns data from domain
+	 *
+	 * @param	string	$domain
+	 * @return	array
+	 */
+	public static function get_data ($domain) {
+		return json_encode(array("status" => "404"));
+	}
+	
+	/**
+	 * add dns data to domain
+	 *
+	 * @param	string	$domain
+	 * @param	array	$data
+	 * @return	array
+	 */
+	public static function add_data ($domain, $data) {
+		return json_encode(array("status" => "404"));
+	}
+	
+	/**
+	 * del dns data to domain
+	 *
+	 * @param	string	$domain
+	 * @param	array	$data
+	 * @return	array
+	 */
+	public static function del_data ($domain, $data) {
+		return json_encode(array("status" => "404"));
+	}
+	
+	/**
+	 * set dns data to domain
+	 *
+	 * @param	string	$domain
+	 * @param	array	$data
+	 * @return	array
+	 */
+	public static function set_data ($domain, $data) {
+		return json_encode(array("status" => "404"));
+	}
 }
 ?>

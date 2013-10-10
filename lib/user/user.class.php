@@ -21,7 +21,7 @@ class user {
 	 * login a user
 	 *
 	 * @param		string		$user
-	 * @param		string		$user
+	 * @param		string		$pass
 	 * @return		string
 	 */
 	public static function login ($user, $pass) {
