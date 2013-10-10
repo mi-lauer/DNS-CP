@@ -35,10 +35,6 @@ This project is licensed under [GNU LESSER GENERAL PUBLIC LICENSE](https://githu
 ---
 Our project page is currently hosted on github and is available on [stricted.github.io/DNS-Webinterface](http://stricted.github.io/DNS-Webinterface)
 
-### Live Demo
----
-A live demonstration is available at [Demo](http://demo.owndns.me). Please report any bugs or give us feedback to let us improve the webinterface.
-
 ### ToDo
 ---
  * general improvements

@@ -32,8 +32,8 @@ if(!file_exists("config.php")) {
 // set config variables
 $database               = array();                    // init database array
 $conf                   = array();                    // init config array
-$conf["version"]        = "0.1.7-dev";                // Version
-$conf["build"]          = "2";                        // build number for internal version checking
+$conf["version"]        = "0.1.8-dev";                // Version
+$conf["build"]          = "1";                        // build number for internal version checking
 $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 'TXT');
 $conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 

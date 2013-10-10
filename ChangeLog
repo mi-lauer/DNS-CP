@@ -1,3 +1,11 @@
+ 0.1.8-dev on 10/10/2013
+   - use pdo for database connections
+   - new file structures
+   - namespaces
+   - change license from GNU GPL to GNU LGPL
+   - starting with the api
+   - add check on user creation
+
  0.1.7-dev on 07/07/2013
    - template system
    - now supporting SQLite
@@ -6,7 +14,7 @@
    - fixes & improvements
 
  0.1.6-Beta on 07/07/2013
-   - add mysqli support for php 5.5 (mysqli extension is deprecated since php 5.5)
+   - add mysqli support for php 5.5 (mysql extension is deprecated since php 5.5)
    - rename config.php to config.sample.php
    - add AUTHORS file
    - add TODO file
