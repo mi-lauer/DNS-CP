@@ -9,7 +9,7 @@ You may need for a working webinterface:
 
  * Linux machine (Debian 6+ recommended; windows may work too, but not recommended)
  * Linux knowledge
- * At least php 5 and enabled shell_exec() for more functionality
+ * At least php 5
  * MySQL/PostgreSQL/SQLite-database
  * working DNS server (only [myDNS](http://mydns.bboy.net) supported so far)
  * some time and basic knowledge about DNS 
@@ -29,7 +29,7 @@ The installation isn't so easy than it will be in the future, when we've have en
 
 ### License
 ---
-This project is licensed under [GNU GENERAL PUBLIC LICENSE](https://github.com/Stricted/DNS-Webinterface/blob/master/COPYING).
+This project is licensed under [GNU LESSER GENERAL PUBLIC LICENSE](https://github.com/Stricted/DNS-Webinterface/blob/master/COPYING).
 
 ### Project page
 ---
