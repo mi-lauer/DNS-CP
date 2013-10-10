@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+use DNS\system\template;
+
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 template::show("help", array("_name" => "Help"));
 ?>

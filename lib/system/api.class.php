@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+namespace DNS\system;
+
 class API {
 	/**
 	 * login a user
@@ -25,7 +27,7 @@ class API {
 	 * @return		string
 	 */
 	public static function login ($user, $pass) {
-		return false
+		return false;
 	}
 	
 	/**

@@ -16,6 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+use DNS\user\user; 
+use DNS\system\template; 
+use DNS\database\DB; 
+
 session_start();
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
@@ -44,6 +48,7 @@ require_once("lib/system/template.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");
 require_once("lib/lang/".$conf['lang'].".inc.php");
+
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
 	$page = trim($_GET["page"]);
@@ -85,7 +90,7 @@ if(user::isLoggedIn()){
 	$login = '<li class="logout"><a href="?page=logout">LOGOUT</a></li>';
 } else {
 	$tmenu ='<li><a href="?page=login" class="active">Login</a></li>';
-	$content = '<?php require_once("page/login.php"); ?>';
+	$content = '<?php require_once("lib/page/login.php"); ?>';
 	$login = '<li class="logout"><a href="?page=login">LOGIN</a></li>';
 }
 $data = array(

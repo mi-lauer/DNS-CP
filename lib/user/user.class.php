@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+namespace DNS\user;
+use DNS\database\DB;
+
 class user {
 	/**
 	 * login a user

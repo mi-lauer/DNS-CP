@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+namespace DNS\database;
+
 if (!extension_loaded("pdo")) die("Missing <a href=\"http://www.php.net/manual/en/book.pdo.php\">PDO</a> PHP extension."); // check if extension loaded
 class DB {
 	private static $conn = NULL;
@@ -35,32 +37,32 @@ class DB {
 				case "dblib":
 					if (!extension_loaded("pdo_dblib")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-dblib.php\">pdo_dblib</a> PHP extension."); // check if extension
 					if(empty($port)) $port=1433;
-					self::$conn = new PDO("dblib:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					self::$conn = new \PDO("dblib:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
 					break;
 					
 				case "odbc":
 					if (!extension_loaded("pdo_odbc")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-odbc.php\">pdo_odbc</a> PHP extension."); // check if extension loaded
 					if(empty($port)) $port=1433;
-					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$port."; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
+					self::$conn = new \PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$port."; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
 					break;
 			
 										
 				case "sqlsrv":
 					if (!extension_loaded("pdo_sqlsrv")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlsrv.php\">pdo_sqlsrv</a> PHP extension."); // check if extension loaded	
 					if(empty($port)) $port=1433;
-					self::$conn = new PDO("sqlsrv:Server=".$host.",".$port.";Database=".$db, $user, $pw);
+					self::$conn = new \PDO("sqlsrv:Server=".$host.",".$port.";Database=".$db, $user, $pw);
 					break;
 			
 				case "mysql":
 					if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
 					if(empty($port)) $port=3306;
-					self::$conn = new PDO("mysql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					self::$conn = new \PDO("mysql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
 					break;
 				
 				case "pgsql":
 					if (!extension_loaded("pdo_pgsql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-pgsql.php\">pdo_pgsql</a> PHP extension."); // check if extension loaded
 					if(empty($port)) $port=5432;
-					self::$conn = new PDO("pgsql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					self::$conn = new \PDO("pgsql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
 					break;
 					
 				case "sqlite":
@@ -80,7 +82,7 @@ class DB {
 						file_put_contents("database/.htaccess", "Deny from all");
 					}
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
-						self::$conn = new PDO("sqlite:".$dbfile.";", $user, $pw);
+						self::$conn = new \PDO("sqlite:".$dbfile.";", $user, $pw);
 						if($created) {
 							self::$conn->exec(file_get_contents("lib/database/db.sqlite.sql"));
 						}
@@ -92,7 +94,7 @@ class DB {
 					break;
 			}
 			return true;
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			self::$err = $e->getMessage();
 			return false;
 		}
@@ -120,7 +122,7 @@ class DB {
 			else
 				$query->execute();
 			return $query;
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			self::$err = $e->getMessage();
 		}
 	}
@@ -134,8 +136,8 @@ class DB {
 	 */
 	public static function fetch_array ($res) {
 		try {
-			return $res->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+			return $res->fetch(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
 			self::$err = $e->getMessage();
 		}
 	}
@@ -149,7 +151,7 @@ class DB {
 	public static function num_rows ($res) {
 		try {
 			return $res->rowCount();
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			self::$err = $e->getMessage();
 		}
 	}

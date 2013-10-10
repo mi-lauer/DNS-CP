@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 /* Server layout class (for later support bind9, mydns and powerdns) */
+namespace DNS\server;
+
 class dns_server {
 	/* RECORD */
 	public static function get_record () { }

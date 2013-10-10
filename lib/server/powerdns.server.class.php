@@ -17,6 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 /* powerDNS server class */
+namespace DNS\server;
+use DNS\server\dns_server;
+
 class server extends dns_server {
 	/* RECORD */
 	public static function get_record () { }

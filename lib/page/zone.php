@@ -16,6 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
+use DNS\system\template;
+use DNS\system\func;
+use DNS\user\user;
+use DNS\database\DB;
+
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
@@ -246,7 +251,7 @@ if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 							<td><input class="text" type="text" name="ttl[<?php echo $i; ?>]" size="1" value="<?php echo func::ent($row2["ttl"]); ?>"></td>
 							<td><?php echo func::getOptions($row2["type"], $i); ?></td>
 							<td><input class="text" type="text" name="pri[<?php echo $i; ?>]" size="1" value="<?php echo func::ent($row2["aux"]); ?>"></td>
-							<td><input class="text" type="text" name="destination[<?php echo $i; ?>]" size="14" value="<?php echo func::ent(DB::unescape($row2["data"])); ?>"></td>
+							<td><input class="text" type="text" name="destination[<?php echo $i; ?>]" size="14" value="<?php echo func::ent($row2["data"]); ?>"></td>
 							<td><center><input type="checkbox" name="delete[<?php echo $i; ?>]" /></center></td>
 						</tr>
 
