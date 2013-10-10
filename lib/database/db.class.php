@@ -82,7 +82,7 @@ class DB {
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
 						self::$conn = new PDO("sqlite:".$dbfile.";", $user, $pw);
 						if($created) {
-							self::$conn->exec(file_get_contents("lib/database/db.sqlite3.sql"));
+							self::$conn->exec(file_get_contents("lib/database/db.sqlite.sql"));
 						}
 					} else { die("cant crate the sqlite database"); }
 					break;

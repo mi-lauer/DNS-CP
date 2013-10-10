@@ -18,16 +18,22 @@
  */
 /* powerDNS server class */
 class server extends dns_server {
-	public static function get_records () { }
+	/* RECORD */
+	public static function get_record () { }
 	public static function add_record () { }
 	public static function del_record () { }
-	public static function update_record () { }
+	public static function set_record () { }
+	
+	/* SOA */
 	public static function get_soa () { }
 	public static function add_soa () { }
 	public static function del_soa () { }
-	public static function update_soa () { }
+	public static function set_soa () { }
+	
+	/* SOA */
 	public static function get_zone () { }
 	public static function add_zone () { }
 	public static function del_zone () { }
+	public static function set_zone () { }
 }
 ?>
