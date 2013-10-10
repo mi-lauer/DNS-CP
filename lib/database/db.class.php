@@ -30,10 +30,11 @@ class DB {
 	 * @param	string		$user
 	 * @param	string		$pw
 	 * @param	string		$db
+	 * @return	true/false
 	 */
 	public static function connect($host, $user, $pw, $db, $driver, $port = Null) {
 		try {
-			switch ($driver) {
+			switch (strtolower($driver)) {
 				case "dblib":
 					if (!extension_loaded("pdo_dblib")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-dblib.php\">pdo_dblib</a> PHP extension."); // check if extension
 					if(empty($port)) $port=1433;
@@ -73,24 +74,31 @@ class DB {
 						$created = true;
 					}
 					if(!file_exists("database/")) {
-						mkdir("database", 0777, true);			
+						// try to create the database folder
+						@mkdir("database", 0777, true);			
 					}
 					if(!file_exists($dbfile)) {
-						touch($dbfile);
+						// try to create the database file
+						@touch($dbfile);
 					}
 					if(!file_exists("database/.htaccess")) {
-						file_put_contents("database/.htaccess", "Deny from all");
+						// try to create the htaccess file
+						@file_put_contents("database/.htaccess", "Deny from all");
 					}
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
-						self::$conn = new \PDO("sqlite:".$dbfile.";", $user, $pw);
+						self::$conn = new \PDO("sqlite:".$dbfile, $user, $pw);
 						if($created) {
 							self::$conn->exec(file_get_contents("lib/database/db.sqlite.sql"));
 						}
-					} else { die("cant crate the sqlite database"); }
+					} else {
+						self::$err = "cant crate the sqlite database";
+						return false;
+					}
 					break;
 					
 				default:
-					die("not supported driver");
+					self::$err = "not supported database typ";
+					return false;
 					break;
 			}
 			return true;
