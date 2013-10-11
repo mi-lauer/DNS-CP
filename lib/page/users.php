@@ -16,9 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-use DNS\system\template;
-use DNS\user\user;
-use DNS\database\DB;
 
 if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
@@ -67,13 +64,21 @@ if(isset($_POST["Submit"])) {
 <?php
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del") {
-		echo user::del($_GET['id']);
+		if($_GET['id'] != 1) {
+			echo user::del($_GET['id']);
+		}
 	} else {
 	if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
-			echo user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
+			if($_GET['id'] != 1) {
+				echo user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
+			} else {
+				echo user::change("chpw", $_GET['id'], 1, $_POST["password_one"], $_POST["confirm_password"]);
+			}
 		} elseif(isset($_POST["admin"])) {
-			echo user::change("chad", $_GET['id'], $_POST["admin"]);
+			if($_GET['id'] != 1) {
+				echo user::change("chad", $_GET['id'], $_POST["admin"]);
+			}
 		}
 	}
 $res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_GET["id"])) or die(DB::error());
@@ -89,7 +94,7 @@ $row = DB::fetch_array($res);
 		<tr>
 			<td><div align="right"><strong>Administrator:</strong></div></td>
 			<td>
-			<?php if($row["admin"] == 1) { ?>
+			<?php if($_GET['id'] == 1) { echo "yes"; } elseif($row["admin"] == 1) { ?>
 				<label><input type="radio" name="admin" value="1" checked="checked" />yes</label> 
 				<label><input type="radio" name="admin" value="0" />no</label>
 			<?php } else { ?>
