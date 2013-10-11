@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-use DNS\system\API;
-use DNS\database\DB;
-use DNS\system\func;
-use DNS\server\dns_server;
-use DNS\server\server;
 
-require_once("config.php");
-require_once("lib/database/db.class.php");
+require_once("../config.php");
+require_once("../lib/database/db.class.php");
 DB::connect($database["host"], $database["user"], $database["pw"], $database["db"], $database["typ"], $database["port"]);
-require_once("lib/server/server.class.php");
-require_once("lib/server/".$conf['server'].".server.class.php");
-require_once("lib/system/func.class.php");
-require_once("lib/system/api.class.php");
+require_once("../lib/server/server.class.php");
+require_once("../lib/server/".$conf['server'].".server.class.php");
+require_once("../lib/system/func.class.php");
+require_once("../lib/system/api.class.php");
 if(isset($_GET['user']) && isset($_GET['pass']) && isset($_GET['domain']) && isset($_GET['action']) && !empty($_GET['user']) && !empty($_GET['pass']) && !empty($_GET['domain']) && !empty($_GET['action'])) {
 	if(API::login($_GET['user'], $_GET['pass'])) {
 		if(isset($_GET['data']) && !empty($_GET['data'])) {
