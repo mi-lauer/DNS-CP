@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 /* api server class */
-namespace DNS\server;
-use DNS\server\dns_server;
 
 class server extends dns_server {
 	/* RECORD */
