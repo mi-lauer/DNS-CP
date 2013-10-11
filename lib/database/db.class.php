@@ -25,49 +25,46 @@ class DB {
 	/**
 	 * Connects to SQL Server
 	 * 
-	 * @param	string		$host
-	 * @param	string		$user
-	 * @param	string		$pw
-	 * @param	string		$db
 	 * @return	true/false
 	 */
-	public static function connect($host, $user, $pw, $db, $driver, $port = Null) {
+	public static function connect() {
+		global $database;
 		try {
-			switch (strtolower($driver)) {
+			switch (strtolower($database["typ"])) {
 				case "dblib":
 					if (!extension_loaded("pdo_dblib")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-dblib.php\">pdo_dblib</a> PHP extension."); // check if extension
-					if(empty($port)) $port=1433;
-					self::$conn = new PDO("dblib:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					if(empty($database["port"])) $database["port"]=1433;
+					self::$conn = new PDO("dblib:host=".$database["host"].";port=".$database["port"].";dbname=".$database["db"], $database["user"], $database["pw"]);
 					break;
 					
 				case "odbc":
 					if (!extension_loaded("pdo_odbc")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-odbc.php\">pdo_odbc</a> PHP extension."); // check if extension loaded
-					if(empty($port)) $port=1433;
-					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$port."; Server=".$host."; Database=".$db."; UID=".$user."; PWD=".$pw.";");
+					if(empty($database["port"])) $database["port"]=1433;
+					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$database["port"]."; Server=".$database["host"]."; Database=".$database["db"]."; UID=".$database["user"]."; PWD=".$database["pw"].";");
 					break;
 			
 										
 				case "sqlsrv":
 					if (!extension_loaded("pdo_sqlsrv")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlsrv.php\">pdo_sqlsrv</a> PHP extension."); // check if extension loaded	
-					if(empty($port)) $port=1433;
-					self::$conn = new PDO("sqlsrv:Server=".$host.",".$port.";Database=".$db, $user, $pw);
+					if(empty($database["port"])) $database["port"]=1433;
+					self::$conn = new PDO("sqlsrv:Server=".$database["host"].",".$database["port"].";Database=".$database["db"], $database["user"], $database["pw"]);
 					break;
 			
 				case "mysql":
 					if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
-					if(empty($port)) $port=3306;
-					self::$conn = new PDO("mysql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					if(empty($database["port"])) $database["port"]=3306;
+					self::$conn = new PDO("mysql:host=".$database["host"].";port=".$database["port"].";dbname=".$database["db"], $database["user"], $database["pw"]);
 					break;
 				
 				case "pgsql":
 					if (!extension_loaded("pdo_pgsql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-pgsql.php\">pdo_pgsql</a> PHP extension."); // check if extension loaded
-					if(empty($port)) $port=5432;
-					self::$conn = new PDO("pgsql:host=".$host.";port=".$port.";dbname=".$db, $user, $pw);
+					if(empty($database["port"])) $database["port"]=5432;
+					self::$conn = new PDO("pgsql:host=".$database["host"].";port=".$database["port"].";dbname=".$database["db"], $database["user"], $database["pw"]);
 					break;
 					
 				case "sqlite":
 					if (!extension_loaded("pdo_sqlite")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlite.php\">pdo_sqlite</a> PHP extension."); // check if extension loaded	
-					$dbfile  = "database/".$db.".db";
+					$dbfile  = "database/".$database["db"].".db";
 					$created = false;
 					if(!file_exists($dbfile)) {
 						$created = true;
@@ -85,7 +82,7 @@ class DB {
 						@file_put_contents("database/.htaccess", "Deny from all");
 					}
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
-						self::$conn = new PDO("sqlite:".$dbfile, $user, $pw);
+						self::$conn = new PDO("sqlite:".$dbfile, $database["user"], $database["pw"]);
 						if($created) {
 							self::$conn->exec(file_get_contents("lib/database/db.sqlite.sql"));
 						}

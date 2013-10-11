@@ -19,7 +19,7 @@
 
 require_once("../config.php");
 require_once("../lib/database/db.class.php");
-DB::connect($database["host"], $database["user"], $database["pw"], $database["db"], $database["typ"], $database["port"]);
+DB::connect();
 require_once("../lib/server/server.class.php");
 require_once("../lib/server/".$conf['server'].".server.class.php");
 require_once("../lib/system/func.class.php");
@@ -48,4 +48,5 @@ if(isset($_GET['user']) && isset($_GET['pass']) && isset($_GET['domain']) && iss
 		} else { echo json_encode(array("status" => "403")); }
 	} else { echo json_encode(array("status" => "403")); }
 } else { echo json_encode(array("status" => "403")); }
+DB::close();
 ?>
