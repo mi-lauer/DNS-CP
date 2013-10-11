@@ -157,11 +157,17 @@ class DB {
 	 * @return 	integer				number of rows in a result
 	 */
 	public static function num_rows ($res) {
+		/* some problems with sqlite i will check this later */
+		/*
 		try {
 			return $res->rowCount();
 		} catch (\PDOException $e) {
 			self::$err = $e->getMessage();
 		}
+		*/
+		$count = 0;
+		while(self::fetch_array($res)) { $count++; }
+		return $count;
 	}
 	
 	/**
