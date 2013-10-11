@@ -19,7 +19,7 @@
 
 // config
 // database
-$database["typ"]        = "mysql";                    // Database typ (available: mysql and pgsql) 
+$database["typ"]        = "mysql";                    // Database typ (available: mysql, pgsql and sqlite) 
 $database["host"]       = "localhost";                // Database host
 $database["port"]       = "3306";                     // Database port
 $database["user"]       = "dns";                      // Database user
@@ -35,8 +35,13 @@ $conf["users"]          = "dns_users";                // Users Table
 $conf["name"]           = "OwnDNS";                   // Name of Page
 $conf["lang"]           = "en";                       // Site Language
 
-// will be removed in the future
-$conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns)
+// server
+$conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns, api)
+
+// remote management api servers
+$conf['api'][0]['url']	= "";						  // url to remote api
+$conf['api'][0]['user']	= "";						  // user for remote api
+$conf['api'][0]['pass']	= "";						  // pass for remote api
 
 // Default values on create
 $conf["mbox"]           = "info.owndns.me.";          // mbox for SOA
