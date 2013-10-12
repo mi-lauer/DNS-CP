@@ -30,39 +30,35 @@ if(isset($_GET['key']) && !empty($_GET['key'])) {
 			if($_GET['action'] == "get") {
 				if($_GET['data'] == "zone") {
 					echo API::get_zone($_GET['domain']);
-				} elseif($_GET['data'] == "records") {
+				} elseif($_GET['data'] == "record") {
 					if(isset($_GET['get'])) {
 						echo API::get_record($_GET['domain'], $_GET['get']);
 					} else { echo json_encode(array("status" => "403") }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($_GET['action'] == "add") {
 				if($_GET['data'] == "zone") {
-					if(isset($_GET['domain'])) {
-						echo API::add_zone($_GET['domain']);
-					} else { echo json_encode(array("status" => "403") }
-				} elseif($_GET['data'] == "records") {
-					if(isset($_GET['record'])) {
-						echo API::add_record($_GET['domain'], $_GET['record']);
+					echo API::add_zone($_GET['domain']);
+				} elseif($_GET['data'] == "record") {
+					if(isset($_GET['add'])) {
+						echo API::add_record($_GET['domain'], $_GET['add']);
 					} else { echo json_encode(array("status" => "403") }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($_GET['action'] == "del") {
 				if($_GET['data'] == "zone") {
-					if(isset($_GET['domain'])) {
-						echo API::del_zone($_GET['domain']);
-					} else { echo json_encode(array("status" => "403") }
-				} elseif($_GET['data'] == "records") {
-					if(isset($_GET['record'])) {
-						echo API::del_record($_GET['domain'], $_GET['record']);
+					echo API::del_zone($_GET['domain']);
+				} elseif($_GET['data'] == "record") {
+					if(isset($_GET['del'])) {
+						echo API::del_record($_GET['domain'], $_GET['del']);
 					} else { echo json_encode(array("status" => "403") }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($_GET['action'] == "set") {
 				if($_GET['data'] == "zone") {
-					if(isset($_GET['domain'])) {
-						echo API::set_zone($_GET['domain']);
+					if(isset($_GET['set'])) {
+						echo API::set_zone($_GET['domain'], $_GET['set']);
 					} else { echo json_encode(array("status" => "403") }
-				} elseif($_GET['data'] == "records") {
-					if(isset($_GET['record'])) {
-						echo API::set_record($_GET['domain'], $_GET['record']);
+				} elseif($_GET['data'] == "record") {
+					if(isset($_GET['set'])) {
+						echo API::set_record($_GET['domain'], $_GET['set']);
 					} else { echo json_encode(array("status" => "403") }
 				} else { echo json_encode(array("status" => "404")); }
 			} else { echo json_encode(array("status" => "404")); }
