@@ -64,27 +64,28 @@ class DB {
 					
 				case "sqlite":
 					if (!extension_loaded("pdo_sqlite")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlite.php\">pdo_sqlite</a> PHP extension."); // check if extension loaded	
-					$dbfile  = "database/".$database["db"].".db";
+					$rootdir = dirname(__FILE__)."/../../";
+					$dbfile  = $rootdir."database/".$database["db"].".db";
 					$created = false;
 					if(!file_exists($dbfile)) {
 						$created = true;
 					}
-					if(!file_exists("database/")) {
+					if(!file_exists($rootdir."database/")) {
 						// try to create the database folder
-						@mkdir("database", 0777, true);			
+						@mkdir($rootdir."database", 0777, true);			
 					}
 					if(!file_exists($dbfile)) {
 						// try to create the database file
 						@touch($dbfile);
 					}
-					if(!file_exists("database/.htaccess")) {
+					if(!file_exists($rootdir."database/.htaccess")) {
 						// try to create the htaccess file
-						@file_put_contents("database/.htaccess", "Deny from all");
+						@file_put_contents($rootdir."database/.htaccess", "Deny from all");
 					}
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
 						self::$conn = new PDO("sqlite:".$dbfile, $database["user"], $database["pw"]);
 						if($created) {
-							self::$conn->exec(file_get_contents("lib/database/db.sqlite.sql"));
+							self::$conn->exec(file_get_contents($rootdir."lib/database/db.sqlite.sql"));
 						}
 					} else {
 						self::$err = "cant crate the sqlite database";
@@ -120,6 +121,7 @@ class DB {
 	 */
 	public static function query ($res, $bind = array()) {
 		try {
+			$query = Null;
 			$query = self::$conn->prepare($res);
 			if(is_array($bind) && !empty($bind))
 				$query->execute($bind);

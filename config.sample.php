@@ -40,7 +40,7 @@ $conf["server"]         = "mydns";                    // Server typ (available: 
 
 // api
 $conf['apikey']         = "";                         // access key for the api
-$conf['enable']         = false;                      // enable the api true/false
+$conf['enableapi']      = false;                      // enable the api true/false
 
 // remote management api servers
 $conf['useremoteapi']   = false;                      // use remote api true/false

@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 require_once("../config.php");
 require_once("../lib/database/db.class.php");
 DB::connect();
 require_once("../lib/server/".$conf['server'].".class.php");
 require_once("../lib/system/func.class.php");
 require_once("../lib/system/api.class.php");
-if($conf['enable'] == false) die();
+if($conf['enableapi'] == false) die(json_encode(array("status" => "400")));
 if(isset($_GET['key']) && !empty($_GET['key'])) {
 	$array = $_GET;
 } elseif(isset($_POST['key']) && !empty($_POST['key'])) {
@@ -40,7 +41,7 @@ if(isset($array['key']) && !empty($array['key'])) {
 				} elseif($array['data'] == "record") {
 					if(isset($array['get'])) {
 						echo API::get_record($array['domain'], $array['get']);
-					} else { echo json_encode(array("status" => "403") }
+					} else { echo json_encode(array("status" => "403")); }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($array['action'] == "add") {
 				if($array['data'] == "zone") {
@@ -48,7 +49,7 @@ if(isset($array['key']) && !empty($array['key'])) {
 				} elseif($array['data'] == "record") {
 					if(isset($array['add'])) {
 						echo API::add_record($array['domain'], $array['add']);
-					} else { echo json_encode(array("status" => "403") }
+					} else { echo json_encode(array("status" => "403")); }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($array['action'] == "del") {
 				if($array['data'] == "zone") {
@@ -56,17 +57,17 @@ if(isset($array['key']) && !empty($array['key'])) {
 				} elseif($array['data'] == "record") {
 					if(isset($array['del'])) {
 						echo API::del_record($array['domain'], $array['del']);
-					} else { echo json_encode(array("status" => "403") }
+					} else { echo json_encode(array("status" => "403")); }
 				} else { echo json_encode(array("status" => "404")); }
 			} elseif($array['action'] == "set") {
 				if($array['data'] == "zone") {
 					if(isset($array['set'])) {
 						echo API::set_zone($array['domain'], $array['set']);
-					} else { echo json_encode(array("status" => "403") }
+					} else { echo json_encode(array("status" => "403")); }
 				} elseif($array['data'] == "record") {
 					if(isset($array['set'])) {
 						echo API::set_record($array['domain'], $array['set']);
-					} else { echo json_encode(array("status" => "403") }
+					} else { echo json_encode(array("status" => "403")); }
 				} else { echo json_encode(array("status" => "404")); }
 			} else { echo json_encode(array("status" => "404")); }
 		} else { echo json_encode(array("status" => "403")); }
