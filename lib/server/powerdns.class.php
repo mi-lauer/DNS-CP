@@ -1,6 +1,6 @@
 <?php
-/* templates/404.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
+/* lib/server/powerdns.class.php - DNS-WI
+ * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
+/* powerDNS server class */
+
+class server {
+	/* RECORD */
+	public static function get_record ($domain, $record) { }
+	public static function add_record ($domain, $record) { }
+	public static function del_record ($domain, $record) { }
+	public static function set_record ($domain, $record) { }
+
+	/* ZONE */
+	public static function get_zone ($domain) { }
+	public static function add_zone ($domain, $data) { }
+	public static function del_zone ($domain) { }
+	public static function set_zone ($domain, $data) { }
+}
 ?>
-<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
-<div id="main">
-{_content}
-</div>

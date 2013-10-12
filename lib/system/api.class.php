@@ -35,40 +35,40 @@ class API {
 	/* RECORD */
 	public static function get_record ($domain, $record) {
 		$record = userialize($record);
-		echo json_encode(server::get_record($domain));
+		echo json_encode(server::get_record($domain, true));
 	}
 	
-	public static function add_record ($domain, $record) {
+	public static function add_record ($domain, $record, true) {
 		$record = userialize($record);
-		echo json_encode(server::add_record($domain, $record));
+		echo json_encode(server::add_record($domain, $record, true));
 	}
 	
 	public static function del_record ($domain, $record) {
 		$record = userialize($record);
-		echo json_encode(server::del_record($domain, $record));
+		echo json_encode(server::del_record($domain, $record, true));
 	}
 	
 	public static function set_record ($domain, $record) {
 		$record = userialize($record);
-		echo json_encode(server::set_record($domain, $record));
+		echo json_encode(server::set_record($domain, $record, true));
 	}
 	
 	/* ZONE */
 	public static function get_zone ($domain) {
-		echo json_encode(server::get_zone($domain));
+		echo json_encode(server::get_zone($domain, Null, true));
 	}
 	
-	public static function add_zone ($domain) {
-		echo json_encode(server::add_zone($domain));
+	public static function add_zone ($domain, $data) {
+		echo json_encode(server::add_zone($domain, $data, true));
 	}
 	
 	public static function del_zone ($domain) {
-		echo json_encode(server::del_zone($domain));
+		echo json_encode(server::del_zone($domain, true));
 	}
 	
 	public static function set_zone ($domain, $data) {
 		$data = userialize($data);
-		echo json_encode(server::set_zone($domain, $data));
+		echo json_encode(server::set_zone($domain, $data, true));
 	}
 }
 ?>

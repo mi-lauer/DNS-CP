@@ -25,7 +25,7 @@ class template {
 	 * @return 	string		source from the template
 	 */
 	public static function get_template($template) {
-		return file_get_contents("templates/".$template.".php");
+		return file_get_contents("templates/".$template.".tpl");
 	}
 	
 	/**

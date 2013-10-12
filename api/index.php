@@ -20,8 +20,7 @@
 require_once("../config.php");
 require_once("../lib/database/db.class.php");
 DB::connect();
-require_once("../lib/server/server.class.php");
-require_once("../lib/server/".$conf['server'].".server.class.php");
+require_once("../lib/server/".$conf['server'].".class.php");
 require_once("../lib/system/func.class.php");
 require_once("../lib/system/api.class.php");
 if($conf['enable'] == false) die();
@@ -30,7 +29,7 @@ if(isset($_GET['key']) && !empty($_GET['key'])) {
 } elseif(isset($_POST['key']) && !empty($_POST['key'])) {
 	$array = $_POST;
 } else {
-	echo json_encode(array("status" => "400"));
+	die(json_encode(array("status" => "400")));
 }
 if(isset($array['key']) && !empty($array['key'])) {
 	if(API::login($array['key'])) {

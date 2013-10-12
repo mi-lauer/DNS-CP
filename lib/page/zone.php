@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Zones</a></h2>
 <div id="main">

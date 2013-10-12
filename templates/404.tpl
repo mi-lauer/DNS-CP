@@ -1,6 +1,6 @@
 <?php
-/* lib/server/server.class.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
+/* templates/404.php - DNS-WI
+ * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* Server layout class (for later support bind9, mydns and powerdns) */
 
-class dns_server {
-	/* RECORD */
-	public static function get_record () { }
-	public static function add_record () { }
-	public static function del_record () { }
-	public static function set_record () { }
-	
-	/* SOA */
-	public static function get_soa () { }
-	public static function add_soa () { }
-	public static function del_soa () { }
-	public static function set_soa () { }
-	
-	/* SOA */
-	public static function get_zone () { }
-	public static function add_zone () { }
-	public static function del_zone () { }
-	public static function set_zone () { }
-}
 ?>
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
+<div id="main">
+{_content}
+</div>

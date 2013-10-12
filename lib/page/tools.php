@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
 	$cont = "";
 	if(isset($_POST["dns"]) && $_POST["dns"] != "") {

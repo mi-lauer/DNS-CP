@@ -1,5 +1,5 @@
 <?php
-/* lib/server/mydns.server.class.php - DNS-WI
+/* lib/server/bind9.class.php - DNS-WI
  * Copyright (C) 2013  OWNDNS project
  * http://owndns.me/
  * 
@@ -16,25 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-/* myDNS server class */
+/* bind9 server class */
 
-class server extends dns_server {
+class server {
 	/* RECORD */
-	public static function get_record () { }
-	public static function add_record () { }
-	public static function del_record () { }
-	public static function set_record () { }
-	
-	/* SOA */
-	public static function get_soa () { }
-	public static function add_soa () { }
-	public static function del_soa () { }
-	public static function set_soa () { }
-	
-	/* SOA */
-	public static function get_zone () { }
-	public static function add_zone () { }
-	public static function del_zone () { }
-	public static function set_zone () { }
+	public static function get_record ($domain, $record) { }
+	public static function add_record ($domain, $record) { }
+	public static function del_record ($domain, $record) { }
+	public static function set_record ($domain, $record) { }
+
+	/* ZONE */
+	public static function get_zone ($domain) { }
+	public static function add_zone ($domain, $data) { }
+	public static function del_zone ($domain) { }
+	public static function set_zone ($domain, $data) { }
 }
 ?>

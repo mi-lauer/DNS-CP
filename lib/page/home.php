@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 $i = 0;
 if(user::isAdmin()){
 	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());

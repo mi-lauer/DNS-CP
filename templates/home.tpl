@@ -1,5 +1,5 @@
 <?php
-/* templates/login.php - DNS-WI
+/* templates/home.php - DNS-WI
  * Copyright (C) 2013  OwnDNS project
  * http://owndns.me/
  * 
@@ -16,25 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
+
 ?>
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
 <div id="main">
-{_error}
-<form method="post" name="login" action="?page=login" class="jNice">
-	<table width="320"  border="0" align="center">
-		<tr>
-			<td><strong>Username:</strong></td>
-			<td><input class="text" type="text" name="username" /></td>
-		</tr>
-		<tr>
-			<td><strong>Password:</strong></td>
-			<td><input class="text" type="password" name="password" /></td>
-		</tr>
-		<tr class="odd">
-			<td><center><input type="submit" name="Submit" value="Login" /></center></td>
-			<td>&nbsp;</td>
-		</tr>
-	</table>
-</form>
+<strong>Welcome, {_user}.</strong> {_status}
+<br /><br />
+<br />You maintain <strong>{_zones}</strong> zones.
 </div>

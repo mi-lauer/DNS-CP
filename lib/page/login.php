@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
 	$error = user::login($_POST['username'], $_POST['password']);
 } else { $error = ""; }
