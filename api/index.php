@@ -24,8 +24,8 @@ require_once("../lib/server/server.class.php");
 require_once("../lib/server/".$conf['server'].".server.class.php");
 require_once("../lib/system/func.class.php");
 require_once("../lib/system/api.class.php");
-if(isset($_GET['user']) && isset($_GET['pass']) && isset($_GET['domain']) && isset($_GET['action']) && !empty($_GET['user']) && !empty($_GET['pass']) && !empty($_GET['domain']) && !empty($_GET['action'])) {
-	if(API::login($_GET['user'], $_GET['pass'])) {
+if(isset($_GET['key']) isset($_GET['domain']) && isset($_GET['action']) && !empty($_GET['key']) && !empty($_GET['domain']) && !empty($_GET['action'])) {
+	if(API::login($_GET['key'])) {
 		if(isset($_GET['data']) && !empty($_GET['data'])) {
 			switch ($_GET['action']) {
 				case "get":

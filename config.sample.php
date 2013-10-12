@@ -39,6 +39,7 @@ $conf["lang"]           = "en";                       // Site Language
 $conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns, api)
 
 // remote management api servers
+$conf['apikey']			= "";						  // access key for the api
 $conf['api'][0]['url']	= "";						  // url to remote api
 $conf['api'][0]['user']	= "";						  // user for remote api
 $conf['api'][0]['pass']	= "";						  // pass for remote api

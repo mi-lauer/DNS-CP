@@ -21,55 +21,39 @@ class API {
 	/**
 	 * login a user
 	 *
-	 * @param		string		$user
-	 * @param		string		$pass
+	 * @param		string		$key
 	 * @return		string
 	 */
-	public static function login ($user, $pass) {
-		return false;
+	public static function login ($key) {
+		global $conf;
+		if($key == $conf['apikey'])
+			return true;
+		else
+			return false;
 	}
 	
-	/**
-	 * get dns data from domain
-	 *
-	 * @param	string	$domain
-	 * @return	array
-	 */
-	public static function get_data ($domain) {
-		return json_encode(array("status" => "404"));
-	}
+	/* RECORD */
+	public static function get_record () { }
+	public static function add_record () { }
+	public static function del_record () { }
+	public static function set_record () { }
 	
-	/**
-	 * add dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function add_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
-	}
+	/* SOA */
+	public static function get_soa () { }
+	public static function add_soa () { }
+	public static function del_soa () { }
+	public static function set_soa () { }
 	
-	/**
-	 * del dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function del_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
-	}
+	/* SOA */
+	public static function get_zone () { }
+	public static function add_zone () { }
+	public static function del_zone () { }
+	public static function set_zone () { }
 	
-	/**
-	 * set dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function set_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
-	}
+	/* User */
+	public static function get_user () { }
+	public static function add_user () { }
+	public static function del_user () { }
+	public static function set_user () { }
 }
 ?>
