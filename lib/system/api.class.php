@@ -59,7 +59,7 @@ class API {
 	}
 	
 	public static function add_zone ($domain, $data) {
-		echo json_encode(server::add_zone($domain, $data, true));
+		echo json_encode(server::add_zone($domain));
 	}
 	
 	public static function del_zone ($domain) {
