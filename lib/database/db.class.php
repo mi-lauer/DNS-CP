@@ -169,6 +169,13 @@ class DB {
 	}
 	
 	/**
+	 * return the last insert id
+	 */
+	public static function last_id () {
+		return self::$conn->lastInsertId();
+	}
+	
+	/**
 	 * Returns SQL error number for last error.
 	 *
 	 * @return 	integer		MySQL error number
