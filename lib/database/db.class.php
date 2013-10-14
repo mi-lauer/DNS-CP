@@ -1,7 +1,7 @@
 <?php
-/* lib/database/pdo/db.class.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* lib/database/pdo/db.class.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

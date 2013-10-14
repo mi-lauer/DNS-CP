@@ -1,7 +1,7 @@
 <?php
-/* templates/users.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* templates/users.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

@@ -1,7 +1,7 @@
-DNS-Webinterface
+DNS-ControlPanel
 ==================
 
-**DNS webinterface** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with MySQL, PostgreSQL and SQLite databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
+**DNS-CP** is powered by [Stricted](https://github.com/Stricted) and [Patschi](https://github.com/patschi) for easy managing your dns server with MySQL, PostgreSQL and SQLite databases. In the feature we've also planned bind9 support with DNSSEC. We're testing our work just on linux (Debian 6/7) machines, so we don't know if it works without problems on Windows machines. Feel free to give us feedback.
 
 ### Requirements
 ---
@@ -18,22 +18,22 @@ You may need for a working webinterface:
 ---
 The installation isn't so easy than it will be in the future, when we've have enough time to build a easy and nice installation system. For now, you'll need to import the database structure manually and set up the correct data in the config file. If you're a little bit experienced, it shouldn't be a big problem. Feel free to open a issue, when you need help with the installation process.
 
- * Clone the git repository: `git clone https://github.com/Stricted/DNS-Webinterface.git`
+ * Clone the git repository: `git clone https://github.com/Stricted/DNS-CP.git`
  * Change the `config.sample.php` file to your needs and rename it to `config.php`
  * Import the structure in `lib/database/db.<DBsystem>.sql` file in your database.
  * Open the page and use the default user and password to login: `admin`
 
 ### Screenshots
 ---
-![Screenshot 1](http://stricted.github.io/DNS-Webinterface/images/screenshot1.png "Screenshot 1")
+![Screenshot 1](http://stricted.github.io/DNS-CP/images/screenshot1.png "Screenshot 1")
 
 ### License
 ---
-This project is licensed under [GNU LESSER GENERAL PUBLIC LICENSE](https://github.com/Stricted/DNS-Webinterface/blob/master/COPYING).
+This project is licensed under [GNU LESSER GENERAL PUBLIC LICENSE](https://github.com/Stricted/DNS-CP/blob/master/COPYING).
 
 ### Project page
 ---
-Our project page is currently hosted on github and is available on [stricted.github.io/DNS-Webinterface](http://stricted.github.io/DNS-Webinterface)
+you find our project page here  [DNS-CP.de](http://dns-cp.de)
 
 ### Live Demo
 ----

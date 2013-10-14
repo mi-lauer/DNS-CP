@@ -1,7 +1,7 @@
 <?php
-/* templates/index.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* templates/index.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@
                 <div class="clear"></div>
             </div>
         </div>
-        <p id="footer"><a href="http://owndns.me">Software: <strong>DNS-WI <span title="{_build}">{_version}</strong></span>, developed by <a href="https://github.com/Stricted/DNS-Webinterface"><strong>OwnDNS</strong></a></a></p>
+        <p id="footer"><a href="http://dns-cp.de/">Software: <strong>DNS-CP <span title="{_build}">{_version}</strong></span>, developed by <a href="https://github.com/Stricted/DNS-CP"><strong>DNS-CP</strong></a></a></p>
     </div>
 </body>
 </html>
