@@ -21,7 +21,6 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
-define("IN_PAGE", true);
 if(!file_exists("config.php")) {
 	die("Missing config file! Please change config.sample.php to your needs and rename it to config.php!");
 }
@@ -39,7 +38,9 @@ require_once("config.php");
 require_once("lib/database/db.class.php");
 DB::connect() or die(DB::error());
 require_once("lib/user/user.class.php");
-require_once("lib/server/".$conf['server'].".class.php");
+require_once("lib/system/apiclient.class.php");
+require_once("lib/server/server.class.php");
+require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/system/template.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");

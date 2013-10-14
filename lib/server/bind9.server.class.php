@@ -1,5 +1,5 @@
 <?php
-/* lib/server/bind9.class.php - DNS-CP
+/* lib/server/bind9.server.class.php - DNS-CP
  * Copyright (C) 2013  CNS-CP project
  * http://dns-cp-de/
  * 
@@ -18,7 +18,7 @@
  */
 /* bind9 server class */
 
-class server {
+class server extends dns_server {
 	/* RECORD */
 	public static function get_record ($domain, $record) { }
 	public static function add_record ($domain, $record) { }
@@ -26,9 +26,9 @@ class server {
 	public static function set_record ($domain, $record) { }
 
 	/* ZONE */
-	public static function get_zone ($domain) { }
-	public static function add_zone ($domain, $data) { }
-	public static function del_zone ($domain) { }
-	public static function set_zone ($domain, $data) { }
+	public static function get_zone ($domain, $owner = Null, $api = false) { }
+	public static function add_zone ($domain, $owner = Null) { }
+	public static function del_zone ($domain, $api = false) { }
+	public static function set_zone ($domain, $data, $api = false) { }
 }
 ?>

@@ -18,7 +18,7 @@
  */
 /* myDNS server class */
 
-class server {
+class server extends dns_server {
 	/* RECORD */
 	public static function get_record ($domain, $record) { }
 	public static function add_record ($domain, $record) { }
@@ -37,6 +37,7 @@ class server {
 				$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $domain, ":owner" => $owner)) or die(DB::error());
 			}
 		}
+		parent::get_zone($domain, $owner, $api)
 		return DB::fetch_array($res);
 	}
 	
@@ -50,6 +51,7 @@ class server {
 			$bind = array(":zone" => $domain, ":ns" => $conf["soans"], ":mbox" => $conf["mbox"], ":serial" => date("Ymd").'01', ":refresh" => $conf["refresh"], ":retry" => $conf["retry"], ":expire" => $conf["expire"], ":minimum" => $conf["minimum_ttl"], ":ttl" => $conf["ttl"]);
 			DB::query("INSERT INTO ".$conf["soa"]." (origin, ns, mbox, serial, refresh, retry, expire, minimum, ttl, owner) VALUES (:zone, :ns, :mbox, :serial, :refresh, :retry, :expire, :minimum, :ttl, 0)", $bind) or die(DB::error());
 		}
+		parent::add_zone($domain, $owner);
 		return true;
 	}
 	
@@ -64,6 +66,7 @@ class server {
 			DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $domain)) or die(DB::error());
 			DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = :id", array(":id" => $domain)) or die(DB::error());
 		}
+		parent::del_zone($domain, $api);
 		return true;
 	}
 	
@@ -76,6 +79,8 @@ class server {
 			$bind = array(":refresh" => $data['refresh'],":retry" => $data['retry'],":expire" => $data['expire'],":ttl" => $data['attl'],":owner" => $data['owner'],":serial" => $serial,":id" => $domain.".");
 			DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, owner = :owner, serial = :serial WHERE origin = :id", $bind) or die(DB::error());
 		}
+		parent::set_zone($domain, $data, $api);
+		return true;
 	}
 }
 ?>
