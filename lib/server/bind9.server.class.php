@@ -28,7 +28,7 @@ class server extends dns_server {
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) { }
 	public static function add_zone ($domain, $owner = Null) { }
-	public static function del_zone ($domain, $api = false) { }
-	public static function set_zone ($domain, $data, $api = false) { }
+	public static function del_zone ($domain) { }
+	public static function set_zone ($domain, $data) { }
 }
 ?>

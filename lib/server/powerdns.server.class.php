@@ -28,14 +28,10 @@ class server extends dns_server {
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {
 		global $conf;
-		if($api) {
-			$res = DB::query("SELECT * FROM ".$conf["rr"]." where name = :id and type = :type", array(":id" => $domain, ":type" => "SOA")) or die(DB::error());
+		if(user::isAdmin() or $api) {
+			$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $domain, ":type" => "SOA")) or die(DB::error());
 		} else {
-			if(user::isAdmin()) {
-				$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $domain, ":type" => "SOA")) or die(DB::error());
-			} else {
-				$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type and owner = :owner", array(":id" => $domain, ":type" => "SOA", ":owner" => $owner)) or die(DB::error());
-			}
+			$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type and owner = :owner", array(":id" => $domain, ":type" => "SOA", ":owner" => $owner)) or die(DB::error());
 		}
 		parent::get_zone($domain, $owner, $api);
 		return DB::fetch_array($res);
@@ -55,31 +51,21 @@ class server extends dns_server {
 		return true;
 	}
 
-	public static function del_zone ($domain, $api = false) {
+	public static function del_zone ($domain) {
 		global $conf;
-		if($api) {
-			$res = DB::query("SELECT id FROM ".$conf["soa"]." where name = :id", array(":id" => $domain)) or die(DB::error());
-			$row = DB::fetch_array($res);
-			DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $row['id'])) or die(DB::error());
-			DB::query("DELETE FROM ".$conf["rr"]." WHERE domain_id = :id", array(":id" => $row["id"])) or die(DB::error());
-		} else {
-			DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $domain)) or die(DB::error());
-			DB::query("DELETE FROM ".$conf["rr"]." WHERE domain_id = :id", array(":id" => $domain)) or die(DB::error());
-		}
-		parent::del_zone($domain, $api);
+		DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $domain)) or die(DB::error());
+		DB::query("DELETE FROM ".$conf["rr"]." WHERE domain_id = :id", array(":id" => $domain)) or die(DB::error());
+		parent::del_zone($domain);
 		return true;
 	}
 	
-	public static function set_zone ($domain, $data, $api = false) {
+	public static function set_zone ($domain, $data) {
 		global $conf;
-		if($api) {
-			$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
-			DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where name = :name ", array(":content" => $content, ":ttl" => $data['attl'], ";name" => $domain));
-		} else{
-			$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
-			DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ";name" => $domain));
-		}
-		parent::set_zone($domain, $data, $api);
+
+		$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
+		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
+		
+		parent::set_zone($domain, $data);
 		return true;
 	}
 }

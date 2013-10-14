@@ -66,7 +66,7 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "zone", "action" => "get", "domain" => $domain);
 				APIClient::sendPost($post);
 			}
 		}
@@ -76,27 +76,27 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "zone", "action" => "add", "domain" => $domain);
 				APIClient::sendPost($post);
 			}
 		}
 	}
-	public static function del_zone ($domain, $api = false) {
+	public static function del_zone ($domain) {
 		global $conf;
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "zone", "action" => "del", "domain" => $domain);
 				APIClient::sendPost($post);
 			}
 		}
 	}
-	public static function set_zone ($domain, $data, $api = false) {
+	public static function set_zone ($domain, $data) {
 		global $conf;
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "zone", "action" => "set", "domain" => $domain, "set" => base64_encode(serialize($data)));
 				APIClient::sendPost($post);
 			}
 		}
