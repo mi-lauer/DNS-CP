@@ -86,10 +86,10 @@ if(user::isLoggedIn()){
 		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
 	}
 	if(isset($page)) {
-		$page = "page/".$_GET["page"].".php";
+		$page = "lib/page/".$page.".php";
 		if(in_array($page, $pages)) {
 			if(@file_exists($page)){
-				$content = '<?php require_once('.$page.'); ?>';
+				$content = '<?php require_once("'.$page.'"); ?>';
 			} else {
 				$content = '<?php require_once("lib/page/404.php"); ?>';
 			}
