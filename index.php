@@ -44,6 +44,7 @@ require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/system/template.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");
+require_once("lib/whois/whois.main.php");
 require_once("lib/lang/".$conf['lang'].".inc.php");
 
 $page = NULL;

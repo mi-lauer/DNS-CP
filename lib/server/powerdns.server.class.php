@@ -37,7 +37,7 @@ class server extends dns_server {
 				$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type and owner = :owner", array(":id" => $domain, ":type" => "SOA", ":owner" => $owner)) or die(DB::error());
 			}
 		}
-		parent::get_zone($domain, $owner, $api)
+		parent::get_zone($domain, $owner, $api);
 		return DB::fetch_array($res);
 	}
 	

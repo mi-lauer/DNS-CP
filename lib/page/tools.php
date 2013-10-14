@@ -26,7 +26,11 @@ if(isset($_POST["Submit"])) {
 		$cont .= "</pre>";
 	}
 	if(isset($_POST["whois"]) && $_POST["whois"] != "") {
-		$cont .= nl2br(file_get_contents("http://webhostmax.de/whois.php?domain=".trim($_POST["whois"])));
+		$whois = new Whois();
+		$data = $whois->Lookup(trim($_POST["whois"]));
+		foreach($data['rawdata'] as $id => $value) {
+			$cont .= $value."<br />";
+		}
 	}
 } else { $cont = ""; }
 template::show("tools", array(
