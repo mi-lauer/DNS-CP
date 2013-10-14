@@ -47,6 +47,13 @@ require_once("lib/system/dns.class.php");
 require_once("lib/whois/whois.main.php");
 require_once("lib/lang/".$conf['lang'].".inc.php");
 
+// save all existing pages in a array
+$pages=array();
+foreach (glob("lib/page/*.php") as $file) {
+	$pages[] = $file;
+}
+
+
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
 	$page = trim($_GET["page"]);
@@ -79,8 +86,13 @@ if(user::isLoggedIn()){
 		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
 	}
 	if(isset($page)) {
-		if(@file_exists("lib/page/".$page.".php")){
-			$content = '<?php require_once("lib/page/'.$page.'.php"); ?>';
+		$page = "page/".$_GET["page"].".php";
+		if(in_array($page, $pages)) {
+			if(@file_exists($page)){
+				$content = '<?php require_once('.$page.'); ?>';
+			} else {
+				$content = '<?php require_once("lib/page/404.php"); ?>';
+			}
 		} else {
 			$content = '<?php require_once("lib/page/404.php"); ?>';
 		}
