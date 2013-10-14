@@ -34,43 +34,64 @@ class API {
 	
 	/* RECORD */
 	public static function get_record ($domain, $record) {
-		$record = userialize($record);
-		echo json_encode(server::get_record($domain, $record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::get_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
 	public static function add_record ($domain, $record) {
-		$record = userialize($record);
-		echo json_encode(server::add_record($domain, $record));
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::add_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
 	public static function del_record ($domain, $record) {
-		$record = userialize($record);
-		echo json_encode(server::del_record($domain, $record));
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::del_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
 	public static function set_record ($domain, $record) {
-		$record = userialize($record);
-		echo json_encode(server::set_record($domain, $record));
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::set_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
 	/* ZONE */
 	public static function get_zone ($domain) {
-		$ret = server::get_zone($domain, Null, true);
+		$ret = array();
 		$ret['status'] = "200";
+		$ret['data'] = server::get_zone($domain, Null, true);
 		echo json_encode($ret);
 	}
 	
 	public static function add_zone ($domain) {
-		echo json_encode(server::add_zone($domain));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::add_zone($domain);
+		echo json_encode($ret);
 	}
 	
 	public static function del_zone ($domain) {
-		echo json_encode(server::del_zone($domain));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::del_zone($domain);
+		echo json_encode($ret);
 	}
 	
 	public static function set_zone ($domain, $data) {
-		$data = userialize($data);
-		echo json_encode(server::set_zone($domain, $data));
+		$data = unserialize($data);
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::set_zone($domain, $data);
+		echo json_encode($ret);
 	}
 }
 ?>

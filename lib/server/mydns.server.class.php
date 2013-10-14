@@ -20,10 +20,30 @@
 
 class server extends dns_server {
 	/* RECORD */
-	public static function get_record ($domain, $record) { }
-	public static function add_record ($domain, $record) { }
-	public static function del_record ($domain, $record) { }
-	public static function set_record ($domain, $record) { }
+	public static function get_record ($domain, $record) {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["rr"]." where zone = :zone and id = :record ORDER BY type ASC", array(":zone" => $domain, ":record" => $record)) or die(DB::error());
+		return DB::fetch_array($res);
+	}
+	
+	public static function add_record ($domain, $record) {
+		global $conf;
+		$bind = array(":zone" => $domain,":name" => $record['newhost'],":type" => $record['newtype'],":data" => $record['newdestination'],":aux" => $record['newpri'],":ttl" => $record['newttl']);
+		DB::query("INSERT INTO ".$conf["rr"]." (id, zone, name, type, data, aux, ttl) VALUES (NULL, :zone, :name, :type, :data, :aux, :ttl)", $bind) or die(DB::error());
+	}
+	
+	public static function del_record ($domain, $record) {
+		global $conf;
+		DB::query("DELETE FROM ".$conf["rr"]." WHERE id = :id AND zone = :zone", array(":id" => $record,":zone" => $domain)) or die(DB::error());
+		return true;
+	}
+	
+	public static function set_record ($domain, $record) {
+		global $conf;
+		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['type'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain);
+		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, aux = :aux, data = :data, ttl = :ttl WHERE id = :id AND zone = :zone", $bind) or die(DB::error());
+		return true;
+	}
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {
