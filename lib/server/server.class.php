@@ -59,6 +59,9 @@ class dns_server {
 			}
 		}
 	}
+	
+	/* function to get all domain records in webinterface */
+	public static function get_all_records ($domain) { }
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {

@@ -38,9 +38,11 @@ class template {
 	public static function show ($template, $replace) {
 		global $conf, $lang;
 		$content = self::get_template($template);
+		/* replace variable placeholders */
 		foreach($replace as $name => $value) {
 			$content = str_replace("{".$name."}", $value, $content);
 		}
+		/* replace language placeholders */
 		foreach($lang as $name => $value) {
 			$content = str_replace("{@_".$name."}", $value, $content);
 		}

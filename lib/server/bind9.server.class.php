@@ -24,6 +24,7 @@ class server extends dns_server {
 	public static function add_record ($domain, $record) { }
 	public static function del_record ($domain, $record) { }
 	public static function set_record ($domain, $record) { }
+	public static function get_all_records ($domain) { }
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) { }

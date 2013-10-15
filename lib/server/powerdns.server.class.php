@@ -45,6 +45,12 @@ class server extends dns_server {
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, content = :data, ttl = :ttl, prio = :aux, change_date = :date WHERE id = :id and domain_id = :zone", $bind) or die(DB::error());	
 		return true;
 	}
+	
+	public static function get_all_records ($domain) {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :zone ", array(":zone" => $domain)) or die(DB::error());
+		return $res;
+	}
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {
