@@ -61,7 +61,7 @@ class server extends dns_server {
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :zone ", array(":zone" => $domain)) or die(DB::error());
 		$return = array();
 		while($row = DB::fetch_array($res)) {
-			if($row['type'] == "soa") continue; /* skip soa record */
+			if($row['type'] == "SOA") continue; /* skip soa record */
 			$change = array();
 			/* make powerdns records compactible with our interface */
 			$change['id'] = $row['id'];
@@ -145,14 +145,13 @@ class server extends dns_server {
 		return true;
 	}
 	
-	public static function get_all_records ($owner = Null) {
+	public static function get_all_zones ($owner = Null) {
 		global $conf;
 		if($owner) {
 			$res = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :owner", array(":owner" => $owner));
 		} else {
-			$re = DB::query("SELECT * FROM ".$conf["soa"]);
+			$res = DB::query("SELECT * FROM ".$conf["soa"]);
 		}
-		parent::get_zone($domain, $owner, $api);
 		$return = array();
 		while($row = DB::fetch_array($res)) {
 			$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $row['id'], ":type" => "SOA")) or die(DB::error());

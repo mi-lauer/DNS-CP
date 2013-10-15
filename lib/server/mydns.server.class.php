@@ -96,7 +96,7 @@ class server extends dns_server {
 		return true;
 	}
 	
-	public static function get_all_records ($owner = Null) {
+	public static function get_all_zones ($owner = Null) {
 		global $conf;
 		if($owner) {
 			$res = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :owner", array( ":owner" => $owner)) or die(DB::error());
