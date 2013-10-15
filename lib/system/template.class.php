@@ -1,7 +1,7 @@
 <?php
-/* lib/system/template.class.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* lib/system/template.class.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@ class template {
 	 * @return 	string		source from the template
 	 */
 	public static function get_template($template) {
-		return file_get_contents("templates/".$template.".php");
+		return file_get_contents("templates/".$template.".tpl");
 	}
 	
 	/**
@@ -38,9 +38,11 @@ class template {
 	public static function show ($template, $replace) {
 		global $conf, $lang;
 		$content = self::get_template($template);
+		/* replace variable placeholders */
 		foreach($replace as $name => $value) {
 			$content = str_replace("{".$name."}", $value, $content);
 		}
+		/* replace language placeholders */
 		foreach($lang as $name => $value) {
 			$content = str_replace("{@_".$name."}", $value, $content);
 		}

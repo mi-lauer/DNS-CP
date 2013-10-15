@@ -1,7 +1,7 @@
 <?php
-/* lib/page/logout.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* lib/page/logout.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(user::isLoggedIn()) {
 	$error = user::logout();
 }else{

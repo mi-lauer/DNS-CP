@@ -1,7 +1,7 @@
 <?php
-/* index.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* index.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
-define("IN_PAGE", true);
 if(!file_exists("config.php")) {
 	die("Missing config file! Please change config.sample.php to your needs and rename it to config.php!");
 }
@@ -37,14 +36,23 @@ $conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 // requirements
 require_once("config.php");
 require_once("lib/database/db.class.php");
-DB::connect($database["host"], $database["user"], $database["pw"], $database["db"], $database["typ"], $database["port"]) or die(DB::error());
+DB::connect() or die(DB::error());
 require_once("lib/user/user.class.php");
+require_once("lib/system/apiclient.class.php");
 require_once("lib/server/server.class.php");
 require_once("lib/server/".$conf['server'].".server.class.php");
 require_once("lib/system/template.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");
+require_once("lib/whois/whois.main.php");
 require_once("lib/lang/".$conf['lang'].".inc.php");
+
+// save all existing pages in a array
+$pages=array();
+foreach (glob("lib/page/*.php") as $file) {
+	$pages[] = $file;
+}
+
 
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
@@ -78,8 +86,13 @@ if(user::isLoggedIn()){
 		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
 	}
 	if(isset($page)) {
-		if(@file_exists("lib/page/".$page.".php")){
-			$content = '<?php require_once("lib/page/'.$page.'.php"); ?>';
+		$page = "lib/page/".$page.".php";
+		if(in_array($page, $pages)) {
+			if(@file_exists($page)){
+				$content = '<?php require_once("'.$page.'"); ?>';
+			} else {
+				$content = '<?php require_once("lib/page/404.php"); ?>';
+			}
 		} else {
 			$content = '<?php require_once("lib/page/404.php"); ?>';
 		}
@@ -100,4 +113,5 @@ $data = array(
 		"_version" => $conf["version"]
 		);
 template::show("index", $data);
+DB::close();
 ?>

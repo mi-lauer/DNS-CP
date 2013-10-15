@@ -1,7 +1,7 @@
 <?php
-/* lib/page/login.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* lib/page/login.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
 	$error = user::login($_POST['username'], $_POST['password']);
 } else { $error = ""; }

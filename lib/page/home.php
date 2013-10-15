@@ -1,7 +1,7 @@
 <?php
-/* lib/page/home.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* lib/page/home.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,14 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 $i = 0;
 if(user::isAdmin()){
-	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
+	$i = count(server::get_all_zones());
 } else {
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :id", array(":id" => $_SESSION['userid'])) or die(DB::error());
+	$i = count(server::get_all_zones($_SESSION['userid']));
 }
-$i = DB::num_rows($res);
 
 if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
 template::show("home", array(

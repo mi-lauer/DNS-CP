@@ -1,7 +1,7 @@
 <?php
-/* lib/user/user.class.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* lib/user/user.class.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -45,6 +45,7 @@ class user {
 	 * @return		string
 	 */
 	public static function logout () {
+		$_SESSIOÌN = array(); // clear session array before destroy
 		session_destroy();
 		return '<font color="#008000">Logout sucessful</font><meta http-equiv="refresh" content="2; URL=?page=home">';
 	}
@@ -98,10 +99,14 @@ class user {
 	 */
 	public static function isAdmin () {
 		global $conf;
-		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_SESSION["userid"])) or die(DB::error());
-		$row = DB::fetch_array($res);
-		if(isset($row['admin']) && $row['admin'] == 1){
-			return true;
+		if(isset($_SESSION["userid"])) {
+			$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_SESSION["userid"])) or die(DB::error());
+			$row = DB::fetch_array($res);
+			if(isset($row['admin']) && $row['admin'] == 1){
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
