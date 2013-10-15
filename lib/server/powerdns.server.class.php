@@ -144,5 +144,37 @@ class server extends dns_server {
 		parent::set_zone($domain, $data);
 		return true;
 	}
+	
+	public static function get_all_records ($owner = Null) {
+		global $conf;
+		if($owner) {
+			$res = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :owner", array(":owner" => $owner));
+		} else {
+			$re = DB::query("SELECT * FROM ".$conf["soa"]);
+		}
+		parent::get_zone($domain, $owner, $api);
+		$return = array();
+		while($row = DB::fetch_array($res)) {
+			$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $row['id'], ":type" => "SOA")) or die(DB::error());
+			while($zone = DB::fetch_array($res2)) {
+				$change=array();
+				/* make powerdns soa compactible with our interface */
+				$change['id'] = $zone['id'];
+				$change['origin'] = $zone['name'];
+				$content = explode(" ", $zone['content']);
+				$change['ns'] = $content[0];
+				$change['mbox'] = $content[1];
+				$change['serial'] = $content[2];
+				$change['refresh'] = $content[3];
+				$change['retry'] = $content[4];
+				$change['expire'] = $content[5];
+				$change['minimum'] = $content[6];
+				$change['ttl'] = $zone['ttl'];
+				$change['owner'] = $row['owner'];
+				$return[] = $change;
+			}
+		}
+		return $return;
+	}
 }
 ?>

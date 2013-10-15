@@ -29,6 +29,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function add_record ($domain, $record) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -39,6 +40,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function del_record ($domain, $record) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -49,6 +51,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function set_record ($domain, $record) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -75,6 +78,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function add_zone ($domain, $owner = Null) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -85,6 +89,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function del_zone ($domain) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -95,6 +100,7 @@ class dns_server {
 			}
 		}
 	}
+	
 	public static function set_zone ($domain, $data) {
 		global $conf;
 		if($conf['useremoteapi']) {
@@ -105,5 +111,8 @@ class dns_server {
 			}
 		}
 	}
+	
+	/* function to get all domain records in webinterface */
+	public static function get_all_zoness ($owner) { /* here we not need send anything to api */ }
 }
 ?>

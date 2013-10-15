@@ -95,5 +95,19 @@ class server extends dns_server {
 		parent::set_zone($domain, $data);
 		return true;
 	}
+	
+	public static function get_all_records ($owner = Null) {
+		global $conf;
+		if($owner) {
+			$res = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :owner", array( ":owner" => $owner)) or die(DB::error());
+		} else {
+			$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
+		}
+		$return = array();
+		while($row = DB::fetch_array($res)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
 }
 ?>
