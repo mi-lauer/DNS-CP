@@ -80,9 +80,18 @@ class server extends dns_server {
 	public static function get_zone ($domain, $owner = Null, $api = false) {
 		global $conf;
 		if(user::isAdmin() or $api) {
+			$re = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $domain, ":owner" => $owner));
+			$row = DB::fetch_array($re);
 			$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $domain, ":type" => "SOA")) or die(DB::error());
 		} else {
-			$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type and owner = :owner", array(":id" => $domain, ":type" => "SOA", ":owner" => $owner)) or die(DB::error());
+			$re = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $domain, ":owner" => $owner));
+			$row = DB::fetch_array($re);
+			if($row['id'] == $domain) {
+				$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => $domain, ":type" => "SOA")) or die(DB::error());
+			} else {
+				/* create a null returning query */
+				$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type", array(":id" => '0', ":type" => "EMPTYQUERY")) or die(DB::error());
+			}
 		}
 		parent::get_zone($domain, $owner, $api);
 		$zone = DB::fetch_array($res);
@@ -99,7 +108,7 @@ class server extends dns_server {
 		$return['expire'] = $content[5];
 		$return['minimum'] = $content[6];
 		$return['ttl'] = $zone['ttl'];
-		$return['owner'] = $zone['owner'];
+		$return['owner'] = $row['owner'];
 		return $return;
 	}
 		
@@ -129,8 +138,9 @@ class server extends dns_server {
 		global $conf;
 
 		$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
-		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
-		
+		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where domain_id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
+		if($data['owner'])
+			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owwner" => $data['owner'], ":id" => $domain));
 		parent::set_zone($domain, $data);
 		return true;
 	}
