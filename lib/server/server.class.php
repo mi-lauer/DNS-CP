@@ -24,7 +24,7 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "action" => "get", "data" => "record", "domain" => $domain, "get" => $record);
 				APIClient::sendPost($post);
 			}
 		}
@@ -34,7 +34,7 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "record", "action" => "add", "domain" => $domain, "add" => base64_encode(serialize($record)));
 				APIClient::sendPost($post);
 			}
 		}
@@ -44,7 +44,7 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "action" => "get", "data" => "record", "domain" => $domain, "del" => $record);
 				APIClient::sendPost($post);
 			}
 		}
@@ -53,15 +53,16 @@ class dns_server {
 		global $conf;
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
+			
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key']);
+				$post = array("key" => $api['key'], "data" => "record", "action" => "set", "domain" => $domain, "set" => base64_encode(serialize($record)));
 				APIClient::sendPost($post);
 			}
 		}
 	}
 	
 	/* function to get all domain records in webinterface */
-	public static function get_all_records ($domain) { }
+	public static function get_all_records ($domain) { /* here we not need send anything to api */ }
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {
