@@ -9,7 +9,7 @@ You may need for a working webinterface:
 
  * Linux machine (Debian 6+ recommended; windows may work too, but not recommended)
  * Linux knowledge
- * At least php 5
+ * At least php 5 and activated curl (for api client)
  * MySQL/PostgreSQL/SQLite-database
  * working DNS server (only [myDNS](http://mydns.bboy.net) supported so far)
  * some time and basic knowledge about DNS 
@@ -52,13 +52,14 @@ A live demonstration is available at [Demo](http://demo.owndns.me). Please repor
  * monitoring dns server and execute events on failure (email, sms api, pushover, ...)
  * manage own permission groups for easier managing users
  * version-checker and update assistant (with question to remove README.md, ...)
-
+ * (user)API (with keys & right controls?)
+ 
 ### Work in Progress
 ---
  * PowerDNS support
  * contact page for contacting the administrator of the webinterface or domain
  * multi language support
- * API (with keys & right controls? / multiserver)
+ * (server)API (multiserver api)
  
  
  

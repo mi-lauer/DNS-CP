@@ -23,7 +23,17 @@ class server extends dns_server {
 	public static function get_record ($domain, $record) {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where id = :id and domain_id = :zone ", array(":zone" => $domain, ":id" => $record)) or die(DB::error());
-		return DB::fetch_array($res);
+		$records = DB::fetch_array($res);
+		$return = array();
+		/* make powerdns records compactible with our interface */
+		$return['id'] = $records['id'];
+		$return['zone'] = $records['domain_id'];
+		$return['name'] = $records['name'];
+		$return['data'] = $records['content'];
+		$return['aux'] = $records['prio'];
+		$return['ttl'] = $records['ttl'];
+		$return['type'] = $records['type'];
+		return $return;
 	}
 	
 	public static function add_record ($domain, $record) {
@@ -49,7 +59,21 @@ class server extends dns_server {
 	public static function get_all_records ($domain) {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :zone ", array(":zone" => $domain)) or die(DB::error());
-		return $res;
+		$return = array();
+		while($row = DB::fetch_array($res)) {
+			if($row['type'] == "soa") continue; /* skip soa record */
+			$change = array();
+			/* make powerdns records compactible with our interface */
+			$change['id'] = $row['id'];
+			$change['zone'] = $row['domain_id'];
+			$change['name'] = $row['name'];
+			$change['data'] = $row['content'];
+			$change['aux'] = $row['prio'];
+			$change['ttl'] = $row['ttl'];
+			$change['type'] = $row['type'];
+			$return[] = $change;
+		}
+		return $return;
 	}
 
 	/* ZONE */
@@ -61,9 +85,24 @@ class server extends dns_server {
 			$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :id and type = :type and owner = :owner", array(":id" => $domain, ":type" => "SOA", ":owner" => $owner)) or die(DB::error());
 		}
 		parent::get_zone($domain, $owner, $api);
-		return DB::fetch_array($res);
+		$zone = DB::fetch_array($res);
+		$return = array();
+		/* make powerdns soa compactible with our interface */
+		$return['id'] = $zone['id'];
+		$return['origin'] = $zone['name'];
+		$content = explode(" ", $zone['content']);
+		$return['ns'] = $content[0];
+		$return['mbox'] = $content[1];
+		$return['serial'] = $content[2];
+		$return['refresh'] = $content[3];
+		$return['retry'] = $content[4];
+		$return['expire'] = $content[5];
+		$return['minimum'] = $content[6];
+		$return['ttl'] = $zone['ttl'];
+		$return['owner'] = $zone['owner'];
+		return $return;
 	}
-	
+		
 	public static function add_zone ($domain, $owner = Null) {
 		global $conf;
 		if(empty($owner)) {

@@ -48,7 +48,11 @@ class server extends dns_server {
 	public static function get_all_records ($domain) {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where zone = :zone ORDER BY type ASC", array(":zone" => $domain)) or die(DB::error());
-		return $res;
+		$return = array();
+		while($row = DB::fetch_array($res)) {
+			$return[] = $row;
+		}
+		return $return;
 	}
 
 	/* ZONE */
