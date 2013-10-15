@@ -1,7 +1,7 @@
 <?php
-/* lib/page/users.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* lib/page/users.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 ?>
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">Users</a></h2>
 <div id="main">
@@ -122,7 +121,7 @@ $row = DB::fetch_array($res);
 	</table>
 </form>
 <?php
-$res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :id ORDER BY origin ASC", array(":id" => $_GET["id"])) or die(DB::error());
+$zones = server::get_all_zones($_GET["id"]);
 ?>
 <strong>Zones owned by this user:</strong>
 <table width="100%"  border="0" cellspacing="1">
@@ -131,9 +130,9 @@ $res2 = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :id ORDER BY ori
 		<td><strong>Records</strong></td>
 		<td><strong>Serial</strong></td>
 	</tr>
-<?php 
-while ($row2 = DB::fetch_array($res2)) { 
-$records = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = :id", array(":id" => $row2["id"]))) or die(DB::error());
+<?php
+foreach($zones as $id => $row2) {
+$records = count(server::get_all_records($row2["id"]));
 ?>
 	<tr>
 		<td class="action"><a class="view" href="?page=zone&id=<?php echo $row2["id"]; ?>"><?php echo $row2["origin"]; ?></a></td>
@@ -162,8 +161,7 @@ $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or di
 		<td class="action">
 			<a class="edit" href="?page=users&id=<?php echo $row["id"]; ?>">
 		<?php
-			$zone = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :id", array(":id" => $row["id"])) or die(DB::error());
-			echo DB::num_rows($zone); 
+			echo count(server::get_all_zones($row["id"])); 
 		?>
 			</a>
 		</td>

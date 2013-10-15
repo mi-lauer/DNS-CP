@@ -1,7 +1,7 @@
 <?php
-/* config.sample.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* config.sample.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -32,21 +32,25 @@ $conf["rr"]             = "dns_rr";                   // RR Table
 $conf["users"]          = "dns_users";                // Users Table
 
 // general
-$conf["name"]           = "OwnDNS";                   // Name of Page
+$conf["name"]           = "DNS-CP";                   // Name of Page
 $conf["lang"]           = "en";                       // Site Language
 
 // server
-$conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns, api)
+$conf["server"]         = "mydns";                    // Server typ (available: mydns, powerdns)
+
+// api
+$conf['apikey']         = "";                         // access key for the api
+$conf['enableapi']      = false;                      // enable the api true/false
 
 // remote management api servers
-$conf['api'][0]['url']	= "";						  // url to remote api
-$conf['api'][0]['user']	= "";						  // user for remote api
-$conf['api'][0]['pass']	= "";						  // pass for remote api
+$conf['useremoteapi']   = false;                      // use remote api true/false
+$conf['api'][0]['url']  = "";                         // url to remote api
+$conf['api'][0]['key']  = "";                         // key for the remote api
 
 // Default values on create
-$conf["mbox"]           = "info.owndns.me.";          // mbox for SOA
-$conf["soans"]          = "ns1.owndns.me.";           // NS for SOA
-$conf["ns"]             = array("ns1.owndns.me.", "ns2.owndns.me.", "ns3.owndns.me.", "ns4.owndns.me.", "ns5.owndns.me.");
+$conf["mbox"]           = "info.dns-cp.de.";          // mbox for SOA
+$conf["soans"]          = "ns1.dns-cp.de.";           // NS for SOA
+$conf["ns"]             = array("ns1.dns-cp.de.", "ns2.dns-cp.de.", "ns3.dns-cp.de.", "ns4.dns-cp.de.", "ns5.dns-cp.de.");
 $conf["a"]              = "127.0.0.1";                // A record for new zone
 $conf["aaaa"]           = Null;                       // AAAA record for new zone
 $conf["txt"]            = "v=spf1 mx -all";           // TXT record for new zone

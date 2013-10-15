@@ -1,7 +1,7 @@
 <?php
-/* lib/system/api.class.php - DNS-WI
- * Copyright (C) 2013  OWNDNS project
- * http://owndns.me/
+/* lib/system/api.class.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -21,55 +21,77 @@ class API {
 	/**
 	 * login a user
 	 *
-	 * @param		string		$user
-	 * @param		string		$pass
+	 * @param		string		$key
 	 * @return		string
 	 */
-	public static function login ($user, $pass) {
-		return false;
+	public static function login ($key) {
+		global $conf;
+		if($key == $conf['apikey'])
+			return true;
+		else
+			return false;
 	}
 	
-	/**
-	 * get dns data from domain
-	 *
-	 * @param	string	$domain
-	 * @return	array
-	 */
-	public static function get_data ($domain) {
-		return json_encode(array("status" => "404"));
+	/* RECORD */
+	public static function get_record ($domain, $record) {
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::get_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
-	/**
-	 * add dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function add_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
+	public static function add_record ($domain, $record) {
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::add_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
-	/**
-	 * del dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function del_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
+	public static function del_record ($domain, $record) {
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::del_record($domain, $record);
+		echo json_encode($ret);
 	}
 	
-	/**
-	 * set dns data to domain
-	 *
-	 * @param	string	$domain
-	 * @param	array	$data
-	 * @return	array
-	 */
-	public static function set_data ($domain, $data) {
-		return json_encode(array("status" => "404"));
+	public static function set_record ($domain, $record) {
+		$record = unserialize(base64_decode($record));
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::set_record($domain, $record);
+		echo json_encode($ret);
+	}
+	
+	/* ZONE */
+	public static function get_zone ($domain) {
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::get_zone($domain, Null, true);
+		echo json_encode($ret);
+	}
+	
+	public static function add_zone ($domain) {
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::add_zone($domain);
+		echo json_encode($ret);
+	}
+	
+	public static function del_zone ($domain) {
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::del_zone($domain);
+		echo json_encode($ret);
+	}
+	
+	public static function set_zone ($domain, $data) {
+		$data = unserialize($data);
+		$ret = array();
+		$ret['status'] = "200";
+		$ret['data'] = server::set_zone($domain, $data);
+		echo json_encode($ret);
 	}
 }
 ?>

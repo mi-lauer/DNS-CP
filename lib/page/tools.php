@@ -1,7 +1,7 @@
 <?php
-/* lib/page/tools.php - DNS-WI
- * Copyright (C) 2013  OwnDNS project
- * http://owndns.me/
+/* lib/page/tools.php - DNS-CP
+ * Copyright (C) 2013  CNS-CP project
+ * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-if(!defined("IN_PAGE")) { die("no direct access allowed!"); }
 if(isset($_POST["Submit"])) {
 	$cont = "";
 	if(isset($_POST["dns"]) && $_POST["dns"] != "") {
@@ -27,7 +26,11 @@ if(isset($_POST["Submit"])) {
 		$cont .= "</pre>";
 	}
 	if(isset($_POST["whois"]) && $_POST["whois"] != "") {
-		$cont .= nl2br(file_get_contents("http://webhostmax.de/whois.php?domain=".trim($_POST["whois"])));
+		$whois = new Whois();
+		$data = $whois->Lookup(trim($_POST["whois"]));
+		foreach($data['rawdata'] as $id => $value) {
+			$cont .= $value."<br />";
+		}
 	}
 } else { $cont = ""; }
 template::show("tools", array(
