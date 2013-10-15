@@ -38,20 +38,6 @@
 		</table>
 
 		<br />
-
-		<table width="320" border="0">
-			<tr>
-				<td><div align="right"><strong>Server:</strong></div></td>
-				<td>
-					<select name="dns_server">
-						{_dnsserver}
-					</select>
-				</td>
-			</tr>
-		</table>
-
-		<br />
-
 		<input name="Submit" type="submit" class="a" value="Save settings">
 	</form>
 </div>

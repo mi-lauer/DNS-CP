@@ -19,11 +19,10 @@
 
 $i = 0;
 if(user::isAdmin()){
-	$res = DB::query("SELECT * FROM ".$conf["soa"]) or die(DB::error());
+	$i = count(server::get_all_zones());
 } else {
-	$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :id", array(":id" => $_SESSION['userid'])) or die(DB::error());
+	$i = count(server::get_all_zones($_SESSION['userid']));
 }
-$i = DB::num_rows($res);
 
 if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
 template::show("home", array(
