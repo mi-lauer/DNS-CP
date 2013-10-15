@@ -26,9 +26,7 @@
 	if(isset($_GET["act"]) && $_GET["act"] == "add") {
 		if(isset($_POST["Submit"])){
 			if(isset($_POST['name']) && $_POST['name'] != "") {
-				$zone_name = $_POST['name'].".";
-				$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin = :zone", array(":zone" => $zone_name));
-				$row = DB::fetch_array($res);
+				$row = server::get_zone_by_name($_POST['name']);
 				if(!empty($row["id"])) {
 					echo '<font color="#ff0000">Zone already exists.</font>';
 
@@ -36,33 +34,31 @@
 					echo '<font color="#ff0000">Please enter a valid domain name!</font>';
 
 				}else{
-					$bind = array(":zone" => $zone_name, ":ns" => $conf["soans"], ":mbox" => $conf["mbox"], ":serial" => date("Ymd").'01', ":refresh" => $conf["refresh"], ":retry" => $conf["retry"], ":expire" => $conf["expire"], ":minimum" => $conf["minimum_ttl"], ":ttl" => $conf["ttl"], ":owner" => $_POST['owner']);
-					DB::query("INSERT INTO ".$conf["soa"]." (origin, ns, mbox, serial, refresh, retry, expire, minimum, ttl, owner) VALUES (:zone, :ns, :mbox, :serial, :refresh, :retry, :expire, :minimum, :ttl, :owner)", $bind) or die(DB::error());
-					$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin = :zone", array(":zone" => $zone_name)) or die(DB::error());
-					$row = DB::fetch_array($res);
-
+					server::add_zone($_POST['name'], $_POST['owner']);
+					$row = server::get_zone_by_name($_POST['name']);
 					if(isset($conf["ns"]) && $conf["ns"] != Null){
 						foreach($conf["ns"] as $id => $ns) {
-							$bind = array(":zone" => $row['id'], ":name" => $zone_name, ":type" => "NS", ":data" => $ns, ":aux" => "0", ":ttl" => $conf["minimum_ttl"]);
-							DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
+							$bind = array("newhost" => $row['origin'], "newtype" => "NS", "newdestination" => $ns, "newpri" => "0", "newttl" => $conf["minimum_ttl"]);
+							server::add_record($row['id'], $bind);
 						}
 					}
 					if(isset($conf["a"]) && $conf["a"] != Null){
-						$bind = array(":zone" => $row['id'], ":name" => $zone_name, ":type" => "A", ":data" => $conf["a"], ":aux" => "0", ":ttl" => $conf["minimum_ttl"]);
-						DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
-						$bind = array(":zone" => $row['id'], ":name" => "*", ":type" => "A", ":data" => $conf["a"], ":aux" => "0", ":ttl" => $conf["minimum_ttl"]);
-						DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
+					
+						$bind = array("newhost" => $row['origin'], "newtype" => "A", "newdestination" => $conf["a"], "newpri" => "0", "newttl" => $conf["minimum_ttl"]);
+						server::add_record($row['id'], $bind);
+						$bind = array("newhost" => "*.".$row['origin'], "newtype" => "A", "newdestination" => $conf["a"], "newpri" => "0", "newttl" => $conf["minimum_ttl"]);
+						server::add_record($row['id'], $bind);
 					}
 					if(isset($conf["aaaa"]) && $conf["aaaa"] != Null){
-						$bind = array(":zone" => $row['id'], ":name" => $zone_name, ":type" => "AAAA", ":data" => $conf["aaaa"], ":aux" => "0", ":ttl" => $conf["minimum_ttl"]);
-						DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
+						$bind = array("newhost" => $row['origin'], "newtype" => "AAAA", "newdestination" => $conf["aaaa"], "newpri" => "0", "newttl" => $conf["minimum_ttl"]);
+						server::add_record($row['id'], $bind);
 					}
 					if(isset($conf["txt"]) && $conf["txt"] != Null){
-						$bind = array(":zone" => $row['id'], ":name" => $zone_name, ":type" => "TXT", ":data" => $conf["txt"], ":aux" => "0", ":ttl" => $conf["minimum_ttl"]);
-						DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
-					}
-					$bind = array(":zone" => $row['id'], ":name" => $zone_name, ":type" => "MX", ":data" => "mail.".$zone_name, ":aux" => "10", ":ttl" => $conf["minimum_ttl"]);
-					DB::query("INSERT INTO ".$conf["rr"]." (zone, name, type, data, aux, ttl) VALUES (:zone, :name, :type, :data, :aux, :ttl);", $bind) or die(DB::error());
+						$bind = array("newhost" => $row['origin'], "newtype" => "TXT", "newdestination" => $conf["txt"], "newpri" => "0", "newttl" => $conf["minimum_ttl"]);
+						server::add_record($row['id'], $bind);
+					}					
+					$bind = array("newhost" => $row['origin'], "newtype" => "MX", "newdestination" => "mail.".$row['origin'], "newpri" => "10", "newttl" => $conf["minimum_ttl"]);
+					server::add_record($row['id'], $bind);
 					echo '<font color="#008000">Zone <b>'.$_POST['name'].'</b> sucessfully added.</font>';
 				}
 			} else{
@@ -106,8 +102,7 @@
 
 	}elseif(isset($_GET["id"])){
 		if(isset($_GET["act"]) && $_GET["act"] == "del" && $isAdmin) {
-			DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $_GET["id"])) or die(DB::error());
-			DB::query("DELETE FROM ".$conf["rr"]." WHERE zone = :id", array(":id" => $_GET["id"])) or die(DB::error());
+			server::del_zone($_GET["id"]);
 			echo '<font color="#008000">Domain deleted successfully.</font><br /><br />';
 		} else {
 			if(isset($_POST["Submit"])){
@@ -127,11 +122,11 @@
 					if(! $_POST['destination'][$x]) {
 						$_POST['destination'][$x] = "";
 					}
-					$bind = array(":name" => $_POST['host'][$x],":type" => $_POST['type'][$x],":aux" => $_POST['type'][$x],":data" => $_POST['destination'][$x],":ttl" => $_POST['ttl'][$x],":id" => $_POST['host_id'][$x],":zone" => $_GET['id']);
-					DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, aux = :aux, data = :data, ttl = :ttl WHERE id = :id AND zone = :zone", $bind) or die(DB::error());
-
+					$bind = array('host' => $_POST['host'][$x], 'type' => $_POST['type'][$x], 'aux' => $_POST['pri'][$x], 'destination' => $_POST['destination'][$x], 'ttl' => $_POST['ttl'][$x], 'host_id' => $_POST['host_id'][$x]);
+					server::set_record($_GET['id'], $bind);
+					
 					if(isset($_POST['delete'][$x])) {
-						DB::query("DELETE FROM ".$conf["rr"]." WHERE id = :id AND zone = :zone", array(":id" => $_POST['host_id'][$x],":zone" => $_GET['id'])) or die(DB::error());
+						server::del_record($_GET['id'], $_POST['host_id'][$x]);
 					}
 				}
 				if(($_POST['newhost']) || ($_POST['newdestination'])) {
@@ -148,9 +143,9 @@
 						$_POST['newpri'] = 10;
 					} elseif($_POST['newtype'] != "MX") {
 						$_POST['newpri'] = 0;
-					}
-					$bind = array(":zone" => $_GET['id'],":name" => $_POST['newhost'],":type" => $_POST['newtype'],":data" => $_POST['newdestination'],":aux" => $_POST['newpri'],":ttl" => $_POST['newttl']);
-					DB::query("INSERT INTO ".$conf["rr"]." (id, zone, name, type, data, aux, ttl) VALUES (NULL, :zone, :name, :type, :data, :aux, :ttl)", $bind) or die(DB::error());
+					}					
+					$bind = array("newhost" => $_POST['newhost'], "newtype" => $_POST['newtype'], "newdestination" => $_POST['newdestination'], "newpri" => $_POST['newpri'], "newttl" => $_POST['newttl']);
+					server::add_record($_GET['id'], $bind);
 				}
 				$old_serial = $_POST['serial'];
 				if(substr($old_serial, 0, -2) == date("Ymd")) {
@@ -159,24 +154,28 @@
 					$serial = date("Ymd")."01";
 				}
 				if($isAdmin) {
-					$bind = array(":refresh" => $_POST['refresh'],":retry" => $_POST['retry'],":expire" => $_POST['expire'],":ttl" => $_POST['attl'],":owner" => $_POST['owner'],":serial" => $serial,":id" => $_GET['id']);
-					DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, owner = :owner, serial = :serial WHERE id = :id", $bind) or die(DB::error());
+					$bind = array("refresh" => $_POST['refresh'], "retry" => $_POST['retry'], "expire" => $_POST['expire'], "attl" => $_POST['attl'], "owner" => $_POST['owner'], "serial" => $serial);
+					server::set_zone($_GET['id'], $bind);
 				} else {
-					$bind = array(":refresh" => $_POST['refresh'],":retry" => $_POST['retry'],":expire" => $_POST['expire'],":ttl" => $_POST['attl'],":serial" => $serial,":id" => $_GET['id']);
-					DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, serial = :serial WHERE id = :id", $bind) or die(DB::error());
+					$bind = array("refresh" => $_POST['refresh'], "retry" => $_POST['retry'], "expire" => $_POST['expire'], "attl" => $_POST['attl'], "serial" => $serial);
+					server::set_zone($_GET['id'], $bind);
 				}
 				echo '<font color="#008000">Done</font><br /><br />';
 			}
 
 			if($isAdmin){
-				$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id", array(":id" => $_GET["id"])) or die(DB::error());
-				$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone = :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
+				#$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id", array(":id" => $_GET["id"])) or die(DB::error());
+				$row = server::get_zone($_GET["id"]);
+				$res2 = server::get_all_records($_GET["id"]);
+				#$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone = :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
 			} else {
-				$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $_GET["id"], ":owner" => $_SESSION['userid'])) or die(DB::error());
-				$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone =' :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
+				#$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $_GET["id"], ":owner" => $_SESSION['userid'])) or die(DB::error());
+				$row = server::get_zone($_GET["id"], $_SESSION['userid']);
+				$res2 = server::get_all_records($_GET["id"]);
+				#$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone =' :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
 			}
 
-			$row = DB::fetch_array($res);
+			#$row = DB::fetch_array($res);
 			if($row["owner"] == $_SESSION['userid'] OR $isAdmin) {
 				$i = 0;
 
@@ -237,7 +236,7 @@
 							<td><strong>Data</strong></td>
 							<td><strong>Manage</strong></td>
 						</tr>
-						<?php while ($row2 = DB::fetch_array($res2)) { ?>
+						<?php foreach($res2 as $rid => $row2) { ?>
 						<tr>
 							<td>
 								<input type="hidden" name="host_id[<?php echo $i; ?>]" value="<?php echo func::ent($row2["id"]); ?>">
@@ -284,17 +283,20 @@
 
 	if($show_list) {
 		if($isAdmin){
-			$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
+			#$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
+			$res = server::get_all_zones();
 		} else {
-			$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :owner ORDER BY origin ASC", array(":owner" => $_SESSION['userid'])) or die(DB::error());
+			#$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :owner ORDER BY origin ASC", array(":owner" => $_SESSION['userid'])) or die(DB::error());
+			$res = server::get_all_zones($_SESSION['userid']);
 		}
 
 		$zones  = array();
 		$zoneid = 0;
-		while($row = DB::fetch_array($res)) {
+		
+		foreach($res as $id => $row) {
 			$zoneid++;
 			$zones[$zoneid] = $row;
-			$zones[$zoneid]["records"] = DB::num_rows(DB::query("SELECT * FROM ".$conf["rr"]." WHERE zone = :id", array(":id" => $row["id"]))) or die(DB::error());
+			$zones[$zoneid]["records"] = count(server::get_all_records($row["id"]));
 		}
 
 		if($zoneid > 0) {
@@ -313,7 +315,7 @@
 				foreach($zones as $zoneid => $row) {
 					?>
 					<tr>
-						<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo substr($row["origin"], 0, strlen($row["origin"])-1); ?></a></td>
+						<td class="action"><a class="view" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["origin"]; ?></a></td>
 						<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["serial"]; ?></a></td>
 						<td class="action"><a class="edit" href="?page=zone&id=<?php echo $row["id"]; ?>"><?php echo $row["records"]; ?></a></td>
 						<?php if($isAdmin){ ?>

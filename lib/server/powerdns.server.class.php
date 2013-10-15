@@ -51,7 +51,7 @@ class server extends dns_server {
 	
 	public static function set_record ($domain, $record) {
 		global $conf;
-		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['type'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain, ":date" => time());
+		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['aux'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain, ":date" => time());
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, content = :data, ttl = :ttl, prio = :aux, change_date = :date WHERE id = :id and domain_id = :zone", $bind) or die(DB::error());	
 		return true;
 	}
@@ -97,16 +97,18 @@ class server extends dns_server {
 		$zone = DB::fetch_array($res);
 		$return = array();
 		/* make powerdns soa compactible with our interface */
-		$return['id'] = $zone['id'];
+		$return['id'] = $zone['domain_id'];
 		$return['origin'] = $zone['name'];
 		$content = explode(" ", $zone['content']);
-		$return['ns'] = $content[0];
-		$return['mbox'] = $content[1];
-		$return['serial'] = $content[2];
-		$return['refresh'] = $content[3];
-		$return['retry'] = $content[4];
-		$return['expire'] = $content[5];
-		$return['minimum'] = $content[6];
+		if(count($content) == 7) {
+			$return['ns'] = $content[0];
+			$return['mbox'] = $content[1];
+			$return['serial'] = $content[2];
+			$return['refresh'] = $content[3];
+			$return['retry'] = $content[4];
+			$return['expire'] = $content[5];
+			$return['minimum'] = $content[6];
+		}
 		$return['ttl'] = $zone['ttl'];
 		$return['owner'] = $row['owner'];
 		return $return;
@@ -140,7 +142,7 @@ class server extends dns_server {
 		$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
 		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where domain_id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
 		if($data['owner'])
-			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owwner" => $data['owner'], ":id" => $domain));
+			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owner" => $data['owner'], ":id" => $domain));
 		parent::set_zone($domain, $data);
 		return true;
 	}
@@ -158,7 +160,7 @@ class server extends dns_server {
 			while($zone = DB::fetch_array($res2)) {
 				$change=array();
 				/* make powerdns soa compactible with our interface */
-				$change['id'] = $zone['id'];
+				$change['id'] = $row['id'];
 				$change['origin'] = $zone['name'];
 				$content = explode(" ", $zone['content']);
 				$change['ns'] = $content[0];
@@ -174,6 +176,13 @@ class server extends dns_server {
 			}
 		}
 		return $return;
+	}
+
+	public static function get_zone_by_name($name) {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["soa"]." where name = :name", array(":name" => $name));
+		$zone = DB::fetch_array($res);
+		return self::get_zone($zone['id']);
 	}
 }
 ?>

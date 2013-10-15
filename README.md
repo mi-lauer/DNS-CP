@@ -11,7 +11,7 @@ You may need for a working webinterface:
  * Linux knowledge
  * At least php 5 and activated curl (for api client)
  * MySQL/PostgreSQL/SQLite-database
- * working DNS server (only [myDNS](http://mydns.bboy.net) supported so far)
+ * working DNS server (only [myDNS](http://mydns.bboy.net) and [PowerDNS](https://github.com/PowerDNS/pdns) supported so far)
  * some time and basic knowledge about DNS 
 
 ### Installation
@@ -56,10 +56,9 @@ A live demonstration is available at [Demo](http://demo.owndns.me). Please repor
  
 ### Work in Progress
 ---
- * PowerDNS support
  * contact page for contacting the administrator of the webinterface or domain
  * multi language support
- * (server)API (multiserver api)
+ 
  
  
  

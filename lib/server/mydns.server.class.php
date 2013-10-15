@@ -40,7 +40,7 @@ class server extends dns_server {
 	
 	public static function set_record ($domain, $record) {
 		global $conf;
-		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['type'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain);
+		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['aux'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain);
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, aux = :aux, data = :data, ttl = :ttl WHERE id = :id AND zone = :zone", $bind) or die(DB::error());
 		return true;
 	}
@@ -90,8 +90,10 @@ class server extends dns_server {
 	
 	public static function set_zone ($domain, $data) {
 		global $conf;
-		$bind = array(":refresh" => $data['refresh'],":retry" => $data['retry'],":expire" => $data['expire'],":ttl" => $data['attl'],":owner" => $data['owner'],":serial" => $data['serial'],":id" => $domain);
-		DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, owner = :owner, serial = :serial WHERE id = :id", $bind) or die(DB::error());
+		$bind = array(":refresh" => $data['refresh'],":retry" => $data['retry'],":expire" => $data['expire'],":ttl" => $data['attl'],":serial" => $data['serial'],":id" => $domain);
+		DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, serial = :serial WHERE id = :id", $bind) or die(DB::error());
+		if($data['owner'])
+			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owner" => $data['owner'], ":id" => $domain));
 		parent::set_zone($domain, $data);
 		return true;
 	}
@@ -108,6 +110,14 @@ class server extends dns_server {
 			$return[] = $row;
 		}
 		return $return;
+	}
+	
+	public static function get_zone_by_name($name) {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["soa"]." where origin = :name", array(":name" => $name.".")) or die(DB::error());
+		$zone = DB::fetch_array($res);
+		return self::get_zone($zone['id']);
+		
 	}
 }
 ?>

@@ -114,5 +114,6 @@ class dns_server {
 	
 	/* function to get all domain records in webinterface */
 	public static function get_all_zones ($owner) { /* here we not need send anything to api */ }
+	public static function get_zone_by_name($name) { /* here we not need send anything to api */ }
 }
 ?>
