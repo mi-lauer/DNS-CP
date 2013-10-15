@@ -28,7 +28,7 @@ class DB {
 	 * @return	true/false
 	 */
 	public static function connect() {
-		global $database;
+		global $database, $conf;
 		try {
 			switch (strtolower($database["typ"])) {
 				case "dblib":
@@ -85,7 +85,7 @@ class DB {
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
 						self::$conn = new PDO("sqlite:".$dbfile, $database["user"], $database["pw"]);
 						if($created) {
-							self::$conn->exec(file_get_contents($rootdir."lib/database/db.sqlite.sql"));
+							self::$conn->exec(file_get_contents($rootdir."sql/".$conf["server"]."/sqlite.sql"));
 						}
 					} else {
 						self::$err = "cant crate the sqlite database";

@@ -20,7 +20,7 @@ The installation isn't so easy than it will be in the future, when we've have en
 
  * Clone the git repository: `git clone https://github.com/Stricted/DNS-CP.git`
  * Change the `config.sample.php` file to your needs and rename it to `config.php`
- * Import the structure in `lib/database/db.<DBsystem>.sql` file in your database.
+ * Import the structure in `sql/<dnsserver>/<DBsystem>.sql` file in your database.
  * Open the page and use the default user and password to login: `admin`
 
 ### Screenshots

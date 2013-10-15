@@ -36,7 +36,7 @@ $conf["name"]           = "DNS-CP";                   // Name of Page
 $conf["lang"]           = "en";                       // Site Language
 
 // server
-$conf["server"]         = "mydns";                    // Server typ (available: mydns, bind9, powerdns, api)
+$conf["server"]         = "mydns";                    // Server typ (available: mydns, powerdns)
 
 // api
 $conf['apikey']         = "";                         // access key for the api
