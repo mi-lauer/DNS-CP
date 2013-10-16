@@ -121,7 +121,7 @@ class user {
 	 * @param	integer	$admin
 	 * @return	string
 	 */
-	public static function add ($user, $pass, $pass2, $admin) {
+	public static function add_user ($user, $pass, $pass2, $admin) {
 		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
 		$row = DB::fetch_array($res);
@@ -144,7 +144,7 @@ class user {
 	 * @param	integer	$id
 	 * @return	string
 	 */
-	public static function del ($id) {
+	public static function del_user ($id) {
 		global $conf;
 		if($id == 1) {
 			return '<font color="#ff0000">You can not delete the main admin with id 1.</font>';
@@ -165,7 +165,7 @@ class user {
 	 * @param	string	$pass2
 	 * @return	string
 	 */
-	public static function change ($action, $id, $admin, $pass = Null, $pass2 = Null) {
+	public static function set_user ($action, $id, $admin, $pass = Null, $pass2 = Null) {
 		global $conf;
 		if($action == "chpw") {
 			if($pass == $pass2) {
@@ -181,8 +181,32 @@ class user {
 			return '<font color="#008000">Status changed sucessfully.</font>';
 		}
 	}
-	/* will be added later
-	public static function get_users () { }
-	*/
+	
+	/**
+	 * returns the user
+	 *
+	 * @param	integer	$user
+	 * @return	array
+	 */
+	public static function get_user ($user) {
+		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $user)) or die(DB::error());
+		return DB::fetch_array($res);
+	}
+	
+	/*
+	 * returns all users
+	 *
+	 * @return array
+	 */
+	public static function get_users () {
+		global $conf;
+		$res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
+		$return = array();
+		while ($row = DB::fetch_array($res)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
+	
 }
 ?>

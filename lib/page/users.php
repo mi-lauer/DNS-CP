@@ -24,7 +24,7 @@
 if(user::isAdmin()){
 if(isset($_GET["act"]) && $_GET["act"] == "add") {
 if(isset($_POST["Submit"])) {
-	echo user::add($_POST["username_one"], $_POST["password_one"], $_POST["confirm_password"], $_POST["admin"]);
+	echo user::add_user($_POST["username_one"], $_POST["password_one"], $_POST["confirm_password"], $_POST["admin"]);
 }
 ?>
 
@@ -64,24 +64,23 @@ if(isset($_POST["Submit"])) {
 }elseif(isset($_GET["id"])){
 	if(isset($_GET["act"]) && $_GET["act"] == "del") {
 		if($_GET['id'] != 1) {
-			echo user::del($_GET['id']);
+			echo user::del_user($_GET['id']);
 		}
 	} else {
 	if(isset($_POST["Submit"])) {
 		if(isset($_POST["password_one"]) && isset($_POST["confirm_password"]) && $_POST["password_one"] != "" && $_POST["confirm_password"] != ""){
 			if($_GET['id'] != 1) {
-				echo user::change("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
+				echo user::set_user("chpw", $_GET['id'], $_POST["admin"], $_POST["password_one"], $_POST["confirm_password"]);
 			} else {
-				echo user::change("chpw", $_GET['id'], 1, $_POST["password_one"], $_POST["confirm_password"]);
+				echo user::set_user("chpw", $_GET['id'], 1, $_POST["password_one"], $_POST["confirm_password"]);
 			}
 		} elseif(isset($_POST["admin"])) {
 			if($_GET['id'] != 1) {
-				echo user::change("chad", $_GET['id'], $_POST["admin"]);
+				echo user::set_user("chad", $_GET['id'], $_POST["admin"]);
 			}
 		}
 	}
-$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_GET["id"])) or die(DB::error());
-$row = DB::fetch_array($res);
+$row = user::get_user($_GET["id"]);
 ?>
 
 <form name="form1" method="post" action="?page=users&id=<?php echo $_GET["id"];?>" class="jNice">
@@ -144,7 +143,7 @@ $records = count(server::get_all_records($row2["id"]));
 <?php
 }
 } else {
-$res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
+$res = user::get_users();
 ?>
 <strong><a href="?page=users&act=add">Add a new user</a></strong><br /><br />
 <table width="100%"  border="0" cellspacing="1">
@@ -154,7 +153,7 @@ $res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or di
 		<td><strong>Zones</strong></td>
 		<td><strong>Delete</strong></td>
 	</tr>
-<?php while ($row = DB::fetch_array($res)) { ?>
+<?php foreach($res as $id => $row )) { ?>
 	<tr>
 		<td class="action"><a class="view" href="?page=users&id=<?php echo $row["id"]; ?>"><?php echo $row["username"]; ?></a></td>
 		<td class="action"><a class="edit" href="?page=users&id=<?php echo $row["id"]; ?>"><?php if($row["admin"] == 1) { echo "yes"; } else { echo "no"; } ?></a></td>

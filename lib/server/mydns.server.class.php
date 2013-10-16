@@ -30,11 +30,14 @@ class server extends dns_server {
 		global $conf;
 		$bind = array(":zone" => $domain,":name" => $record['newhost'],":type" => $record['newtype'],":data" => $record['newdestination'],":aux" => $record['newpri'],":ttl" => $record['newttl']);
 		DB::query("INSERT INTO ".$conf["rr"]." (id, zone, name, type, data, aux, ttl) VALUES (NULL, :zone, :name, :type, :data, :aux, :ttl)", $bind) or die(DB::error());
+		parent::add_record($domain, $record);
+		return true;
 	}
 	
 	public static function del_record ($domain, $record) {
 		global $conf;
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE id = :id AND zone = :zone", array(":id" => $record,":zone" => $domain)) or die(DB::error());
+		parent::del_record($domain, $record);
 		return true;
 	}
 	
@@ -42,6 +45,7 @@ class server extends dns_server {
 		global $conf;
 		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['aux'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain);
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, aux = :aux, data = :data, ttl = :ttl WHERE id = :id AND zone = :zone", $bind) or die(DB::error());
+		parent::set_record($domain, $record);
 		return true;
 	}
 	
@@ -63,7 +67,6 @@ class server extends dns_server {
 		} else {
 			$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $domain, ":owner" => $owner)) or die(DB::error());
 		}
-		parent::get_zone($domain, $owner, $api);
 		return DB::fetch_array($res);
 	}
 	
