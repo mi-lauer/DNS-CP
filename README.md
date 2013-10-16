@@ -25,7 +25,7 @@ The installation isn't so easy than it will be in the future, when we've have en
 
 ### Screenshots
 ---
-![Screenshot 1](http://stricted.github.io/DNS-CP/images/screenshot1.png "Screenshot 1")
+![Screenshot 1](http://dns-cp.de/dns.png "Screenshot 1")
 
 ### License
 ---
