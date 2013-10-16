@@ -53,15 +53,5 @@ class func {
 	public static function ent ($str) {
 		return htmlentities($str);
 	}
-
-	/**
-	 * Output current dns server
-	 *
-	 * @return   string    dns server in lowercase
-	*/
-	public static function currentDNSserver () {
-		global $conf;
-		return $conf['server'];
-	}
 }
 ?>

@@ -33,13 +33,6 @@ class API {
 	}
 	
 	/* RECORD */
-	public static function get_record ($domain, $record) {
-		$ret = array();
-		$ret['status'] = "200";
-		$ret['data'] = server::get_record($domain, $record);
-		echo json_encode($ret);
-	}
-	
 	public static function add_record ($domain, $record) {
 		$record = unserialize(base64_decode($record));
 		$ret = array();
@@ -64,14 +57,7 @@ class API {
 		echo json_encode($ret);
 	}
 	
-	/* ZONE */
-	public static function get_zone ($domain) {
-		$ret = array();
-		$ret['status'] = "200";
-		$ret['data'] = server::get_zone($domain, Null, true);
-		echo json_encode($ret);
-	}
-	
+	/* ZONE */	
 	public static function add_zone ($domain) {
 		$ret = array();
 		$ret['status'] = "200";

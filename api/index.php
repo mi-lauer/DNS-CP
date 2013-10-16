@@ -38,15 +38,7 @@ if(isset($_GET['key']) && !empty($_GET['key'])) {
 if(isset($array['key']) && !empty($array['key'])) {
 	if(API::login($array['key'])) {
 		if(isset($array['action']) && !empty($array['action']) && isset($array['data']) && !empty($array['data']) && isset($array['domain']) && !empty($array['domain'])) {
-			if($array['action'] == "get") {
-				if($array['data'] == "zone") {
-					echo API::get_zone($array['domain']);
-				} elseif($array['data'] == "record") {
-					if(isset($array['get'])) {
-						echo API::get_record($array['domain'], $array['get']);
-					} else { echo json_encode(array("status" => "403")); }
-				} else { echo json_encode(array("status" => "404")); }
-			} elseif($array['action'] == "add") {
+			if($array['action'] == "add") {
 				if($array['data'] == "zone") {
 					echo API::add_zone($array['domain']);
 				} elseif($array['data'] == "record") {

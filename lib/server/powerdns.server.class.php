@@ -40,12 +40,14 @@ class server extends dns_server {
 		global $conf;
 		$bind = array(":zone" => $domain,":name" => $record['newhost'],":type" => $record['newtype'],":data" => $record['newdestination'],":aux" => $record['newpri'],":ttl" => $record['newttl'], ":date" => time());
 		DB::query("INSERT INTO ".$conf["rr"]." (domain_id ,name ,type ,content ,ttl ,prio ,change_date) VALUES (:zone, :name, :type, :data, :ttl, :aux, :date)", $bind) or die(DB::error());
+		parent::add_record($domain, $record);
 		return true;
 	}
 	
 	public static function del_record ($domain, $record) {
 		global $conf;
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE id = :id and domain_id = :zone", array(":id" => $record, ":zone" => $domain)) or die(DB::error());
+		parent::del_record($domain, $record);
 		return true;
 	}
 	
@@ -53,6 +55,7 @@ class server extends dns_server {
 		global $conf;
 		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['aux'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain, ":date" => time());
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, content = :data, ttl = :ttl, prio = :aux, change_date = :date WHERE id = :id and domain_id = :zone", $bind) or die(DB::error());	
+		parent::set_record($domain, $record);
 		return true;
 	}
 	

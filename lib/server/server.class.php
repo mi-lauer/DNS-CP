@@ -19,16 +19,7 @@
 
 class dns_server {
 	/* RECORD */
-	public static function get_record ($domain, $record) {
-		global $conf;
-		if($conf['useremoteapi']) {
-			foreach($conf['api'] as $id => $api) {
-				APIClient::connect($api['url']);
-				$post = array("key" => $api['key'], "action" => "get", "data" => "record", "domain" => $domain, "get" => $record);
-				APIClient::sendPost($post);
-			}
-		}
-	}
+	public static function get_record ($domain, $record) { /* here we not need send anything to api */ }
 	
 	public static function add_record ($domain, $record) {
 		global $conf;
@@ -68,16 +59,7 @@ class dns_server {
 	public static function get_all_records ($domain) { /* here we not need send anything to api */ }
 
 	/* ZONE */
-	public static function get_zone ($domain, $owner = Null, $api = false) {
-		global $conf;
-		if($conf['useremoteapi']) {
-			foreach($conf['api'] as $id => $api) {
-				APIClient::connect($api['url']);
-				$post = array("key" => $api['key'], "data" => "zone", "action" => "get", "domain" => $domain);
-				APIClient::sendPost($post);
-			}
-		}
-	}
+	public static function get_zone ($domain, $owner = Null, $api = false) { /* here we not need send anything to api */ }
 	
 	public static function add_zone ($domain, $owner = Null) {
 		global $conf;

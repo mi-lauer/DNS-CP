@@ -82,8 +82,8 @@
 						<td>
 							<select name="owner">
 								<?php 
-								$res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
-								while ($row3 = DB::fetch_array($res3)) { ?>
+								$res3 = user::get_users();
+								foreach($res3 as $id3 => $row3 ) { ?>
 								<option value="<?php echo $row3["id"]; ?>"><?php echo $row3["username"]; ?></option>
 								<?php } ?>
 							</select>
@@ -164,18 +164,13 @@
 			}
 
 			if($isAdmin){
-				#$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id", array(":id" => $_GET["id"])) or die(DB::error());
 				$row = server::get_zone($_GET["id"]);
 				$res2 = server::get_all_records($_GET["id"]);
-				#$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone = :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
 			} else {
-				#$res = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $_GET["id"], ":owner" => $_SESSION['userid'])) or die(DB::error());
 				$row = server::get_zone($_GET["id"], $_SESSION['userid']);
 				$res2 = server::get_all_records($_GET["id"]);
-				#$res2 = DB::query("SELECT * FROM ".$conf["rr"]." where zone =' :id ORDER BY type ASC", array(":id" => $_GET["id"])) or die(DB::error());
 			}
 
-			#$row = DB::fetch_array($res);
 			if($row["owner"] == $_SESSION['userid'] OR $isAdmin) {
 				$i = 0;
 
@@ -204,12 +199,12 @@
 						<?php if($isAdmin) { ?>
 						<tr>
 							<?php
-							$res3 = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
+							$res3 = user::get_users();
 							?>
 							<td><div align="right"><font face="Arial,Helvetica" size="-1"><strong>Owner: </strong></font></div></td>
 							<td>
 								<select name="owner">
-									<?php while ($row3 = DB::fetch_array($res3)) { ?>
+									<?php foreach($res3 as $id3 => $row3 ) { ?>
 									<?php if($row3["id"] == $row["owner"]) { ?>
 									<option value="<?php echo $row3["id"]; ?>" selected><?php echo $row3["username"]; ?></option>
 									<?php } else { ?>
@@ -283,10 +278,8 @@
 
 	if($show_list) {
 		if($isAdmin){
-			#$res = DB::query("SELECT * FROM ".$conf["soa"]." ORDER BY origin ASC") or die(DB::error());
 			$res = server::get_all_zones();
 		} else {
-			#$res = DB::query("SELECT * FROM ".$conf["soa"]." WHERE owner = :owner ORDER BY origin ASC", array(":owner" => $_SESSION['userid'])) or die(DB::error());
 			$res = server::get_all_zones($_SESSION['userid']);
 		}
 
