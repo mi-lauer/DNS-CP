@@ -1,6 +1,6 @@
 <?php
 /* templates/users.php - DNS-CP
- * Copyright (C) 2013  CNS-CP project
+ * Copyright (C) 2013  DNS-CP project
  * http://dns-cp-de/
  * 
  * This program is free software: you can redistribute it and/or modify
