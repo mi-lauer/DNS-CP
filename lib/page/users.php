@@ -153,7 +153,7 @@ $res = user::get_users();
 		<td><strong>Zones</strong></td>
 		<td><strong>Delete</strong></td>
 	</tr>
-<?php foreach($res as $id => $row )) { ?>
+<?php foreach($res as $id => $row ) { ?>
 	<tr>
 		<td class="action"><a class="view" href="?page=users&id=<?php echo $row["id"]; ?>"><?php echo $row["username"]; ?></a></td>
 		<td class="action"><a class="edit" href="?page=users&id=<?php echo $row["id"]; ?>"><?php if($row["admin"] == 1) { echo "yes"; } else { echo "no"; } ?></a></td>

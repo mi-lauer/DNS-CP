@@ -189,6 +189,7 @@ class user {
 	 * @return	array
 	 */
 	public static function get_user ($user) {
+		global $conf;
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $user)) or die(DB::error());
 		return DB::fetch_array($res);
 	}

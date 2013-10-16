@@ -83,7 +83,7 @@
 							<select name="owner">
 								<?php 
 								$res3 = user::get_users();
-								foreach($res3 as $id3 => $row3 )) { ?>
+								foreach($res3 as $id3 => $row3 ) { ?>
 								<option value="<?php echo $row3["id"]; ?>"><?php echo $row3["username"]; ?></option>
 								<?php } ?>
 							</select>
@@ -204,7 +204,7 @@
 							<td><div align="right"><font face="Arial,Helvetica" size="-1"><strong>Owner: </strong></font></div></td>
 							<td>
 								<select name="owner">
-									<?php foreach($res3 as $id3 => $row3 )) { ?>
+									<?php foreach($res3 as $id3 => $row3 ) { ?>
 									<?php if($row3["id"] == $row["owner"]) { ?>
 									<option value="<?php echo $row3["id"]; ?>" selected><?php echo $row3["username"]; ?></option>
 									<?php } else { ?>
