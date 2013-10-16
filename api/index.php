@@ -19,12 +19,12 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 require_once("../config.php");
-require_once("../lib/database/db.class.php");
+require_once("../lib/system/db.class.php");
 DB::connect();
 require_once("../lib/system/apiclient.class.php");
 require_once("../lib/server/server.class.php");
 require_once("../lib/server/".$conf['server'].".server.class.php");
-require_once("../lib/user/user.class.php");
+require_once("../lib/system/user.class.php");
 require_once("../lib/system/func.class.php");
 require_once("../lib/system/api.class.php");
 if($conf['enableapi'] == false) die(json_encode(array("status" => "400")));

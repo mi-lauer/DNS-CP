@@ -31,25 +31,6 @@ class DB {
 		global $database, $conf;
 		try {
 			switch (strtolower($database["typ"])) {
-				case "dblib":
-					if (!extension_loaded("pdo_dblib")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-dblib.php\">pdo_dblib</a> PHP extension."); // check if extension
-					if(empty($database["port"])) $database["port"]=1433;
-					self::$conn = new PDO("dblib:host=".$database["host"].";port=".$database["port"].";dbname=".$database["db"], $database["user"], $database["pw"]);
-					break;
-					
-				case "odbc":
-					if (!extension_loaded("pdo_odbc")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-odbc.php\">pdo_odbc</a> PHP extension."); // check if extension loaded
-					if(empty($database["port"])) $database["port"]=1433;
-					self::$conn = new PDO("odbc:Driver=SQL Server; TDS_Version=8.2; Port=".$database["port"]."; Server=".$database["host"]."; Database=".$database["db"]."; UID=".$database["user"]."; PWD=".$database["pw"].";");
-					break;
-			
-										
-				case "sqlsrv":
-					if (!extension_loaded("pdo_sqlsrv")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-sqlsrv.php\">pdo_sqlsrv</a> PHP extension."); // check if extension loaded	
-					if(empty($database["port"])) $database["port"]=1433;
-					self::$conn = new PDO("sqlsrv:Server=".$database["host"].",".$database["port"].";Database=".$database["db"], $database["user"], $database["pw"]);
-					break;
-			
 				case "mysql":
 					if (!extension_loaded("pdo_mysql")) die("Missing <a href=\"http://php.net/manual/de/ref.pdo-mysql.php\">pdo_mysql</a> PHP extension."); // check if extension loaded
 					if(empty($database["port"])) $database["port"]=3306;
@@ -67,16 +48,14 @@ class DB {
 					$rootdir = dirname(__FILE__)."/../../";
 					$dbfile  = $rootdir."database/".$database["db"].".db";
 					$created = false;
-					if(!file_exists($dbfile)) {
-						$created = true;
-					}
 					if(!file_exists($rootdir."database/")) {
 						// try to create the database folder
 						@mkdir($rootdir."database", 0777, true);			
 					}
 					if(!file_exists($dbfile)) {
 						// try to create the database file
-						@touch($dbfile);
+						if(@touch($dbfile))
+							$created = true;
 					}
 					if(!file_exists($rootdir."database/.htaccess")) {
 						// try to create the htaccess file
@@ -84,9 +63,8 @@ class DB {
 					}
 					if(file_exists($dbfile) && is_readable($dbfile) && is_writable($dbfile)) {
 						self::$conn = new PDO("sqlite:".$dbfile, $database["user"], $database["pw"]);
-						if($created) {
+						if($created)
 							self::$conn->exec(file_get_contents($rootdir."sql/".$conf["server"]."/sqlite.sql"));
-						}
 					} else {
 						self::$err = "cant crate the sqlite database";
 						return false;
@@ -146,26 +124,6 @@ class DB {
 		} catch (PDOException $e) {
 			self::$err = $e->getMessage();
 		}
-	}
-	
-	/**
-	 * Counts number of rows in a result returned by a SELECT query.
-	 *
-	 * @param	string		$res	a database query	
-	 * @return 	integer				number of rows in a result
-	 */
-	public static function num_rows ($res) {
-		/* some problems with sqlite i will check this later */
-		/*
-		try {
-			return $res->rowCount();
-		} catch (PDOException $e) {
-			self::$err = $e->getMessage();
-		}
-		*/
-		$count = 0;
-		while(self::fetch_array($res)) { $count++; }
-		return $count;
 	}
 	
 	/**

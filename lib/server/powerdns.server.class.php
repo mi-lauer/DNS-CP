@@ -122,8 +122,8 @@ class server extends dns_server {
 		if(empty($owner)) {
 			DB::query("INSERT INTO ".$conf["soa"]." (name, master, last_check, type, notified_serial, account, owner) VALUES (:zone, NULL, NULL, 'MASTER', NULL, NULL, 0);", array(":zone" => $domain));
 		} else {
-		DB::query("INSERT INTO ".$conf["soa"]." (name, master, last_check, type, notified_serial, account, owner) VALUES (:zone, NULL, NULL, 'MASTER', NULL, NULL, :owner);", array(":zone" => $domain, ":owner" => $owner));
-	}
+			DB::query("INSERT INTO ".$conf["soa"]." (name, master, last_check, type, notified_serial, account, owner) VALUES (:zone, NULL, NULL, 'MASTER', NULL, NULL, :owner);", array(":zone" => $domain, ":owner" => $owner));
+		}
 		$content = $conf["soans"]." ".$conf["mbox"]." ".date("Ymd")."01 ".$conf["refresh"]." ".$conf["retry"]." ".$conf["expire"]." ".$conf["minimum_ttl"];
 		$bind = array(":id" => DB::last_id(), ":name" => $domain, ":type" => "SOA", ":content" => $content, ":ttl" => $conf["ttl"], ":prio" => 0, ":date" => time());
 		DB::query("INSERT INTO ".$conf["rr"]." (domain_id, name, type, content, ttl, prio, change_date) VALUES (:id, :name, :type, :content, :ttl, :prio, :date);", $bind);
