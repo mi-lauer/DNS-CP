@@ -16,9 +16,7 @@ foreach ($zones as $zone) {
 	file \"".$zone['origin'].".db\";
 };\n\n";
 
-	$out = 
-"\$TTL   " . $zone['ttl'] . "
-@       IN      SOA     " . $zone['ns'] . " " . $zone['mbox'] . " (
+	$out = $zone['origin']."       IN      SOA     " . $zone['ns'] . " " . $zone['mbox'] . " (
 			" . $zone['serial'] . " \t; Serial
 			" . $zone['refresh'] . " \t\t; Refresh
 			" . $zone['retry'] . " \t\t; Retry
@@ -27,7 +25,7 @@ foreach ($zones as $zone) {
 ;\n" ;
 	$records = server::get_all_records($zone['id']);
 	foreach ($records as $record) {
-		$out .= $record['name'] . "\tIN\t" . $record['type'] . "\t" . $record['aux'] . "\t" . $record['data'] . "\n";
+		$out .= $record['name'] . "\t ".$record['ttl']."\tIN\t" . $record['type'] . "\t" . ($record['type'] == "MX" ? $record['aux'] : "") . "\t" . $record['data'] . "\n";
 	}
     $handler = fOpen("domains.cfg" , "a+");
     fWrite($handler , $cout);
