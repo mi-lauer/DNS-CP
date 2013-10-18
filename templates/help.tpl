@@ -1,24 +1,5 @@
-<?php
-/* templates/help.php - DNS-CP
- * Copyright (C) 2013  DNS-CP project
- * http://dns-cp-de/
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
- * along with this program. If not, see <http://www.gnu.org/licenses/>. 
- */
-
-?>
-<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{_name}</a></h2>
+{include file="header"}
+<h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{$name}</a></h2>
 <div id="main">
 <b>Forward DNS and Reverse DNS (A and PTR)</b><br />
 The Address (A) record associates a domain name with an IP address, which is the primary purpose of the DNS system.  The Pointer (PTR) record provides data for reverse DNS, which is used for logging the domain name and verification purposes.  Also called "reverse DNS," the PTR record is an option.  See <a href="http://www.pcmag.com/encyclopedia/term/50493/reverse-dns">reverse DNS</a>.<br />
@@ -51,3 +32,4 @@ The first value is a number specifying the weight for this entry.<br />
 The second field is a number specifying the port on the target<br />
 host of this service. The last field is a name specifying the target host.<br /><br />
 </div>
+{include file="footer"}

@@ -20,8 +20,13 @@
 if(isset($_POST["Submit"])) {
 	$error = user::login($_POST['username'], $_POST['password']);
 } else { $error = ""; }
-template::show("login", array(
+tpl::show("login", array(
 		"_name" => "Login",
-		"_error" => $error
+		"_error" => $error,
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>

@@ -34,6 +34,7 @@ $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 
 $conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 
 // requirements
+require_once("lib/template/template.class.php");
 require_once("config.php");
 require_once("lib/system/db.class.php");
 DB::connect() or die(DB::error());
@@ -41,7 +42,7 @@ require_once("lib/system/user.class.php");
 require_once("lib/system/apiclient.class.php");
 require_once("lib/server/server.class.php");
 require_once("lib/server/".$conf['server'].".server.class.php");
-require_once("lib/system/template.class.php");
+require_once("lib/system/tpl.class.php");
 require_once("lib/system/func.class.php");
 require_once("lib/system/dns.class.php");
 require_once("lib/whois/whois.main.php");
@@ -78,40 +79,29 @@ $title = $conf["name"];
 if(!empty($menu[$page])) {
 	$title .= " :: ".$menu[$page];
 }
-
 if(user::isLoggedIn()){
 	$tmenu = "";
 	foreach($menu as $mpage => $menu_name) {
 		if($page == $mpage) { $class = ' class="active"'; }else{ $class = null; }
 		$tmenu .= '<li><a href="?page='.$mpage.'"'.$class.'>'.$menu_name.'</a></li>'."\n";
 	}
+	$login = '<li class="logout"><a href="?page=logout">LOGOUT</a></li>';
 	if(isset($page)) {
 		$page = "lib/page/".$page.".php";
 		if(in_array($page, $pages)) {
 			if(@file_exists($page)){
-				$content = '<?php require_once("'.$page.'"); ?>';
+				require_once($page);
 			} else {
-				$content = '<?php require_once("lib/page/404.php"); ?>';
+				require_once("lib/page/404.php");
 			}
 		} else {
-			$content = '<?php require_once("lib/page/404.php"); ?>';
+			require_once("lib/page/404.php");
 		}
 	}
-	$login = '<li class="logout"><a href="?page=logout">LOGOUT</a></li>';
 } else {
 	$tmenu ='<li><a href="?page=login" class="active">Login</a></li>';
-	$content = '<?php require_once("lib/page/login.php"); ?>';
 	$login = '<li class="logout"><a href="?page=login">LOGIN</a></li>';
+	require_once("lib/page/login.php");
 }
-$data = array(
-		"_title" => $title,
-		"_name" => $conf["name"],
-		"_login" => $login,
-		"_menu" => $tmenu,
-		"_content" => $content,
-		"_build" => $conf["build"],
-		"_version" => $conf["version"]
-		);
-template::show("index", $data);
 DB::close();
 ?>

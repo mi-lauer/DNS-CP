@@ -33,8 +33,13 @@ if(isset($_POST["Submit"])) {
 		}
 	}
 } else { $cont = ""; }
-template::show("tools", array(
-		"_name" => "Tools",
-		"_content" => $cont
+tpl::show("tools", array(
+		"name" => "Tools",
+		"content" => $cont,
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>

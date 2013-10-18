@@ -25,10 +25,16 @@ if(user::isAdmin()){
 }
 
 if(user::isAdmin()) { $status = "(<u>administrator</u>)"; } else { $status = "(<u>customer</u>)"; }
-template::show("home", array(
-		"_name" => "Home",
-		"_user" => $_SESSION['username'],
-		"_status" => $status,
-		"_zones" => $i
+tpl::show("home", array(
+		"name" => "Home",
+		"user" => $_SESSION['username'],
+		"status" => $status,
+		"zones" => $i,
+
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>

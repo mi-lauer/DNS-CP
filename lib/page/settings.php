@@ -21,8 +21,13 @@ if(isset($_POST["Submit"])){
 	$error = user::change_password($_SESSION['userid'], $_POST["password_old"], $_POST["password_one"], $_POST["confirm_password"]);
 } else { $error = ""; }
 
-template::show("settings", array(
-	"_name" => "Settings",
-	"_error" => $error
+tpl::show("settings", array(
+	"name" => "Settings",
+	"error" => $error,
+	"title" => $title,
+	"login" => $login,
+	"menu" => $tmenu,
+	"build" => $conf["build"],
+	"version" => $conf["version"]
 	));
 ?>
