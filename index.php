@@ -54,6 +54,8 @@ foreach (glob("lib/page/*.php") as $file) {
 	$pages[] = $file;
 }
 
+// set language to template
+tpl::set_lang($lang);
 
 $page = NULL;
 if(isset($_GET["page"]) && !empty($_GET["page"]))
