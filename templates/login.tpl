@@ -1,7 +1,7 @@
 {include file="header"}
 <h2><a href="?page=home">DNS</a> &raquo; <a href="#" class="active">{$name}</a></h2>
 <div id="main">
-{$error}
+{if $error|isset}{$error}{/if}
 <form method="post" name="login" action="?page=login" class="jNice">
 	<table width="320"  border="0" align="center">
 		<tr>

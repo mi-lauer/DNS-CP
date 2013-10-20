@@ -18,8 +18,8 @@
  */
 
 tpl::show("404", array(
-		"_name" => "404 - Not found",
-		"_content" => "<b>This page does not exist!</b>",
+		"name" => "404 - Not found",
+		"content" => "<b>This page does not exist!</b>",
 		"title" => $title,
 		"login" => $login,
 		"menu" => $tmenu,
