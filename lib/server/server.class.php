@@ -22,7 +22,7 @@ class dns_server {
 	public static function get_record ($domain, $record) { /* here we not need send anything to api */ }
 	
 	public static function add_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
@@ -33,7 +33,7 @@ class dns_server {
 	}
 	
 	public static function del_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
@@ -44,7 +44,7 @@ class dns_server {
 	}
 	
 	public static function set_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 			
@@ -62,7 +62,7 @@ class dns_server {
 	public static function get_zone ($domain, $owner = Null, $api = false) { /* here we not need send anything to api */ }
 	
 	public static function add_zone ($domain, $owner = Null) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
@@ -73,7 +73,7 @@ class dns_server {
 	}
 	
 	public static function del_zone ($domain) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
@@ -84,7 +84,7 @@ class dns_server {
 	}
 	
 	public static function set_zone ($domain, $data) {
-		global $conf;
+		$conf = system::get_conf();
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);

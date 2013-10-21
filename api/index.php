@@ -19,6 +19,11 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 require_once("../config.php");
+require_once("../lib/system/system.class.php");
+// set system variables
+system::set_conf($conf);
+system::set_database($database);
+
 require_once("../lib/system/db.class.php");
 DB::connect();
 require_once("../lib/system/apiclient.class.php");

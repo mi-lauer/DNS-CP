@@ -34,10 +34,16 @@ $conf["typearray"]      = array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SRV', 
 $conf["avail_dns_srv"]  = array("MyDNS", "Bind9", "PowerDNS");
 
 // requirements
-require_once("lib/template/template.class.php");
 require_once("config.php");
+require_once("lib/system/system.class.php");
+// set system variables
+system::set_conf($conf);
+system::set_database($database);
+
+require_once("lib/template/template.class.php");
 require_once("lib/system/db.class.php");
 DB::connect() or die(DB::error());
+
 require_once("lib/system/user.class.php");
 require_once("lib/system/apiclient.class.php");
 require_once("lib/server/server.class.php");

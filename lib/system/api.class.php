@@ -25,7 +25,7 @@ class API {
 	 * @return		string
 	 */
 	public static function login ($key) {
-		global $conf;
+		$conf = system::get_conf();
 		if($key == $conf['apikey'])
 			return true;
 		else
