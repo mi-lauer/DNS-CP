@@ -73,7 +73,7 @@ class API {
 	}
 	
 	public static function set_zone ($domain, $data) {
-		$data = unserialize($data);
+		$data = unserialize(base64_decode($data));
 		$ret = array();
 		$ret['status'] = "200";
 		$ret['data'] = server::set_zone($domain, $data);

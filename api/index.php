@@ -30,7 +30,6 @@ require_once("../lib/system/apiclient.class.php");
 require_once("../lib/server/server.class.php");
 require_once("../lib/server/".$conf['server'].".server.class.php");
 require_once("../lib/system/user.class.php");
-require_once("../lib/system/func.class.php");
 require_once("../lib/system/api.class.php");
 if($conf['enableapi'] == false) die(json_encode(array("status" => "400")));
 if(isset($_GET['key']) && !empty($_GET['key'])) {

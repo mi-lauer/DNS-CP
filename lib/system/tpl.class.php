@@ -40,7 +40,7 @@ class tpl {
 		$tpl->compile_dir = "templates/compiled";
 		$tpl->compile_check = true;
 		$tpl->tpl_ending = "tpl";
-		$tpl->language = self::$lang
+		$tpl->language = self::$lang;
 		$tpl->assign($replace);
 		$tpl->display($template);
 	}
