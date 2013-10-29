@@ -28,7 +28,8 @@ class DB {
 	 * @return	true/false
 	 */
 	public static function connect() {
-		global $database, $conf;
+		$conf = system::get_conf();
+		$database = system::get_database();
 		try {
 			switch (strtolower($database["typ"])) {
 				case "mysql":

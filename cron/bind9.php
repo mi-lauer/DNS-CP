@@ -1,6 +1,10 @@
 <?php
 if(!defined('STDIN')) die();
 require_once("../config.php");
+require_once("../lib/system/system.class.php");
+// set system variables
+system::set_conf($conf);
+system::set_database($database);
 require_once("../lib/system/db.class.php");
 DB::connect();
 require_once("../lib/server/server.class.php");

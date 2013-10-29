@@ -26,7 +26,7 @@ class user {
 	 * @return		string
 	 */
 	public static function login ($user, $pass) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if($row["password"] == md5($pass)) {
@@ -60,7 +60,7 @@ class user {
 	 * @return		string
 	 */
 	public static function change_password ($id, $opw, $npw, $npw2) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $id)) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if(isset($npw) && isset($npw2) && isset($opw) && $opw != "" && $npw != "" && $npw2 != ""){
@@ -98,7 +98,7 @@ class user {
 	 * @return 		true or false
 	 */
 	public static function isAdmin () {
-		global $conf;
+		$conf = system::get_conf();
 		if(isset($_SESSION["userid"])) {
 			$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $_SESSION["userid"])) or die(DB::error());
 			$row = DB::fetch_array($res);
@@ -122,7 +122,7 @@ class user {
 	 * @return	string
 	 */
 	public static function add_user ($user, $pass, $pass2, $admin) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE username = :user", array(":user" => $user)) or die(DB::error());
 		$row = DB::fetch_array($res);
 		if(!$row['username'] && $row['username'] != $user) {
@@ -145,7 +145,7 @@ class user {
 	 * @return	string
 	 */
 	public static function del_user ($id) {
-		global $conf;
+		$conf = system::get_conf();
 		if($id == 1) {
 			return '<font color="#ff0000">You can not delete the main admin with id 1.</font>';
 		}else{
@@ -166,7 +166,7 @@ class user {
 	 * @return	string
 	 */
 	public static function set_user ($action, $id, $admin, $pass = Null, $pass2 = Null) {
-		global $conf;
+		$conf = system::get_conf();
 		if($action == "chpw") {
 			if($pass == $pass2) {
 				$bind = array(":pass" => md5($pass), ":adm" => $admin, ":id" => $id);
@@ -189,7 +189,7 @@ class user {
 	 * @return	array
 	 */
 	public static function get_user ($user) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["users"]." WHERE id = :id", array(":id" => $user)) or die(DB::error());
 		return DB::fetch_array($res);
 	}
@@ -200,7 +200,7 @@ class user {
 	 * @return array
 	 */
 	public static function get_users () {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["users"]." ORDER BY username ASC") or die(DB::error());
 		$return = array();
 		while ($row = DB::fetch_array($res)) {

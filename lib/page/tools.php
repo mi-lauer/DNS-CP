@@ -32,9 +32,16 @@ if(isset($_POST["Submit"])) {
 			$cont .= $value."<br />";
 		}
 	}
-} else { $cont = ""; }
-template::show("tools", array(
-		"_name" => "Tools",
-		"_content" => $cont
+	$submit = true;
+} else { $cont = ""; $submit = false; }
+tpl::show("tools", array(
+		"name" => "Tools",
+		"submit" => $submit,
+		"content" => $cont,
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>

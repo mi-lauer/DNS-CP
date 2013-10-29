@@ -22,8 +22,13 @@ if(user::isLoggedIn()) {
 }else{
 	$error = 'You are not logged in. <a href="?page=login">Click here</a>.';
 }
-template::show("logout", array(
-		"_name" => "Logout",
-		"_error" => $error
+tpl::show("logout", array(
+		"name" => "Logout",
+		"error" => $error,
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>

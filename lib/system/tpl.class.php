@@ -1,5 +1,5 @@
 <?php
-/* lib/system/template.class.php - DNS-CP
+/* lib/system/tpl.class.php - DNS-CP
  * Copyright (C) 2013  DNS-CP project
  * http://dns-cp-de/
  * 
@@ -17,36 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-class template {
+class tpl {
+	private static $lang = array();
+
 	/**
-	 * get the template
+	 * set language array
 	 *
-	 * @param	string		$template
-	 * @return 	string		source from the template
+	 * @param	array	$lang
 	 */
-	public static function get_template($template) {
-		return file_get_contents("templates/".$template.".tpl");
+	public static function set_lang ($lang) {
+		self::$lang = $lang;
 	}
 	
 	/**
 	 * show the template
 	 *
 	 * @param	string		$content
-	 * @param	string		$replace
-	 * @return	string		returns the replaces template
+	 * @param	array		$replace
 	 */
 	public static function show ($template, $replace) {
-		global $conf, $lang;
-		$content = self::get_template($template);
-		/* replace variable placeholders */
-		foreach($replace as $name => $value) {
-			$content = str_replace("{".$name."}", $value, $content);
-		}
-		/* replace language placeholders */
-		foreach($lang as $name => $value) {
-			$content = str_replace("{@_".$name."}", $value, $content);
-		}
-		return eval("?>".$content);
+		$tpl = new template;
+		$tpl->compile_dir = "templates/compiled";
+		$tpl->compile_check = true;
+		$tpl->tpl_ending = "tpl";
+		$tpl->language = self::$lang;
+		$tpl->assign($replace);
+		$tpl->display($template);
 	}
 }
 ?>

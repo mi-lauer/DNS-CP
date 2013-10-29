@@ -25,7 +25,7 @@ class API {
 	 * @return		string
 	 */
 	public static function login ($key) {
-		global $conf;
+		$conf = system::get_conf();
 		if($key == $conf['apikey'])
 			return true;
 		else
@@ -73,7 +73,7 @@ class API {
 	}
 	
 	public static function set_zone ($domain, $data) {
-		$data = unserialize($data);
+		$data = unserialize(base64_decode($data));
 		$ret = array();
 		$ret['status'] = "200";
 		$ret['data'] = server::set_zone($domain, $data);

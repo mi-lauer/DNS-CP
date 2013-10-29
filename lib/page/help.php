@@ -17,6 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-template::show("help", array("_name" => "Help"));
+tpl::show("help", array(
+		"name" => "Help",
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
+		));
 ?>
 

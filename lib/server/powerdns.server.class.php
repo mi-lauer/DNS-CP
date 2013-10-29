@@ -21,7 +21,7 @@
 class server extends dns_server {
 	/* RECORD */
 	public static function get_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where id = :id and domain_id = :zone ", array(":zone" => $domain, ":id" => $record)) or die(DB::error());
 		$records = DB::fetch_array($res);
 		$return = array();
@@ -37,7 +37,7 @@ class server extends dns_server {
 	}
 	
 	public static function add_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		$bind = array(":zone" => $domain,":name" => $record['newhost'],":type" => $record['newtype'],":data" => $record['newdestination'],":aux" => $record['newpri'],":ttl" => $record['newttl'], ":date" => time());
 		DB::query("INSERT INTO ".$conf["rr"]." (domain_id ,name ,type ,content ,ttl ,prio ,change_date) VALUES (:zone, :name, :type, :data, :ttl, :aux, :date)", $bind) or die(DB::error());
 		parent::add_record($domain, $record);
@@ -45,14 +45,14 @@ class server extends dns_server {
 	}
 	
 	public static function del_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE id = :id and domain_id = :zone", array(":id" => $record, ":zone" => $domain)) or die(DB::error());
 		parent::del_record($domain, $record);
 		return true;
 	}
 	
 	public static function set_record ($domain, $record) {
-		global $conf;
+		$conf = system::get_conf();
 		$bind = array(":name" => $record['host'],":type" => $record['type'],":aux" => $record['aux'],":data" => $record['destination'],":ttl" => $record['ttl'],":id" => $record['host_id'],":zone" => $domain, ":date" => time());
 		DB::query("UPDATE ".$conf["rr"]." SET name = :name, type = :type, content = :data, ttl = :ttl, prio = :aux, change_date = :date WHERE id = :id and domain_id = :zone", $bind) or die(DB::error());	
 		parent::set_record($domain, $record);
@@ -60,7 +60,7 @@ class server extends dns_server {
 	}
 	
 	public static function get_all_records ($domain) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where domain_id = :zone ", array(":zone" => $domain)) or die(DB::error());
 		$return = array();
 		while($row = DB::fetch_array($res)) {
@@ -81,7 +81,7 @@ class server extends dns_server {
 
 	/* ZONE */
 	public static function get_zone ($domain, $owner = Null, $api = false) {
-		global $conf;
+		$conf = system::get_conf();
 		if(user::isAdmin() or $api) {
 			$re = DB::query("SELECT * FROM ".$conf["soa"]." where id = :id and owner = :owner", array(":id" => $domain, ":owner" => $owner));
 			$row = DB::fetch_array($re);
@@ -118,7 +118,7 @@ class server extends dns_server {
 	}
 		
 	public static function add_zone ($domain, $owner = Null) {
-		global $conf;
+		$conf = system::get_conf();
 		if(empty($owner)) {
 			DB::query("INSERT INTO ".$conf["soa"]." (name, master, last_check, type, notified_serial, account, owner) VALUES (:zone, NULL, NULL, 'MASTER', NULL, NULL, 0);", array(":zone" => $domain));
 		} else {
@@ -132,7 +132,7 @@ class server extends dns_server {
 	}
 
 	public static function del_zone ($domain) {
-		global $conf;
+		$conf = system::get_conf();
 		DB::query("DELETE FROM ".$conf["soa"]." WHERE id = :id", array(":id" => $domain)) or die(DB::error());
 		DB::query("DELETE FROM ".$conf["rr"]." WHERE domain_id = :id", array(":id" => $domain)) or die(DB::error());
 		parent::del_zone($domain);
@@ -140,7 +140,7 @@ class server extends dns_server {
 	}
 	
 	public static function set_zone ($domain, $data) {
-		global $conf;
+		$conf = system::get_conf();
 
 		$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
 		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where domain_id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
@@ -151,7 +151,7 @@ class server extends dns_server {
 	}
 	
 	public static function get_all_zones ($owner = Null) {
-		global $conf;
+		$conf = system::get_conf();
 		if($owner) {
 			$res = DB::query("SELECT * FROM ".$conf["soa"]." where owner = :owner", array(":owner" => $owner));
 		} else {
@@ -182,7 +182,7 @@ class server extends dns_server {
 	}
 
 	public static function get_zone_by_name($name) {
-		global $conf;
+		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["soa"]." where name = :name", array(":name" => $name));
 		$zone = DB::fetch_array($res);
 		return self::get_zone($zone['id']);

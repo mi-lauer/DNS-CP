@@ -17,8 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>. 
  */
 
-template::show("404", array(
-		"_name" => "404 - Not found",
-		"_content" => "<b>This page does not exist!</b>"
+tpl::show("404", array(
+		"name" => "404 - Not found",
+		"content" => "<b>This page does not exist!</b>",
+		"title" => $title,
+		"login" => $login,
+		"menu" => $tmenu,
+		"build" => $conf["build"],
+		"version" => $conf["version"]
 		));
 ?>
