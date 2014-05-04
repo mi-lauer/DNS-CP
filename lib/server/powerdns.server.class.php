@@ -144,7 +144,7 @@ class server extends dns_server {
 
 		$content = $conf["soans"]." ".$conf["mbox"]." ".$data['serial']." ".$data['refresh']." ".$data['retry']." ".$data['expire']." ".$conf["minimum_ttl"];
 		DB::query("UPDATE ".$conf["rr"]." SET content = :content, ttl = :ttl where domain_id = :name ", array(":content" => $content, ":ttl" => $data['attl'], ":name" => $domain));
-		if($data['owner'])
+		if(isset($data['owner']))
 			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owner" => $data['owner'], ":id" => $domain));
 		parent::set_zone($domain, $data);
 		return true;

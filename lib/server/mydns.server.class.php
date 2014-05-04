@@ -95,7 +95,7 @@ class server extends dns_server {
 		$conf = system::get_conf();
 		$bind = array(":refresh" => $data['refresh'],":retry" => $data['retry'],":expire" => $data['expire'],":ttl" => $data['attl'],":serial" => $data['serial'],":id" => $domain);
 		DB::query("UPDATE ".$conf["soa"]." SET refresh = :refresh, retry = :retry, expire = :expire, ttl = :ttl, serial = :serial WHERE id = :id", $bind) or die(DB::error());
-		if($data['owner'])
+		if(isset($data['owner']))
 			DB::query("UPDATE ".$conf["soa"]." SET owner = :owner where id = :id ", array(":owner" => $data['owner'], ":id" => $domain));
 		parent::set_zone($domain, $data);
 		return true;
