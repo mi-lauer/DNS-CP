@@ -41,11 +41,14 @@ class API {
 		echo json_encode($ret);
 	}
 	
-	public static function del_record ($domain, $record) {
+	public static function del_record ($record) {
 		$record = unserialize(base64_decode($record));
+		$conf = system::get_conf();
+		$res = DB::query("SELECT * FROM ".$conf["rr"]." where id = :record ORDER BY type ASC", array(":record" => $record)) or die(DB::error());
+		$domain = DB::fetch_array($res);
 		$ret = array();
 		$ret['status'] = "200";
-		$ret['data'] = server::del_record($domain, $record);
+		$ret['data'] = server::del_record($domain['zone'], $record);
 		echo json_encode($ret);
 	}
 	

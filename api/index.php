@@ -34,9 +34,11 @@ require_once("../lib/system/api.class.php");
 if($conf['enableapi'] == false) die(json_encode(array("status" => "400")));
 if(isset($_GET['key']) && !empty($_GET['key'])) {
 	$array = $_GET;
-} elseif(isset($_POST['key']) && !empty($_POST['key'])) {
+}
+elseif(isset($_POST['key']) && !empty($_POST['key'])) {
 	$array = $_POST;
-} else {
+}
+else {
 	die(json_encode(array("status" => "400")));
 }
 if(isset($array['key']) && !empty($array['key'])) {
@@ -45,32 +47,70 @@ if(isset($array['key']) && !empty($array['key'])) {
 			if($array['action'] == "add") {
 				if($array['data'] == "zone") {
 					echo API::add_zone($array['domain']);
-				} elseif($array['data'] == "record") {
+				}
+				elseif($array['data'] == "record") {
 					if(isset($array['add'])) {
 						echo API::add_record($array['domain'], $array['add']);
-					} else { echo json_encode(array("status" => "403")); }
-				} else { echo json_encode(array("status" => "404")); }
-			} elseif($array['action'] == "del") {
+					}
+					else {
+						echo json_encode(array("status" => "403"));
+					}
+				}
+				else {
+				echo json_encode(array("status" => "404"));
+				}
+			}
+			elseif($array['action'] == "del") {
 				if($array['data'] == "zone") {
 					echo API::del_zone($array['domain']);
-				} elseif($array['data'] == "record") {
+				}
+				elseif($array['data'] == "record") {
 					if(isset($array['del'])) {
-						echo API::del_record($array['domain'], $array['del']);
-					} else { echo json_encode(array("status" => "403")); }
-				} else { echo json_encode(array("status" => "404")); }
-			} elseif($array['action'] == "set") {
+						echo API::del_record($array['del']);
+					}
+					else {
+						echo json_encode(array("status" => "403"));
+					}
+				}
+				else {
+					echo json_encode(array("status" => "404"));
+				}
+			}
+			elseif($array['action'] == "set") {
 				if($array['data'] == "zone") {
 					if(isset($array['set'])) {
 						echo API::set_zone($array['domain'], $array['set']);
-					} else { echo json_encode(array("status" => "403")); }
-				} elseif($array['data'] == "record") {
+					}
+					else {
+						echo json_encode(array("status" => "403"));
+					}
+				}
+				elseif($array['data'] == "record") {
 					if(isset($array['set'])) {
 						echo API::set_record($array['domain'], $array['set']);
-					} else { echo json_encode(array("status" => "403")); }
-				} else { echo json_encode(array("status" => "404")); }
-			} else { echo json_encode(array("status" => "404")); }
-		} else { echo json_encode(array("status" => "403")); }
-	} else { echo json_encode(array("status" => "401")); }
-} else { echo json_encode(array("status" => "400")); }
+					}
+					else {
+						echo json_encode(array("status" => "403"));
+					}
+				}
+				else {
+					echo json_encode(array("status" => "404"));
+				}
+			}
+			else {
+				echo json_encode(array("status" => "404"));
+			}
+		}
+		else {
+			echo json_encode(array("status" => "403"));
+		}
+	}
+	else {
+		echo json_encode(array("status" => "401"));
+	}
+}
+else {
+	echo json_encode(array("status" => "400"));
+}
 DB::close();
 ?>
