@@ -42,7 +42,6 @@ class API {
 	}
 	
 	public static function del_record ($record) {
-		$record = unserialize(base64_decode($record));
 		$conf = system::get_conf();
 		$res = DB::query("SELECT * FROM ".$conf["rr"]." where id = :record ORDER BY type ASC", array(":record" => $record)) or die(DB::error());
 		$domain = DB::fetch_array($res);

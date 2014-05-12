@@ -37,7 +37,7 @@ class dns_server {
 		if($conf['useremoteapi']) {
 			foreach($conf['api'] as $id => $api) {
 				APIClient::connect($api['url']);
-				$post = array("key" => $api['key'], "action" => "del", "data" => "record", "del" => $record);
+				$post = array("key" => $api['key'], "action" => "del", "data" => "record", "domain" => "empty", "del" => $record);
 				APIClient::sendPost($post);
 			}
 		}
